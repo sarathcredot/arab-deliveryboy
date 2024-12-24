@@ -1,14 +1,15 @@
-import React from 'react'
-import { Container } from 'reactstrap'
+import React from "react";
+import { Container } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+
 
 const breadcrumbItems = [
   {title:"Dashboard" ,link:"/dashboard"},
-  {title:"Settlements",link:"" },
+  {title:"Returns",link:"/kljekr" },
 
 ]
 
-const Settlements = () => {
+const Returns = () => {
   return (
     <React.Fragment>
       <div className="page-content">
@@ -20,7 +21,7 @@ const Settlements = () => {
         </Container>
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Settlements
+export default Returns;

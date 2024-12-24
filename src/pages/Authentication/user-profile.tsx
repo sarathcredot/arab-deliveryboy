@@ -94,7 +94,7 @@ const UserProfile = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumb title="Minia" breadcrumbItem="Profile" />
+          {/* <Breadcrumb title="Minia" breadcrumbItem="Profile" /> */}
 
           <Row>
             <Col lg="12">

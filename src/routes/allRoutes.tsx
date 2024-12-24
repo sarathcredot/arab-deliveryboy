@@ -12,6 +12,8 @@ import ForgetPassword from "src/pages/Authentication/ForgetPassword";
 import UserProfile from "src/pages/Authentication/user-profile";
 import Settlements from "src/pages/Settlements";
 import Orders from "src/pages/Orders";
+import Returns from "src/pages/Returns";
+import OrderDetail from "src/pages/Orders/OrderDetail";
 
 
 interface RouteProps {
@@ -26,8 +28,17 @@ const userRoutes: Array<RouteProps> = [
 
   //dashboard
   { path: "/dashboard", component: <Dashboard /> },
+
+  //settlements
   { path: "/settlements", component: <Settlements /> },
+
+  //orders
   { path: "/orders", component: <Orders /> },
+  { path: "/orders/detail/", component: <OrderDetail /> },
+
+  //returns
+  { path: "/returns", component: <Returns /> },
+
 
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: <Navigate to="/dashboard" /> },
