@@ -1,24 +1,24 @@
 import React from "react";
-import boxIcon from "../../assets/images/icons/boxIcon.svg";
+import returnIcon from "../../assets/images/icons/returnIcon.svg";
 import arrowIcon from "../../assets/images/icons/arrowIcon.svg";
 import styles from "./style.module.css";
 import { useNavigate } from "react-router";
-const OrdersCount = () => {
-  const navigate = useNavigate()
+const ReturnsCount = () => {
+    const navigate = useNavigate()
   return (
-    <div className={styles.box} onClick={()=> navigate("/orders") }>
+    <div className={styles.box} onClick={()=> navigate("/returns")}>
       <div className={styles.box_contents}>
         <div className={styles.icon_div}>
           <img
-            src={boxIcon}
+            src={returnIcon}
             alt="icon"
           />
         </div>
         <div className={styles.content}>
-          <h3>50</h3>
-          <p >Assigned Orders</p>
+          <h3>90</h3>
+          <p>Assigned Returns</p>
           <p>
-            <span style={{ color: "red" }}>10</span> Pending Orders
+            <span style={{ color: "red" }}>25</span> Returns to Collect
           </p>
         </div>
       </div>
@@ -30,4 +30,4 @@ const OrdersCount = () => {
   );
 };
 
-export default OrdersCount;
+export default ReturnsCount;

@@ -212,7 +212,7 @@ const SidebarContent = (props: any) => {
               }}
             >
               <Link
-                to="/dashboard"
+                to="/returns"
                 className=""
               >
                 <FeatherIcon

@@ -4,7 +4,12 @@ import React from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { Col, Container, Row } from "reactstrap";
 import OrdersCount from "src/components/TotalCounts/OrdersCount";
+import ReturnsCount from "src/components/TotalCounts/ReturnsCount";
+import CashCount from "src/components/TotalCounts/CashCount";
 
+
+const breadcrumbItems = [
+  {title:"Dashboard" ,link:"/dashboard"}]
 const Dashboard = () => {
   //meta title
   document.title = "Dashboard | Minia - React Admin & Dashboard Template";
@@ -14,23 +19,34 @@ const Dashboard = () => {
         <Container fluid>
           {/* Render Breadcrumbs */}
           <Breadcrumbs
-            title="Dashboard"
-            breadcrumbItem="Dashboard"
+            // title="Home"
+            breadcrumbs={breadcrumbItems}
           />
-          <Row style={{
-            gap:0
-          }}>
-            <Col style={{
-              margin:0,
-              padding:0
-            }}>
+          <Row
+            style={{
+              gap: 0,
+            }}
+          >
+            <Col lg={4} md={6} sm={12}
+              style={{
+                padding: 4,
+              }}
+            >
               <OrdersCount />
             </Col>
-            <Col>
-              <OrdersCount />
+            <Col lg={4} md={6} sm={12}
+              style={{
+                padding: 4,
+              }}
+            >
+              <ReturnsCount />
             </Col>
-            <Col>
-              <OrdersCount />
+            <Col lg={4} md={6} sm={12}
+              style={{
+                padding: 4,
+              }}
+            >
+              <CashCount />
             </Col>
           </Row>
         </Container>
