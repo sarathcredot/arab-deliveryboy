@@ -2,8 +2,52 @@
 // authentication.scss
 //
 
+.carousel-show{
+    display: none;
+}
+.logo-show{
+    display: none;
+}
+.intro-show{
+    display: block;
+}
+
+.auth-logo-section {
+    margin: 40px 0; 
+}
+.auth-form-align{
+    margin-top: 20px;
+}
+
+.auth-button-align{
+    margin-top: 280px;
+}
+
+@media (min-width:768px) {
+    .carousel-show{
+        display: block;
+    }
+    .logo-show{
+        display: block;
+    }
+    .intro-show{
+        display: none;
+    }
+    .auth-logo-section {
+        margin: auto 0; 
+    }
+    .auth-form-align{
+        margin-top: 60px;
+    }
+    .auth-button-align{
+        margin-top: 16px;
+    }
+}
+
+  
+
 .auth-bg{
-    background-image: url("../../images/auth-bg.jpg");
+    background-image: url("../../images/auth2-bg.png");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -14,7 +58,6 @@
         height: 100vh;
     }
 }
-
 .auth-full-page-content{
     min-height: 100vh;
 }

@@ -28,7 +28,7 @@ import { useFormik } from "formik";
 import { loginUser, socialLogin } from "../../store/actions";
 
 // import images
-import logo from "../../assets/images/logo-sm.svg";
+import logo from "../../assets/images/arabDealLogo.svg";
 
 //Import config
 import config from "../../config";
@@ -53,7 +53,7 @@ const Login = (props: any) => {
   const { error } = useSelector(errorData);
 
 
-  document.title = "Login | Minia - React Admin & Dashboard Template";
+  document.title = "Login | Arabdeals-Agent & Dashboard ";
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -88,25 +88,48 @@ const Login = (props: any) => {
       <div className="auth-page">
         <Container fluid className="p-0">
           <Row className="g-0">
+
+
             <Col lg={4} md={5} className="col-xxl-3">
               <div className="auth-full-page-content d-flex p-sm-5 p-4">
                 <div className="w-100">
                   <div className="d-flex flex-column h-100">
-                    <div className="mb-4 mb-md-5 text-center">
+                    {/* <div className="mb-4 mb-md-5 text-center">
                       <Link to="/dashboard" className="d-block auth-logo">
                         <img src={logo} alt="" height="28" />{" "}
                         <span className="logo-txt">Minia</span>
                       </Link>
-                    </div>
-                    <div className="auth-content my-auto">
-                      <div className="text-center">
-                        <h5 className="mb-0">Welcome Back !</h5>
+                    </div> */}
+                    <div className="auth-content auth-logo-section">
+                      <div className="intro-show">
+                        <h1 style={{color:"#000000",fontSize:"24px",fontWeight:700,lineHeight:"22px"}}>Login</h1>
+                        <p style={{color:"#7C7C7C",fontWeight:400,fontSize:"14px",lineHeight:"22px",marginTop:"22px"}}>Enter your email and password to get started!</p>
+                      </div>
+                      <div className="text-center  logo-show">
+                        {/* <h5 className="mb-0">Welcome Back !</h5>
                         <p className="text-muted mt-2">
                           Sign in to continue to Minia.
-                        </p>
+                        </p> */}
+
+                        <img src={logo} alt="" width={"60%"} />
+                        {/* <p
+                          className="text-muted mt-5"
+                          style={{
+                            color: "#00000",
+                            textAlign: "center",
+                            fontSize: "25px",
+                            fontWeight: "300",
+                            lineHeight: "normal",
+                            letterSpacing: "0.5px",
+                            fontFamily: "Arial",
+                          }}
+                        >
+                          Welcome Back!
+                        </p> */}
                       </div>
                       <Form
-                        className="custom-form mt-4 pt-2"
+                        
+                        className="custom-form auth-form-align  pt-2"
                         onSubmit={(e) => {
                           e.preventDefault();
                           validation.handleSubmit();
@@ -115,11 +138,11 @@ const Login = (props: any) => {
                       >
                         {/* {error ? <Alert color="danger">{error}</Alert> : null} */}
                         <div className="mb-3">
-                          <Label className="form-label">Email</Label>
+                          {/* <Label className="form-label">Email</Label> */}
                           <Input
                             name="email"
                             className="form-control"
-                            placeholder="Enter email"
+                            placeholder="Enter Email"
                             type="email"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
@@ -130,6 +153,8 @@ const Login = (props: any) => {
                                 ? true
                                 : false
                             }
+
+                            style={{ borderRadius: "6px ", height: "52px", fontFamily: "Arial", border:" 1px solid #CDCDCD",backgroundColor:"white"}}
                           />
                           {validation.touched.email &&
                             validation.errors.email ? (
@@ -142,17 +167,17 @@ const Login = (props: any) => {
                         <div className="mb-3">
                           {/* <Label className="form-label">Password</Label> */}
                           <div className="d-flex align-items-start">
-                            <div className="flex-grow-1">
+                            {/* <div className="flex-grow-1">
                               <Label className="form-label">Password</Label>
                             </div>
                             <div className="flex-shrink-0">
                               <div className="">
                                 <Link to="/page-recoverpw" className="text-muted">Forgot password?</Link>
                               </div>
-                            </div>
+                            </div> */}
                           </div>
-                          <div className="input-group auth-pass-inputgroup">
-                            <Input
+                          <div className="input-group auth-pass-inputgroup" style={{position:"relative",width:"100%"}}>
+                          <Input
                               name="password"
                               value={validation.values.password || ""}
                               type={passwordShow ? "text" : "password"}
@@ -165,8 +190,9 @@ const Login = (props: any) => {
                                   ? true
                                   : false
                               }
+                              style={{  borderRadius:"6px", height: "52px", fontFamily: "Arial",backgroundColor:"white" , border:" 1px solid #CDCDCD",paddingRight:"40px",boxSizing:"border-box"}}
                             />
-                            <button onClick={() => setPasswordShow(!passwordShow)} className="btn btn-light shadow-none ms-0" type="button" id="password-addon"><i className="mdi mdi-eye-outline"></i></button>
+                            <button onClick={() => setPasswordShow(!passwordShow)} className="btn  shadow-none ms-0" type="button" id="password-addon" style={{position:"absolute",top: "50%", right: "10px", transform: "translateY(-50%)",}}><i className="mdi mdi-eye-outline"></i></button>
                             {validation.touched.password &&
                               validation.errors.password ? (
                               <FormFeedback type="invalid">
@@ -174,11 +200,14 @@ const Login = (props: any) => {
                               </FormFeedback>
                             ) : null}
                           </div>
+                          
                         </div>
 
                         <div className="row mb-4">
                           <div className="col">
-                            <div className="form-check">
+
+
+                            {/* <div className="form-check">
                               <input
                                 className="form-check-input"
                                 type="checkbox"
@@ -190,27 +219,28 @@ const Login = (props: any) => {
                               >
                                 Remember me
                               </label>
-                            </div>
+                            </div> */}
 
-                            <div className="mt-3 d-grid">
+                            <div className="auth-button-align d-grid">
                               <button
-                                className="btn btn-primary btn-block"
+                                className="btn btn-block"
                                 type="submit"
+                                style={{backgroundColor:"#131313",color:"#FFFFFF",borderRadius:"8px",fontWeight:500,fontSize:"16px",lineHeight:"22px",padding:"10px"}}
                               // onClick={() => logIn()}
                               >
-                                Log In
+                                Login
                               </button>
                             </div>
                           </div>
                         </div>
                       </Form>
 
-                      <div className="mt-4 text-center">
+                      {/* <div className="mt-4 text-center">
                         <h5 className="font-size-14 mb-3">Sign in with</h5>
 
                         <ul className="list-inline">
                           <li className="list-inline-item">
-                            {/* <FacebookLogin
+                            <FacebookLogin
                               appId={config.facebook.APP_ID}
                               autoLoad={false}
                               callback={facebookResponse}
@@ -223,7 +253,7 @@ const Login = (props: any) => {
                                   <i className="mdi mdi-facebook" />
                                 </Link>
                               )}
-                            /> */}
+                            />
                             <Link
                               to="#"
                               className="social-list-item bg-primary text-white border-primary"
@@ -234,8 +264,8 @@ const Login = (props: any) => {
                             >
                               <i className="mdi mdi-facebook" />
                             </Link>
-                          </li>
-                          {/*<li className="list-inline-item">*/}
+                          </li> */}
+                          {/* <li className="list-inline-item">*/}
                           {/*  <TwitterLogin*/}
                           {/*    loginUrl={*/}
                           {/*      "http://localhost:4000/api/v1/auth/twitter"*/}
@@ -255,8 +285,8 @@ const Login = (props: any) => {
                           {/*      <i className="mdi mdi-twitter"/>*/}
                           {/*    </a>*/}
                           {/*  </TwitterLogin>*/}
-                          {/*</li>*/}
-                          <li className="list-inline-item">
+                          {/*</li> */}
+                          {/* <li className="list-inline-item"> */}
                             {/* <GoogleLogin
                               clientId="CLIENT_ID" // u can add your Client ID
                               render={(renderProps) => (
@@ -272,7 +302,7 @@ const Login = (props: any) => {
                               onFailure={() => { }}
                             /> */}
 
-                            <Link
+                            {/* <Link
                               to="#"
                               className="social-list-item bg-danger text-white border-danger"
                               onClick={e => {
@@ -284,9 +314,9 @@ const Login = (props: any) => {
                             </Link>
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
 
-                      <div className="mt-5 text-center">
+                      {/* <div className="mt-5 text-center">
                         <p className="text-muted mb-0">
                           Don't have an account ?{" "}
                           <Link
@@ -297,20 +327,31 @@ const Login = (props: any) => {
                             Signup now{" "}
                           </Link>{" "}
                         </p>
-                      </div>
+                      </div> */}
                     </div>
+
+
+
+
+
+
                     <div className="mt-4 mt-md-5 text-center">
-                      <p className="mb-0">
+                      {/* <p className="mb-0">
                         © {new Date().getFullYear()} Minia . Crafted with{" "}
                         <i className="mdi mdi-heart text-danger"></i> by
                         Themesbrand
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 </div>
               </div>
             </Col>
-            <CarouselPage />
+
+
+
+            <CarouselPage/>
+            
+           
           </Row>
         </Container>
       </div>
