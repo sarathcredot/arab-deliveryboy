@@ -42,6 +42,12 @@ const Orders = () => {
     },
   ];
 
+  const breadcrumbItems = [
+    {title:"Dashboard" ,link:"/dashboard"},
+    {title:"Pendind Orders",link:"" },
+  
+  ]
+
   document.title = "Orders | Minia - React Admin & Dashboard Template";
 
   return (
@@ -49,7 +55,9 @@ const Orders = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Pending Orders" breadcrumbItem="Pending Orders" />
+          <Breadcrumbs
+            breadcrumbs={breadcrumbItems}
+          />
           <div className="order-outer-div">
             {orders.map((order) => (
               <div className="order-card" key={order.id}>
