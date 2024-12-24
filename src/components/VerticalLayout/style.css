@@ -1,0 +1,14 @@
+#sidebar-menu .active {
+    background-color: #ffffff40;
+    border-radius:30px
+}
+#sidebar-menu .active .feather-icon {
+    color:#8f0d0d;
+    background-color: #fff; 
+    
+    border-radius: 50%; 
+}
+#sidebar-menu .active .feather-icon img {
+    color:red;
+    fill:red;
+}
