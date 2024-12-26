@@ -1,0 +1,65 @@
+.detail_box {
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+}
+
+.box {
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+    padding: 20px;
+    display: grid;
+    gap: 20px;
+
+}
+
+.detail_content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px;
+
+    && div {
+        display: flex;
+    }
+
+}
+
+.detail_content div p:first-child {
+    width: 130px;
+}
+
+.detail_content div p:nth-child(2) {
+    font-weight: bold;
+}
+
+.input {
+    width: 100%;
+    border: 1px solid #CDCDCD;
+
+    &&::placeholder {
+        color: #c5c5c5;
+    }
+}
+
+.select_box {
+    background: #00000033 !important;
+
+    
+}
+
+.select_box option{
+    background: #fff !important;
+}
+.call_box{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background: #fff;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding:25px 20px;
+    box-shadow:0 0 10px #00000033;
+    
+}

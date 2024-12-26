@@ -54,6 +54,7 @@ const { layoutMode, showRightSidebar } = useSelector(nonauthData);
     setClick(!isClick);
     if (isClick === true) {
       body.classList.remove("sidebar-enable");
+      // document.body.removeAttribute("data-sidebar-size");
       document.body.setAttribute("data-sidebar-size", "sm");
     } else {
       body.classList.add("sidebar-enable");

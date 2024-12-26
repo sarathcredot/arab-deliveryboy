@@ -165,32 +165,112 @@ const SidebarContent = (props: any) => {
               paddingTop: "30px",
             }}
           >
-            {/* <li className="menu-title">{props.t("Menu")} </li> */}
-            <li
-              style={{
-                background: "#ffffff26",
-                borderRadius: "30px",
-                marginTop: "10px",
-              }}
-            >
+            <li>
               <Link
+                className="link"
                 to="/dashboard"
-                className=""
               >
-                <FeatherIcon
-                  className="feather-icon"
-                  icon="home"
-                  style={{ color: "#fff" }}
-                />{" "}
+                <div className="icon_round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                  >
+                    <path d="M2.6087 13.6957V5.86958L7.82609 1.95654L13.0435 5.86958V13.6957H9.13044V9.13045H6.52174V13.6957H2.6087Z" />
+                  </svg>
+                </div>
                 <span style={{ color: "#fff" }}>{props.t("Dashboard")}</span>
               </Link>
             </li>
-            <li
+            <li>
+              <Link
+                className="link"
+                to="/orders"
+              >
+                <div className="icon_round">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2.91666 12.8333C2.59582 12.8333 2.32117 12.7191 2.0927 12.4906C1.86423 12.2621 1.74999 11.9875 1.74999 11.6666V5.08954C1.57499 4.9826 1.43402 4.84406 1.32707 4.67392C1.22013 4.50378 1.16666 4.3069 1.16666 4.08329V2.33329C1.16666 2.01246 1.28089 1.73781 1.50936 1.50933C1.73784 1.28086 2.01249 1.16663 2.33332 1.16663H11.6667C11.9875 1.16663 12.2621 1.28086 12.4906 1.50933C12.7191 1.73781 12.8333 2.01246 12.8333 2.33329V4.08329C12.8333 4.3069 12.7799 4.50378 12.6729 4.67392C12.566 4.84406 12.425 4.9826 12.25 5.08954V11.6666C12.25 11.9875 12.1358 12.2621 11.9073 12.4906C11.6788 12.7191 11.4042 12.8333 11.0833 12.8333H2.91666ZM2.33332 4.08329H11.6667V2.33329H2.33332V4.08329ZM5.24999 8.16663H8.74999V6.99996H5.24999V8.16663Z"
+                      // fill="white"
+                    />
+                  </svg>
+                </div>
+                <span style={{ color: "#fff" }}>{props.t("Orders")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="link"
+                to="/returns"
+              >
+                <div className="icon_round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                  >
+                    <path d="M2.6087 13.6957V5.86958L7.82609 1.95654L13.0435 5.86958V13.6957H9.13044V9.13045H6.52174V13.6957H2.6087Z" />
+                  </svg>
+                </div>
+                <span style={{ color: "#fff" }}>{props.t("Returns")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="link"
+                to="/settlements"
+              >
+                <div className="icon_round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                  >
+                    <path d="M2.6087 13.6957V5.86958L7.82609 1.95654L13.0435 5.86958V13.6957H9.13044V9.13045H6.52174V13.6957H2.6087Z" />
+                  </svg>
+                </div>
+                <span style={{ color: "#fff" }}>{props.t("Settlements")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="link"
+                to="/dashboard"
+              >
+                <div className="icon_round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                  >
+                    <path d="M2.6087 13.6957V5.86958L7.82609 1.95654L13.0435 5.86958V13.6957H9.13044V9.13045H6.52174V13.6957H2.6087Z" />
+                  </svg>
+                </div>
+                <span style={{ color: "#fff" }}>{props.t("Logout")}</span>
+              </Link>
+            </li>
+
+            {/* <li
               style={{
                 background: "#ffffff26",
                 borderRadius: "30px",
                 marginTop: "10px",
               }}
+
             >
               <Link
                 to="/orders"
@@ -255,7 +335,6 @@ const SidebarContent = (props: any) => {
                     src={settleImg}
                     alt="icon"
                   />
-                  {/* <SettleImg fill="#000"  /> */}
                 </span>
                 <span style={{ color: "#fff" }}>{props.t("Settlements")}</span>
               </Link>
@@ -278,7 +357,7 @@ const SidebarContent = (props: any) => {
                 />{" "}
                 <span style={{ color: "#fff" }}>{props.t("Logout")}</span>
               </Link>
-            </li>
+            </li> */}
 
             {/* <li>
               <Link
@@ -667,7 +746,7 @@ const SidebarContent = (props: any) => {
         </div>
       </SimpleBar>
       <p
-        style={{ color: "#fff", fontSize: "9px", position: "absolute", bottom: 0, width: "100%", textAlign: "center" }}
+        style={{ color: "#fff", fontSize: "9px", position: "absolute", bottom: 10, width: "100%", textAlign: "center" }}
       >
         Arab Deals © 2024. All Rights Reserved
       </p>
