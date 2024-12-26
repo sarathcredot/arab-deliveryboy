@@ -8,10 +8,10 @@ export const requestInterceptor = new ApolloLink(
     // Modify the operation before it is sent
     operation.setContext({
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('agent_token')}`,
       },
     });
-    console.log("token==",localStorage.getItem('token'))
+    console.log("token==",localStorage.getItem('agent_token'))
     // Call the next link in the chain
     return forward(operation);
   }
