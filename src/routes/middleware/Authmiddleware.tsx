@@ -1,14 +1,26 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
-const Authmiddleware = (props:any) => {
-  if (!localStorage.getItem("authUser")) {
-    return (
-      <Navigate to={{ pathname: "/login"}} />
-    );
-  }
-  return <React.Fragment>{props.children}</React.Fragment>;
+const Authmiddleware = (props: any) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("agent_token");
+    console.log("Checking token:", token);
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      console.log("Redirecting to /login");
+      navigate("/login");
+    }
+  }, [navigate,isAuthenticated]);
+
+  
+
+    return <React.Fragment>{props.children}</React.Fragment>
+ 
 };
 
 export default Authmiddleware;
