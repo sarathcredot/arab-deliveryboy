@@ -30,15 +30,15 @@ const Logout = ({ history }: LogoutProps) => {
               <div className="w-100">
                 <div className="d-flex flex-column h-100">
                   <div className="mb-4 mb-md-5 text-center">
-                    <Link to="index.html" className="d-block auth-logo">
+                    {/* <Link to="index.html" className="d-block auth-logo">
                       <img src={logo} alt="" height="28" />{" "}
                       <span className="logo-txt">Minia</span>
-                    </Link>
+                    </Link> */}
                   </div>
                   <div className="auth-content my-auto">
                     <div className="text-center">
                       <div className="avatar-xl mx-auto">
-                        <div className="avatar-title bg-light-subtle text-primary h1 rounded-circle">
+                        <div className="avatar-title bg-light-subtle text-dark h1 rounded-circle">
                           <i className="bx bxs-user"></i>
                         </div>
                       </div>
@@ -47,12 +47,12 @@ const Logout = ({ history }: LogoutProps) => {
                         <h5>You are Logged Out</h5>
                         <p className="text-muted font-size-15">
                           Thank you for using{" "}
-                          <span className="fw-semibold text-dark">Minia</span>
+                          <span className="fw-semibold text-dark">Us</span>
                         </p>
                         <div className="mt-4">
                           <Link
                             to="/dashboard"
-                            className="btn btn-primary w-100 waves-effect waves-light"
+                            className="btn btn-dark w-100 waves-effect waves-light"
                           >
                             Sign In
                           </Link>
@@ -61,7 +61,7 @@ const Logout = ({ history }: LogoutProps) => {
                     </div>
 
                     <div className="mt-5 text-center">
-                      <p className="text-muted mb-0">
+                      {/* <p className="text-muted mb-0">
                         Don't have an account ?{" "}
                         <Link
                           to="/register"
@@ -70,16 +70,16 @@ const Logout = ({ history }: LogoutProps) => {
                           {" "}
                           Signup
                         </Link>{" "}
-                      </p>
+                      </p> */}
                     </div>
                   </div>
-                  <div className="mt-4 mt-md-5 text-center">
+                  {/* <div className="mt-4 mt-md-5 text-center">
                     <p className="mb-0">
                       © {new Date().getFullYear()} Minia . Crafted with{" "}
                       <i className="mdi mdi-heart text-danger"></i> by
                       Themesbrand
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
