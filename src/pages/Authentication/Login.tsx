@@ -37,6 +37,7 @@ import CarouselPage from "../AuthenticationInner/CarouselPage";
 import { createSelector } from "reselect";
 import { ToastContainer, toast } from "react-toastify";
 
+
 interface LoginProps {
   history: object;
 }
@@ -44,17 +45,19 @@ interface LoginProps {
 const Login = (props: any) => {
   const dispatch = useDispatch();
 
+
   const [token, setToken] = useState(localStorage.getItem("agent_token") || "");
 
-  useEffect(() => {
-    // Check if the user is authenticated and if the token is stored
-    const token = localStorage.getItem("agent_token");
-    if (!token) {
-      navigate("/login");  // Redirect to login if no token found
-    } else {
-      navigate("/dashboard");  // Redirect to dashboard if token exists
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Check if the user is authenticated and if the token is stored
+  //   const token = localStorage.getItem("agent_token");
+  //   if (!token) {
+  //       navigate("/login"); 
+  //      // Redirect to login if no token found
+  //   } else {
+  //     navigate("/dashboard");  // Redirect to dashboard if token exists
+  //   }
+  // }, []);
 
   const errorData = createSelector(
 

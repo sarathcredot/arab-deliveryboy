@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import useWindowWidth from "src/hooks/useWindowWidth";
 
 
 const Authmiddleware = (props: any) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const navigate = useNavigate();
+  const width = useWindowWidth(); 
 
   useEffect(() => {
     const token = localStorage.getItem("agent_token");
@@ -13,7 +15,12 @@ const Authmiddleware = (props: any) => {
       setIsAuthenticated(true);
     } else {
       console.log("Redirecting to /login");
-      navigate("/login");
+      if(width <= 480){
+        navigate("/greeting")
+      }else{
+        navigate("/login");
+      }
+     
     }
   }, [navigate,isAuthenticated]);
 

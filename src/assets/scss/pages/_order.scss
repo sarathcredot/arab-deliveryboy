@@ -62,7 +62,8 @@ body {
         
   
         &.outfordelivery,
-        &.returnrequested {
+        &.returnrequested,
+        &.approved {
           background-color: #F97316;
         }
         &.delivered,
