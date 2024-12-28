@@ -145,8 +145,8 @@ const Orders = () => {
           />
           <div className="order-outer-div">
             {orders.map((order) => (
-              <Link to={`/orders/detail/${order._id}`}>
-               <div className="order-card" key={order._id}>
+              <Link to={`/orders/detail/${order._id}`} key={order._id}>
+               <div className="order-card" >
                 <div className="order-card-header">
                   <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>{order.shippingStatus}</span>
                   <h5 className="order-id">

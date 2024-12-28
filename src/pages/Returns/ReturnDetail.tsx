@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Input, Label, Row } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import styles from "./style.module.css";
 import CustomButton from "src/components/Common/CustomButton";
 import MapPopup from "src/components/MapPopup";
@@ -64,6 +64,7 @@ const UPLOAD_LOCATION = gql`
 `;
 
 const ReturnDetail = () => {
+  const { id } = useParams();
   const [orderDetail, setOrderDetail] = useState<any>();
   const [returnStatus, setReturnStatus] = useState("");
 
@@ -78,14 +79,11 @@ const ReturnDetail = () => {
   } = useQuery(GET_ORDER_DETAIL, {
     variables: {
       input: {
-        _id: "6762a8b43011832d35c2107f",
+        _id: id,
       },
     },
   });
 
-  const [searchParams] = useSearchParams();
-  const orderId = searchParams.get("orderId");
-  console.log({ orderId });
   const [trackingLink, setTrackingLink] = useState("");
 
   const [openOtp, setOpenOtp] = useState(false);
@@ -117,7 +115,7 @@ const ReturnDetail = () => {
         const response = await uploadLocation({
           variables: {
             input: {
-              orderProductId: "6762a8b43011832d35c2107f",
+              orderProductId: id,
               mapLocation: trackingLink,
             },
           },
@@ -133,7 +131,6 @@ const ReturnDetail = () => {
         console.log("ERROR = ", error);
         toast.error(error);
       }
-
     }
   };
 
@@ -149,7 +146,7 @@ const ReturnDetail = () => {
         const response = await uploadProductImages({
           variables: {
             input: {
-              orderProductId: "6762a8b43011832d35c2107f",
+              orderProductId: id,
             },
             image: productImages[0], // need to change this
           },

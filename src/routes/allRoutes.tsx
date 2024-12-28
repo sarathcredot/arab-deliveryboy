@@ -52,7 +52,7 @@ const userRoutes: Array<RouteProps> = [
 
   //orders
   { path: "/orders", component: <Orders /> },
-  { path: "/orders/detail/", component: <OrderDetail /> },
+  { path: "/orders/detail/:id", component: <OrderDetail /> },
   { path: "/order-history", component: <OrderHistory /> },
 
   //returns

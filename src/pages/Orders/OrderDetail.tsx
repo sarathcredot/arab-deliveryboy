@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Input, Label, Row } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import styles from "./style.module.css";
 import CustomButton from "src/components/Common/CustomButton";
 import MapPopup from "src/components/MapPopup";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { toast } from "react-toastify";
 import Loader from "src/components/Common/Loader";
 import OtpPopup from "./OtpPopup";
@@ -18,39 +18,48 @@ const breadcrumbItems = [
 
 const GET_ORDER_DETAIL = gql`
   query GetAssignedeOrderDeatilsByAgentProfile($input: getAssignedeOrderDeatilsByAgentProfileInput!) {
-  getAssignedeOrderDeatilsByAgentProfile(input: $input) {
-    records {
-      _id
-      orderId
-      userId
-      productName
-      itemId
-      sellingPrice
-      paymentStatus
-      paymentMode
-      orderDate
-      shippingStatus
-      deliveryAgentId
-      userName
-      email
-      mobileNumber
-      houseNumber
-      streetName
-      apartment
-      suite
-      unit
-      city
-      country
-      postCode
+    getAssignedeOrderDeatilsByAgentProfile(input: $input) {
+      records {
+        _id
+        orderId
+        userId
+        productName
+        itemId
+        sellingPrice
+        paymentStatus
+        paymentMode
+        orderDate
+        shippingStatus
+        deliveryAgentId
+        userName
+        email
+        mobileNumber
+        houseNumber
+        streetName
+        apartment
+        suite
+        unit
+        city
+        country
+        postCode
+      }
+      maxRecords
     }
-    maxRecords
   }
-}
+`;
+const UPLOAD_LOCATION = gql`
+  mutation UpdateDeliveredMapLocation($input: UpdateMapLocation!) {
+    updateDeliveredMapLocation(input: $input) {
+      message
+    }
+  }
 `;
 
 const OrderDetail = () => {
+  const { id } = useParams();
   const [orderDetail, setOrderDetail] = useState<any>();
   const [deliveryStatus, setDeliveryStatus] = useState("");
+  const [uploadLocation] = useMutation(UPLOAD_LOCATION);
 
   const {
     data: orderData,
@@ -59,17 +68,15 @@ const OrderDetail = () => {
   } = useQuery(GET_ORDER_DETAIL, {
     variables: {
       input: {
-        _id: "6762a8b43011832d35c2107f",
+        _id: id,
       },
     },
   });
 
-  const [searchParams] = useSearchParams();
-  const orderId = searchParams.get("orderId");
-  console.log({ orderId });
+  console.log({ id });
   const [trackingLink, setTrackingLink] = useState("");
 
-  const [openOtp,setOpenOtp] = useState(false)
+  const [openOtp, setOpenOtp] = useState(false);
   const openOtpToggle = () => {
     setOpenOtp(!openOtp);
   };
@@ -94,12 +101,32 @@ const OrderDetail = () => {
     console.log({ trackingLink });
 
     if (trackingLink) {
-      setShowMap(true);
+      try {
+        const response = await uploadLocation({
+          variables: {
+            input: {
+              orderProductId: id,
+              mapLocation: trackingLink,
+            },
+          },
+        });
+
+        if (response.data) {
+          toast.success(response.data.updateDeliveredMapLocation.message);
+          setShowMap(true);
+        } else if (response.errors) {
+          console.log("ERRORS = ", response.errors);
+        }
+      } catch (error: any) {
+        console.log("ERROR = ", error);
+        toast.error(error);
+      }
     }
   };
 
   const handleDeliveryStatus = (e: any) => {
     console.log("status =", e.target.value);
+    setDeliveryStatus(e.target.value);
   };
 
   return (
@@ -274,7 +301,10 @@ const OrderDetail = () => {
           width="100%"
         />
       </div>
-      <OtpPopup isOpen={openOtp} toggle={openOtpToggle} />
+      <OtpPopup
+        isOpen={openOtp}
+        toggle={openOtpToggle}
+      />
     </React.Fragment>
   );
 };
