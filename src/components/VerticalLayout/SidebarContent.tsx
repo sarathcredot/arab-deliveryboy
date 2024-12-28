@@ -246,18 +246,29 @@ const SidebarContent = (props: any) => {
             </li>
             <li>
               <Link
-                className="link"
+                className="logout_ink"
                 to="/dashboard"
               >
                 <div className="icon_round">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
                     fill="none"
+                    stroke="#fff"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="feather feather-power"
                   >
-                    <path d="M2.6087 13.6957V5.86958L7.82609 1.95654L13.0435 5.86958V13.6957H9.13044V9.13045H6.52174V13.6957H2.6087Z" />
+                    <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                    <line
+                      x1="12"
+                      y1="2"
+                      x2="12"
+                      y2="12"
+                    ></line>
                   </svg>
                 </div>
                 <span style={{ color: "#fff" }}>{props.t("Logout")}</span>
