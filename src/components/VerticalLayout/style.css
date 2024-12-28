@@ -1,4 +1,4 @@
-.link{
+.link,.logout_ink{
     background:#ffffff1a;
     border-radius:30px;
     display:flex !important;
@@ -9,7 +9,7 @@
     
 }
 
-.link .icon_round{
+.link .icon_round,.logout_ink .icon_round{
     width:25px;
     height:25px;
     display:flex;
@@ -28,11 +28,27 @@
     }
     
 }
+.logout_ink:hover,.logout_ink.active{
+    background:#ffffff30;
+    && .icon_round{
+        background:#fff;
+    }
+    && svg{
+        stroke:red !important;
+        /* fill:#fff !important; */
+    }
+    
+}
+
 .link svg{
-    transition:.2s ease;
     padding:0 !important;
     margin:0 !important;
     fill:#fff !important;
-    /* width:16 !important; */
-    /* height:16 !important; */
+    transition:.2s ease;
+}
+.logout_ink svg{
+    padding:0 !important;
+    margin:0 !important;
+    transition:.2s ease;
+
 }

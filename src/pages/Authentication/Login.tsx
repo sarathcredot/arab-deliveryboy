@@ -107,18 +107,18 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
           },
         });
 
-        console.log("response,",response)
+        console.log("LOGIN response = ",response)
 
         if (response.data.loginDeliveryAgent.status === "login") {
           const newToken = response.data.loginDeliveryAgent.token;
           console.log("Token received:", newToken); // Log the token
           localStorage.setItem("agent_token", newToken);
           setToken(newToken); // Update token state
-          // toast.success("Successfully logged in");
+          toast.success("Successfully logged in");
           navigate("/dashboard")
           
         } else {
-          return toast.error("please provide the valid email or password ");
+          return toast.error(response.data.loginDeliveryAgent.msg);
         }
       } catch (error) {
         console.log(error);
@@ -145,6 +145,7 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
 
   return (
     <React.Fragment>
+      <ToastContainer/>
       <div className="auth-page">
         <Container fluid className="p-0">
           <Row className="g-0">
