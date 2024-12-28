@@ -149,9 +149,8 @@ const Return = () => {
         <Container fluid style={{paddingRight:"0px",paddingLeft:"0px"}}>
           {/* Render Breadcrumbs */}
           <Breadcrumbs
-            title="Pending Returns"
+            title="Returns History"
             onFilterChange={handleFilterChange}
-            isHistory={true}
           />
           <div className="order-outer-div">
             {orders.map((order) => (

@@ -54,7 +54,7 @@ export const responseInterceptor = new ApolloLink(
 
 
 const getAuthToken = () => {
-  return localStorage.getItem("admin_token") || null;
+  return localStorage.getItem("agent_token") || null;
 };
 
 export const authLink = new ApolloLink((operation, forward) => {

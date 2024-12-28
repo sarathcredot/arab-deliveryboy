@@ -8,9 +8,9 @@ import filtericon from '../../assets/images/FilterIcon.svg'
 interface BreadcrumbProps {
   title: string;
   onFilterChange: (filter: string) => void; 
-  isHistory?:boolean
+  isHistory?:boolean;
 }
-const Breadcrumb = ({ title, onFilterChange,isHistory }: BreadcrumbProps) => {
+const Breadcrumb = ({ title, onFilterChange,isHistory}: BreadcrumbProps) => {
   const [showFilterOptions, setShowFilterOptions] = useState(false);
   const toggleFilterOptions = () => {
     setShowFilterOptions((prev) => !prev);
@@ -29,11 +29,13 @@ const Breadcrumb = ({ title, onFilterChange,isHistory }: BreadcrumbProps) => {
         <div className="page-title-box  align-items-center justify-content-between" style={{display:"flex"}}>
           <h4 className="mb-0 font-size-18">{title}</h4>
           <div className="page-title-right" style={{display:"flex",gap:"10px"}}>
-            
             {isHistory && (
-                <Link to={"/order-history"}> <button className="btn btn-dark btn-sm" style={{borderRadius:"30px",fontSize:"10px",fontWeight:"500",padding:"5px 15px"}} >History</button></Link>
+              <Link to={"/return-history"} >
+                   <button className="btn btn-dark btn-sm" style={{borderRadius:"30px",fontSize:"10px",fontWeight:"500",padding:"5px 15px"}} >History</button>
+              </Link>
+             
             )}
-          
+           
             <img  onClick={toggleFilterOptions} src={filtericon} alt="filter"/>
             
           </div>
@@ -44,12 +46,12 @@ const Breadcrumb = ({ title, onFilterChange,isHistory }: BreadcrumbProps) => {
         <div className="filter-options">
           <ul className="filter-list">
             <li onClick={() => applyFilter("All")}>All</li>
-            <li onClick={() => applyFilter("SHIPPED")}>
-              Out for Delivery
+            <li onClick={() => applyFilter("APPROVED")}>
+              Return Requested
             </li>
-            <li onClick={() => applyFilter("DELIVERED")}>Delivered</li>
-            <li onClick={() => applyFilter("CANCELED")}>Cancelled</li>
-            <li onClick={() => applyFilter("POSTPONED")}>Postponed</li>
+            <li onClick={() => applyFilter("COLLECTED")}>Collected</li>
+            <li onClick={() => applyFilter("REJECTED")}>Rejected</li>
+            <li onClick={() => applyFilter("RETURNED TO WAREHOUSE")}>Returned to Warehouse</li>
           </ul>
         </div>
       )}

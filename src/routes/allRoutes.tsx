@@ -14,6 +14,10 @@ import Settlements from "src/pages/Settlements";
 import Orders from "src/pages/Orders";
 import Returns from "src/pages/Returns";
 import OrderDetail from "src/pages/Orders/OrderDetail";
+import OrderHistory from "src/pages/Orders/OrderHistory";
+import ReturnHistory from "src/pages/Returns/ReturnHistory";
+import Greeting from "src/pages/Authentication/Greeting";
+import useWindowWidth from "src/hooks/useWindowWidth";
 
 
 interface RouteProps {
@@ -21,6 +25,23 @@ interface RouteProps {
   component: any;
   exact?: boolean;
 }
+
+
+
+const RedirectToHome = () => {
+  const token = localStorage.getItem("agent_token");
+  const width = useWindowWidth(); 
+  console.log(width) 
+  
+  if (width <= 480) {
+    // On mobile, show the Greeting page
+    return token ? <Navigate to="/dashboard" /> : <Greeting />;
+  } else {
+    // On desktop, directly navigate to /dashboard if authenticated
+    return token ? <Navigate to="/dashboard" /> : <Navigate to="/login" />;
+  }
+};
+
 
 const userRoutes: Array<RouteProps> = [
   //User Profile
@@ -35,22 +56,27 @@ const userRoutes: Array<RouteProps> = [
   //orders
   { path: "/orders", component: <Orders /> },
   { path: "/orders/detail/", component: <OrderDetail /> },
+  {path:"/order-history",component:<OrderHistory/>},
 
   //returns
   { path: "/returns", component: <Returns /> },
+   {path:"/return-history",component:<ReturnHistory/>},
+    
 
 
   // this route should be at the end of all other routes
-  { path: "/", exact: true, component: <Navigate to="/dashboard" /> },
+  { path: "/", exact: true, component: <RedirectToHome/> },
 ];
 
 const authRoutes: Array<RouteProps> = [
   //Authentication pages
   { path: "/login", component: <Login /> },
+  {path:"/greeting",component:<Greeting/>},
   { path: "/logout", component: <Logout /> },
   { path: "/register", component: <Register /> },
   { path: "/recoverpw", component: <ForgetPassword /> },
 
 ];
+
 
 export { userRoutes, authRoutes };
