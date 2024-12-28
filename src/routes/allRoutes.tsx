@@ -18,6 +18,7 @@ import OrderHistory from "src/pages/Orders/OrderHistory";
 import ReturnHistory from "src/pages/Returns/ReturnHistory";
 import Greeting from "src/pages/Authentication/Greeting";
 import useWindowWidth from "src/hooks/useWindowWidth";
+import ReturnDetail from "src/pages/Returns/ReturnDetail";
 
 interface RouteProps {
   path: string;
@@ -56,6 +57,7 @@ const userRoutes: Array<RouteProps> = [
 
   //returns
   { path: "/returns", component: <Returns /> },
+  { path: "/returns/detail/", component: <ReturnDetail /> },
   { path: "/return-history", component: <ReturnHistory /> },
 
   // this route should be at the end of all other routes
