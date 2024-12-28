@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb2";
 import { Container } from "reactstrap";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import { Link } from "react-router-dom";
 
 
 
@@ -144,7 +145,8 @@ const Orders = () => {
           />
           <div className="order-outer-div">
             {orders.map((order) => (
-              <div className="order-card" key={order._id}>
+              <Link to={`/orders/detail/${order._id}`}>
+               <div className="order-card" key={order._id}>
                 <div className="order-card-header">
                   <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>{order.shippingStatus}</span>
                   <h5 className="order-id">
@@ -166,6 +168,8 @@ const Orders = () => {
                   </div>
                 </div>
               </div>
+              </Link>
+             
             ))}
           </div>
         </Container>
