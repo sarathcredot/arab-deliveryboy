@@ -2,6 +2,22 @@
 // authentication.scss
 //
 
+
+input.focused {
+    border-color: #cdcdcd; /* Maintain border color */
+    box-shadow: none; /* Remove any default focus shadow */
+  }
+  
+  .auth-pass-inputgroup button {
+    z-index: 2; /* Ensure button is above the input field */
+  }
+  
+  .auth-pass-inputgroup {
+    position: relative;
+    width: 100%;
+    overflow: visible; /* Ensure child elements are visible */
+  }
+  
 .carousel-show{
     display: none;
 }

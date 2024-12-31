@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../../assets/images/brands/Logo.svg'
+import logo from "../../assets/images/greetlogo.svg"
 
 
 const Greeting = () => {

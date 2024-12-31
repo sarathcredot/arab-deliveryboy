@@ -144,33 +144,41 @@ const Orders = () => {
             isHistory={true}
           />
           <div className="order-outer-div">
-            {orders.map((order) => (
-              <Link to={`/orders/detail/${order._id}`} key={order._id}>
-               <div className="order-card" >
-                <div className="order-card-header">
-                  <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>{order.shippingStatus}</span>
-                  <h5 className="order-id">
-                      <span className="label">Order ID:</span> 
-                      <span className="value">{order.orderId}</span>
-                    </h5>
-                </div>
-                <div className="order-card-body">
-                  <p className="address">{order.country}</p>
-                  <div className="customer-order-date-row">
-                    <div>
-                    <p className="username">Customer</p>
-                    <p className="order-user">  {order.userName}</p>
-                    </div>
-                    <div>
-                    <p className="order-date">Date</p>
-                    <p className="date"> {order.orderDate}</p>
+
+            {ordersData?.getAssignedOrderByAgentProfile?.records?.length === 0 ? (
+              <p>No Orders Found</p>
+            ):(
+              orders.map((order) => (
+                <Link to={`/orders/detail/${order._id}`} key={order._id}>
+                 <div className="order-card" >
+                  <div className="order-card-header">
+                    <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>{order.shippingStatus}</span>
+                    <h5 className="order-id">
+                        <span className="label">Order ID:</span> 
+                        <span className="value">{order.orderId}</span>
+                      </h5>
+                  </div>
+                  <div className="order-card-body">
+                   <p className="address">
+                      {`${order.houseNumber}, ${order.apartment}, ${order.city}, ${order.country}`}
+                    </p>
+                    <div className="customer-order-date-row">
+                      <div>
+                      <p className="username">Customer</p>
+                      <p className="order-user">  {order.userName}</p>
+                      </div>
+                      <div>
+                      <p className="order-date">Date</p>
+                      <p className="date"> {order.orderDate}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              </Link>
-             
-            ))}
+                </Link>
+               
+              ))
+            )
+          }
           </div>
         </Container>
       </div>
