@@ -3,10 +3,28 @@ import boxIcon from "../../assets/images/icons/boxIcon.svg";
 import arrowIcon from "../../assets/images/icons/arrowIcon.svg";
 import styles from "./style.module.css";
 import { useNavigate } from "react-router";
-const OrdersCount = () => {
-  const navigate = useNavigate()
+
+interface IWallet {
+  cashInHand: number;
+  lastSettlementDate: string;
+  totalSettlement: number;
+  grandTotal: number;
+  numberOfOrderAssigned: number;
+  numberOfOrderDelivered: number;
+  numberOfReturnOrderAssigned: number;
+  numberOfReturnOrderDelivered: number;
+}
+interface Props {
+  wallet?: IWallet;
+}
+
+const OrdersCount = ({ wallet }: Props) => {
+  const navigate = useNavigate();
   return (
-    <div className={styles.box} onClick={()=> navigate("/orders") }>
+    <div
+      className={styles.box}
+      onClick={() => navigate("/orders")}
+    >
       <div className={styles.box_contents}>
         <div className={styles.icon_div}>
           <img
@@ -15,10 +33,13 @@ const OrdersCount = () => {
           />
         </div>
         <div className={styles.content}>
-          <h3>50</h3>
-          <p >Assigned Orders</p>
+          <h3>{wallet?.numberOfOrderAssigned}</h3>
+          <p>Assigned Orders</p>
           <p>
-            <span style={{ color: "red" }}>10</span> Pending Orders
+            <span style={{ color: "red" }}>
+              {(wallet?.numberOfOrderAssigned || 0) - (wallet?.numberOfOrderDelivered || 0)}
+            </span>{" "}
+            Pending Orders
           </p>
         </div>
       </div>

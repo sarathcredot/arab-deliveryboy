@@ -2,44 +2,103 @@ import React, { useState } from "react";
 import { Col, Input, Modal, ModalBody, Row } from "reactstrap";
 import CustomButton from "src/components/Common/CustomButton";
 import styles from "./style.module.css";
+import { gql, useMutation } from "@apollo/client";
+import { toast } from "react-toastify";
 
-const OtpPopup = ({ isOpen, toggle }: any) => {
+const VERIFY_OTP = gql`
+  mutation DeliveryStatusOtpVerify($input: DeliveryStatusOtpVerifyInput!) {
+    deliveryStatusOtpVerify(input: $input) {
+      status
+      msg
+    }
+  }
+`;
+
+const OtpPopup = ({
+  orderItemId,
+  deliveryStatus,
+  paymentMode,
+  remarks,
+  returnStatus,
+  returnRemark,
+  isOpen,
+  toggle,
+  refetch,
+}: any) => {
+  const [verifyOtp] = useMutation(VERIFY_OTP);
+  const [invaild, setInvalid] = useState(false);
   const [otp, setOpt] = useState("");
   const submitOtp = async () => {
     console.log({ otp });
+    if (!orderItemId) {
+      return toast.error("Order ID is Required");
+    }
+    if (!otp) {
+      return setInvalid(true);
+    }
+
+    try {
+      const response = await verifyOtp({
+        variables: {
+          input: {
+            orderItemId,
+            deliveryStatus,
+            paymentMode,
+            remarks,
+            returnStatus,
+            returnRemark,
+            code: otp,
+          },
+        },
+      });
+      console.log("RESPONSE = ", response);
+      if (response.data.deliveryStatusOtpVerify.status) {
+        toast.success(response.data.deliveryStatusOtpVerify.msg);
+        refetch();
+        toggle();
+      } else if (response.data.deliveryStatusOtpVerify.msg) {
+        toast.error(response.data.deliveryStatusOtpVerify.msg);
+      }
+    } catch (error: any) {
+      console.log("ERROR = ", error);
+      toast.error(error);
+    }
   };
   return (
     <Modal
       isOpen={isOpen}
       toggle={toggle}
       centered={true}
-    //   style={{ maxWidth: "90%", width: "400px", height: "400px", margin: "0px auto" }}
     >
       <ModalBody
-        className="p-5"
-        // style={{ maxWidth: "100%", maxHeight: "100%", height: "400px" }}
+        className="p-4 p-md-5"
       >
         <h5>Please confirm the delivery by entering the OTP below.</h5>
-        <div style={{
-            display:"flex",
-            alignItems:"center",
-            gap:10,
-            marginTop:20
-        }}>
-
-        <Input
-          className={styles.input}
-          type="text"
-          placeholder="Enter the OTP here"
-          value={otp}
-          onChange={(e) => setOpt(e.target.value)}
-        />
-        <CustomButton
-          name="Submit"
-          padding="0 25px"
-          onClick={submitOtp}
+        <div
+          className="flex-column flex-md-row"
+          style={{
+            display: "flex",
+            gap: 15,
+            marginTop: 20,
+          }}
+        >
+          <Input
+            className={styles.input}
+            invalid={invaild}
+            type="text"
+            placeholder="Enter the OTP here"
+            value={otp}
+            onChange={(e) => {
+              setInvalid(false);
+              setOpt(e.target.value);
+            }}
           />
-          </div>
+          <CustomButton
+            name="Submit"
+            padding="0 25px"
+            onClick={submitOtp}
+          />
+        </div>
       </ModalBody>
     </Modal>
   );

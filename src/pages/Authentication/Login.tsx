@@ -126,9 +126,9 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
         } else {
           return toast.error(response.data.loginDeliveryAgent.msg);
         }
-      } catch (error) {
+      } catch (error:any) {
         console.log(error);
-        return toast.error("please provide the valid email or password ");
+        return toast.error(error.message);
       }
     },
   });

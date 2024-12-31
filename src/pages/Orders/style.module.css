@@ -4,12 +4,16 @@
 }
 
 .box {
-    border: 1px solid #DDDDDD;
-    border-radius: 10px;
     padding: 20px;
     display: grid;
     gap: 20px;
 
+}
+
+@media (min-width: 768px) {
+    .box {
+        border-bottom: 1px solid #DDDDDD;
+    }
 }
 
 .detail_content {
@@ -44,22 +48,23 @@
 .select_box {
     background: #00000033 !important;
 
-    
+
 }
 
-.select_box option{
+.select_box option {
     background: #fff !important;
 }
-.call_box{
-    position:fixed;
-    bottom:0;
-    width:100%;
+
+.call_box {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
     background: #fff;
-    display:flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 20px;
-    padding:25px 20px;
-    box-shadow:0 0 10px #00000033;
-    
+    padding: 25px 20px;
+    box-shadow: 0 0 10px #00000033;
+
 }
