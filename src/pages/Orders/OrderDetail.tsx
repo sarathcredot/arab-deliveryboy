@@ -9,6 +9,8 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { toast } from "react-toastify";
 import Loader from "src/components/Common/Loader";
 import OtpPopup from "./OtpPopup";
+import { skip } from "node:test";
+import OrderRemarkPopup from "./OrderRemarkPopup";
 
 const breadcrumbItems = [
   { title: "Dashboard", link: "/dashboard" },
@@ -19,31 +21,52 @@ const breadcrumbItems = [
 const GET_ORDER_DETAIL = gql`
   query GetAssignedeOrderDeatilsByAgentProfile($input: getAssignedeOrderDeatilsByAgentProfileInput!) {
     getAssignedeOrderDeatilsByAgentProfile(input: $input) {
-      records {
-        _id
-        orderId
-        userId
-        productName
-        itemId
-        sellingPrice
-        paymentStatus
-        paymentMode
-        orderDate
-        shippingStatus
-        deliveryAgentId
-        userName
+      _id
+      orderId
+      userId
+      productName
+      itemId
+      sellingPrice
+      paymentStatus
+      paymentMode
+      orderDate
+      shippingStatus
+      deliveryAgentId
+      userName
+      email
+      mobileNumber
+      houseNumber
+      streetName
+      apartment
+      suite
+      unit
+      city
+      country
+      postCode
+      returnStatus
+      returnUserReason
+      returnProductImage {
+        fileType
+        fileURL
+        mimeType
+        originalName
+      }
+      returnOrderAssignedOn
+      returnAddress {
+        firstname
         email
-        mobileNumber
-        houseNumber
+        mobile
         streetName
+        city
+        houseNumber
+        country
+        postCode
         apartment
         suite
         unit
-        city
-        country
-        postCode
       }
-      maxRecords
+      returnAdminComment
+      returnRequestDate
     }
   }
 `;
@@ -55,21 +78,39 @@ const UPLOAD_LOCATION = gql`
   }
 `;
 
+const DELIVERY_STATUS = gql`
+  mutation OrderDelivedbyAgent($input: OrderDelivedbyAgentInput!) {
+    orderDelivedbyAgent(input: $input) {
+      status
+      msg
+      otp
+    }
+  }
+`;
+
 const OrderDetail = () => {
   const { id } = useParams();
   const [orderDetail, setOrderDetail] = useState<any>();
   const [deliveryStatus, setDeliveryStatus] = useState("");
   const [uploadLocation] = useMutation(UPLOAD_LOCATION);
+  const [changeDeliveryStatus] = useMutation(DELIVERY_STATUS);
+  const [remarks, setRemarks] = useState("");
+  const [paymentMode, setPaymentMode] = useState("");
+
+  const [invalid, setInvalid] = useState(false);
+  const [linkInvalid, setLinkInvalid] = useState(false);
 
   const {
     data: orderData,
     loading: orderDataLoading,
     error: orderDataError,
+    refetch,
   } = useQuery(GET_ORDER_DETAIL, {
     variables: {
       input: {
         _id: id,
       },
+      skip: !id,
     },
   });
 
@@ -79,6 +120,10 @@ const OrderDetail = () => {
   const [openOtp, setOpenOtp] = useState(false);
   const openOtpToggle = () => {
     setOpenOtp(!openOtp);
+  };
+  const [openRemarks, setOpenRemarks] = useState(false);
+  const openRemarksToggle = () => {
+    setOpenRemarks(!openRemarks);
   };
   const [showMap, setShowMap] = useState(false);
   const mapToggle = () => {
@@ -93,45 +138,91 @@ const OrderDetail = () => {
 
   if (orderDataError) {
     console.log("ERROR =   ", orderDataError);
-    toast.error(orderDataError.message);
+    // toast.error(orderDataError.message);
   }
   console.log("DATA = ", orderData);
 
   const submitTrackingLink = async () => {
     console.log({ trackingLink });
-
-    if (trackingLink) {
-      try {
-        const response = await uploadLocation({
-          variables: {
-            input: {
-              orderProductId: id,
-              mapLocation: trackingLink,
-            },
+    if (!trackingLink) {
+      return setLinkInvalid(true);
+    }
+    try {
+      const response = await uploadLocation({
+        variables: {
+          input: {
+            orderProductId: id,
+            mapLocation: trackingLink,
           },
-        });
+        },
+      });
 
-        if (response.data) {
-          toast.success(response.data.updateDeliveredMapLocation.message);
-          setShowMap(true);
-        } else if (response.errors) {
-          console.log("ERRORS = ", response.errors);
-        }
-      } catch (error: any) {
-        console.log("ERROR = ", error);
-        toast.error(error);
+      if (response.data) {
+        toast.success(response.data.updateDeliveredMapLocation.message);
+        setShowMap(true);
+      } else if (response.errors) {
+        console.log("ERRORS = ", response.errors);
       }
+    } catch (error: any) {
+      console.log("ERROR = ", error);
+      toast.error(error);
     }
   };
 
-  const handleDeliveryStatus = (e: any) => {
-    console.log("status =", e.target.value);
-    setDeliveryStatus(e.target.value);
+  const handleSubmit = async () => {
+    if (!paymentMode) {
+      return toast.error("Select a Payment Method");
+    }
+    if (!deliveryStatus) {
+      return toast.error("Select a Status");
+    }
+    if (!remarks) {
+      return setInvalid(true);
+    }
+
+    try {
+      const response = await changeDeliveryStatus({
+        variables: {
+          input: {
+            orderItemId: id,
+            deliveryStatus,
+            remarks,
+          },
+        },
+      });
+
+      if (response.data.orderDelivedbyAgent.status) {
+        setOpenRemarks(false)
+        if (response.data.orderDelivedbyAgent.otp) {
+          setOpenOtp(true);
+        } else {
+          refetch();
+          toast.success(response.data.orderDelivedbyAgent.msg);
+        }
+      } else {
+        return toast.error(response.data.orderDelivedbyAgent.msg);
+      }
+    } catch (error: any) {
+      console.log("ERROR = ", error);
+      return toast.error(error);
+    }
   };
+  useEffect(() => {
+    if (orderDetail) {
+      if (
+        orderDetail.shippingStatus === "POSTPONED" ||
+        orderDetail.shippingStatus === "DELIVERED" ||
+        orderDetail.shippingStatus === "CANCELED"
+      ) {
+        setDeliveryStatus(orderDetail?.shippingStatus);
+      }
+      setPaymentMode(orderDetail?.paymentMode);
+    }
+  }, [orderDetail]);
 
   return (
     <React.Fragment>
-      <div className="page-content">
+      <div className="page-content mb-5 mb-md-0">
         <Container fluid>
           {/* Render Breadcrumbs */}
           <Breadcrumbs breadcrumbs={breadcrumbItems} />
@@ -154,22 +245,33 @@ const OrderDetail = () => {
                         <p>Customer :</p> <p>{orderDetail?.userName}</p>
                       </div>
                       <div>
-                        <p>Date :</p> <p>{orderDetail?.orderDate}</p>
+                        <p>Date :</p>{" "}
+                        <p>
+                          {orderDetail?.orderDate &&
+                            new Date(orderDetail.orderDate).toLocaleDateString("en-GB").replace(/\//g, "-")}
+                        </p>
                       </div>
                       <div>
-                        <p>Contact :</p> <p>+956 {orderDetail?.mobileNumber}</p>
+                        <p>Contact :</p> <p>{orderDetail?.mobileNumber && `+956 ${orderDetail.mobileNumber}`}</p>
                       </div>
                       <div>
-                        <p>payment Type :</p> <p>{orderDetail?.paymentMod}</p>
+                        <p>payment Type :</p> <p>{orderDetail?.paymentMode}</p>
                       </div>
                       <div>
-                        <p>payable :</p> <p>{orderDetail?.sellingPrice} OMR</p>
+                        <p>payable :</p> <p>{orderDetail?.sellingPrice && `${orderDetail?.sellingPrice} OMR`}</p>
                       </div>
                       <div>
                         <p>Address :</p>{" "}
                         <p>
-                          {orderDetail?.houseNumber}, {orderDetail?.apartment}, {orderDetail?.streetName},{" "}
-                          {orderDetail?.city}, {orderDetail?.postCode}
+                          {[
+                            orderDetail?.houseNumber,
+                            orderDetail?.apartment,
+                            orderDetail?.streetName,
+                            orderDetail?.city,
+                            orderDetail?.postCode,
+                          ]
+                            .filter(Boolean)
+                            .join(", ")}
                         </p>
                       </div>
                       <div>
@@ -179,7 +281,7 @@ const OrderDetail = () => {
                             color: "#F97316",
                           }}
                         >
-                          Out for Delivery
+                          {orderDetail?.shippingStatus}
                         </p>
                       </div>
                     </>
@@ -211,7 +313,11 @@ const OrderDetail = () => {
                       type="text"
                       placeholder="Past the tracking link here"
                       value={trackingLink}
-                      onChange={(e) => setTrackingLink(e.target.value)}
+                      invalid={linkInvalid}
+                      onChange={(e) => {
+                        setLinkInvalid(false);
+                        setTrackingLink(e.target.value);
+                      }}
                     />
                     <CustomButton
                       name="Save"
@@ -232,78 +338,155 @@ const OrderDetail = () => {
               lg={6}
               md={6}
             >
-              <div className={styles.box}>
-                {orderDataLoading ? (
-                  <Loader />
-                ) : (
-                  <>
-                    <div>
-                      <Label className="form-label ">Payment Method</Label>
-                      <Input
-                        name="paymentMethod"
-                        placeholder="Select Payment Method"
-                        type="select"
-                        // value={formik.values?.agentType}
-                        className={styles.select_box}
-                      >
-                        <option
-                          value=""
-                          disabled
+              <div
+                style={{
+                  border: "1px solid #DDDDDD",
+                  borderRadius: "10px",
+                }}
+              >
+                <div className={styles.box}>
+                  {orderDataLoading ? (
+                    <Loader />
+                  ) : (
+                    <>
+                      <div>
+                        <Label className="form-label ">Payment Method</Label>
+                        <Input
+                          name="paymentMode"
+                          placeholder="Select Payment Method"
+                          type="select"
+                          value={paymentMode}
+                          className={styles.select_box}
+                          onChange={(e) => setPaymentMode(e.target.value)}
                         >
-                          Select Payment Method
-                        </option>
-                        <option value={"CASH ON DELIVERY"}>Cash On Delivery</option>
-                        <option value={"CARD ON DELIVERY"}>Card on Delivery</option>
-                      </Input>
-                    </div>
-                    <div>
-                      <Label className="form-label ">Delivery Status </Label>
+                          <option
+                            value=""
+                            disabled
+                          >
+                            Select Payment Method
+                          </option>
+                          <option value={"COD"}>Cash On Delivery</option>
+                          <option value={"CARD"}>Card on Delivery</option>
+                        </Input>
+                      </div>
+                      <div>
+                        <Label className="form-label ">Delivery Status </Label>
 
-                      <Input
-                        name="deliveryStatus"
-                        placeholder="Select Delivery Status"
-                        type="select"
-                        className={styles.select_box}
-                        value={deliveryStatus}
-                        onChange={handleDeliveryStatus}
-                      >
-                        <option
-                          value=""
-                          disabled
+                        <Input
+                          name="deliveryStatus"
+                          placeholder="Select Delivery Status"
+                          type="select"
+                          className={styles.select_box}
+                          value={deliveryStatus}
+                          onChange={(e) => {
+                            setDeliveryStatus(e.target.value);
+                            setOpenRemarks(true);
+                          }}
                         >
-                          Select Delivery Status
-                        </option>
-                        <option value={"Postponed"}>Postponed</option>
-                        <option value={"Delivered"}>Delivered</option>
-                        <option value={"Cancelled"}>Cancelled</option>
-                      </Input>
-                    </div>
-                    <Input
-                      className={styles.input}
-                      type="text"
-                      placeholder="Note "
-                    />
-                  </>
-                )}
+                          <option
+                            value=""
+                            disabled
+                          >
+                            Select Delivery Status
+                          </option>
+                          <option value={"POSTPONED"}>POSTPONED</option>
+                          <option value={"DELIVERED"}>DELIVERED</option>
+                          <option value={"CANCELED"}>CANCELED</option>
+                        </Input>
+                      </div>
+                      {/* <Input
+                        className={styles.input}
+                        type="text"
+                        value={remarks}
+                        placeholder="Note"
+                        invalid={invalid}
+                        onChange={(e) => {
+                          setInvalid(false);
+                          setRemarks(e.target.value);
+                        }}
+                      /> */}
+                    </>
+                  )}
+                </div>
+                <div
+                  className="d-none d-md-flex"
+                  style={{
+                    display: "flex",
+                    padding: "34px 20px",
+                    gap: 15,
+                  }}
+                >
+                  <a
+                    href={`tel:+956${orderDetail?.mobileNumber}`}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#28A745",
+                      color: "white",
+                      width: "100%",
+                      height: "40px",
+                      borderRadius: "10px",
+                      gap: "5px",
+                      fontSize: "13px",
+                      border: "none",
+                    }}
+                  >
+                    Call Customer
+                  </a>
+                  <CustomButton
+                    name="Closed"
+                    width="100%"
+                    // onClick={handleSubmit}
+                  />
+                </div>
               </div>
             </Col>
           </Row>
         </Container>
       </div>
       <div className={`${styles.call_box} d-md-none`}>
-        <CustomButton
-          bgColor="#28A745"
-          name="Call Customer"
-          width="100%"
-        />
+        <a
+          href={`tel:+956${orderDetail?.mobileNumber}`}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#28A745",
+            color: "white",
+            width: "100%",
+            height: "40px",
+            borderRadius: "10px",
+            gap: "5px",
+            fontSize: "13px",
+            border: "none",
+          }}
+        >
+          Call Customer
+        </a>
         <CustomButton
           name="Closed"
           width="100%"
+          // onClick={handleSubmit}
         />
       </div>
+      <OrderRemarkPopup
+        remarks={remarks}
+        setRemarks={setRemarks}
+        submit={handleSubmit}
+        isOpen={openRemarks}
+        toggle={openRemarksToggle}
+      />
       <OtpPopup
         isOpen={openOtp}
         toggle={openOtpToggle}
+        orderItemId={id}
+        deliveryStatus={deliveryStatus}
+        paymentMode={paymentMode}
+        remarks={remarks}
+        refetch={refetch}
       />
     </React.Fragment>
   );

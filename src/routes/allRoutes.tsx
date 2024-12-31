@@ -57,7 +57,7 @@ const userRoutes: Array<RouteProps> = [
 
   //returns
   { path: "/returns", component: <Returns /> },
-  { path: "/returns/detail/", component: <ReturnDetail /> },
+  { path: "/returns/detail/:id", component: <ReturnDetail /> },
   { path: "/return-history", component: <ReturnHistory /> },
 
   // this route should be at the end of all other routes

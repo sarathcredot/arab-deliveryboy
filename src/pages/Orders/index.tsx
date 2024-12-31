@@ -163,7 +163,7 @@ const Orders = () => {
                     </div>
                     <div>
                     <p className="order-date">Date</p>
-                    <p className="date"> {order.orderDate}</p>
+                    <p className="date"> {new Date(order.orderDate).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
                     </div>
                   </div>
                 </div>

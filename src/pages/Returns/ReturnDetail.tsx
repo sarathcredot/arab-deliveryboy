@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Input, Label, Row } from "reactstrap";
+import { Col, Container, FormFeedback, Input, Label, Row } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { useParams, useSearchParams } from "react-router-dom";
 import styles from "./style.module.css";
@@ -8,6 +8,8 @@ import MapPopup from "src/components/MapPopup";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { toast } from "react-toastify";
 import Loader from "src/components/Common/Loader";
+import OtpPopup from "../Orders/OtpPopup";
+import ReturnRemarkPopup from "./ReturnRemarkPopup";
 // import OtpPopup from "./OtpPopup";
 
 const breadcrumbItems = [
@@ -19,37 +21,68 @@ const breadcrumbItems = [
 const GET_ORDER_DETAIL = gql`
   query GetAssignedeOrderDeatilsByAgentProfile($input: getAssignedeOrderDeatilsByAgentProfileInput!) {
     getAssignedeOrderDeatilsByAgentProfile(input: $input) {
-      records {
-        _id
-        orderId
-        userId
-        productName
-        itemId
-        sellingPrice
-        paymentStatus
-        paymentMode
-        orderDate
-        shippingStatus
-        deliveryAgentId
-        userName
+      _id
+      orderId
+      userId
+      productName
+      itemId
+      sellingPrice
+      paymentStatus
+      paymentMode
+      orderDate
+      shippingStatus
+      deliveryAgentId
+      userName
+      email
+      mobileNumber
+      houseNumber
+      streetName
+      apartment
+      suite
+      unit
+      city
+      country
+      postCode
+      returnStatus
+      returnUserReason
+      returnProductImage {
+        fileType
+        fileURL
+        mimeType
+        originalName
+      }
+      returnOrderAssignedOn
+      returnAddress {
+        firstname
         email
-        mobileNumber
-        houseNumber
+        mobile
         streetName
+        city
+        houseNumber
+        country
+        postCode
         apartment
         suite
         unit
-        city
-        country
-        postCode
       }
-      maxRecords
+      returnAdminComment
+      returnRequestDate
+    }
+  }
+`;
+
+const RETURN_STATUS = gql`
+  mutation ReturnStatusChangeDeliveryAgent($input: ReturnstatusUpdateInput!) {
+    returnStatusChangeDeliveryAgent(input: $input) {
+      otp
+      status
+      msg
     }
   }
 `;
 
 const UPLOAD_IMAGES = gql`
-  mutation UploadReturnProductImageByAgent($input: UploadReturnInput!, $image: Upload) {
+  mutation UploadReturnProductImageByAgent($input: UploadReturnInput!, $image: [Upload]) {
     uploadReturnProductImageByAgent(input: $input, image: $image) {
       message
     }
@@ -67,15 +100,21 @@ const ReturnDetail = () => {
   const { id } = useParams();
   const [orderDetail, setOrderDetail] = useState<any>();
   const [returnStatus, setReturnStatus] = useState("");
+  const [remarks, setRemarks] = useState("");
+
+  const [invalid, setInvalid] = useState(false);
+  const [linkInvalid, setLinkInvalid] = useState(false);
 
   const [productImages, setProductImages] = useState<FileList | null>(null);
   const [uploadProductImages] = useMutation(UPLOAD_IMAGES);
   const [uploadLocation] = useMutation(UPLOAD_LOCATION);
+  const [changeReturnStatus] = useMutation(RETURN_STATUS);
 
   const {
     data: orderData,
     loading: orderDataLoading,
     error: orderDataError,
+    refetch,
   } = useQuery(GET_ORDER_DETAIL, {
     variables: {
       input: {
@@ -90,6 +129,10 @@ const ReturnDetail = () => {
   const openOtpToggle = () => {
     setOpenOtp(!openOtp);
   };
+  const [openRemarks, setOpenRemarks] = useState(false);
+  const openRemarksToggle = () => {
+    setOpenRemarks(!openRemarks);
+  };
   const [showMap, setShowMap] = useState(false);
   const mapToggle = () => {
     setShowMap(!showMap);
@@ -102,41 +145,75 @@ const ReturnDetail = () => {
   }, [orderData]);
 
   if (orderDataError) {
-    console.log("ERROR =   ", orderDataError);
-    toast.error(orderDataError.message);
+    // console.log("ERROR =   ", orderDataError);
+    // toast.error(orderDataError.message);
   }
   console.log("DATA = ", orderData);
 
   const submitTrackingLink = async () => {
     console.log({ trackingLink });
+    if (!trackingLink) {
+      return setLinkInvalid(true);
+    }
 
-    if (trackingLink) {
-      try {
-        const response = await uploadLocation({
-          variables: {
-            input: {
-              orderProductId: id,
-              mapLocation: trackingLink,
-            },
+    try {
+      const response = await uploadLocation({
+        variables: {
+          input: {
+            orderProductId: id,
+            mapLocation: trackingLink,
           },
-        });
+        },
+      });
 
-        if (response.data) {
-          toast.success(response.data.updateDeliveredMapLocation.message);
-          setShowMap(true);
-        } else if (response.errors) {
-          console.log("ERRORS = ", response.errors);
-        }
-      } catch (error: any) {
-        console.log("ERROR = ", error);
-        toast.error(error);
+      if (response.data) {
+        toast.success(response.data.updateDeliveredMapLocation.message);
+        refetch();
+        setShowMap(true);
+      } else if (response.errors) {
+        console.log("ERRORS = ", response.errors);
       }
+    } catch (error: any) {
+      console.log("ERROR = ", error);
+      toast.error(error);
     }
   };
 
-  const handleReturnStatus = (e: any) => {
-    console.log("status =", e.target.value);
-    setReturnStatus(e.target.value);
+  // submit return status
+  const handleReturnStatus = async () => {
+    if (!returnStatus) {
+      return toast.error("Select Status");
+    }
+    if (!remarks) {
+      return setInvalid(true);
+    }
+
+    try {
+      const response = await changeReturnStatus({
+        variables: {
+          input: {
+            orderProductId: id,
+            returnStatus,
+            remarks,
+          },
+        },
+      });
+
+      if (response.data.returnStatusChangeDeliveryAgent.status) {
+        setOpenRemarks(false)
+        if (response.data.returnStatusChangeDeliveryAgent.otp) {
+          setOpenOtp(true);
+        } else {
+          toast.success(response.data.returnStatusChangeDeliveryAgent.msg);
+          refetch();
+        }
+      } else {
+        return toast.error(response.data.returnStatusChangeDeliveryAgent.msg);
+      }
+    } catch (error: any) {
+      console.log("ERROR = ", error);
+      return toast.error(error);
+    }
   };
 
   const handleImageUpload = async () => {
@@ -148,7 +225,7 @@ const ReturnDetail = () => {
             input: {
               orderProductId: id,
             },
-            image: productImages[0], // need to change this
+            image: productImages, // need to change this
           },
         });
         console.log("RESPONSE = ", response);
@@ -166,9 +243,15 @@ const ReturnDetail = () => {
     }
   };
 
+  useEffect(() => {
+    if (orderDetail) {
+      setReturnStatus(orderDetail?.returnStatus);
+    }
+  }, [orderDetail]);
+
   return (
     <React.Fragment>
-      <div className="page-content">
+      <div className="page-content mb-5 mb-md-0">
         <Container fluid>
           {/* Render Breadcrumbs */}
           <Breadcrumbs breadcrumbs={breadcrumbItems} />
@@ -197,7 +280,7 @@ const ReturnDetail = () => {
                         <p>Contact :</p> <p>+956 {orderDetail?.mobileNumber}</p>
                       </div>
                       <div>
-                        <p>payment Type :</p> <p>{orderDetail?.paymentMod}</p>
+                        <p>payment Type :</p> <p>{orderDetail?.paymentMode}</p>
                       </div>
                       <div>
                         <p>payable :</p> <p>{orderDetail?.sellingPrice} OMR</p>
@@ -205,8 +288,15 @@ const ReturnDetail = () => {
                       <div>
                         <p>Address :</p>{" "}
                         <p>
-                          {orderDetail?.houseNumber}, {orderDetail?.apartment}, {orderDetail?.streetName},{" "}
-                          {orderDetail?.city}, {orderDetail?.postCode}
+                          {[
+                            orderDetail?.houseNumber,
+                            orderDetail?.apartment,
+                            orderDetail?.streetName,
+                            orderDetail?.city,
+                            orderDetail?.postCode,
+                          ]
+                            .filter(Boolean)
+                            .join(", ")}
                         </p>
                       </div>
                       <div>
@@ -216,7 +306,7 @@ const ReturnDetail = () => {
                             color: "#F97316",
                           }}
                         >
-                          Out for Delivery
+                          {orderDetail?.returnStatus}
                         </p>
                       </div>
                     </>
@@ -248,7 +338,11 @@ const ReturnDetail = () => {
                       type="text"
                       placeholder="Past the tracking link here"
                       value={trackingLink}
-                      onChange={(e) => setTrackingLink(e.target.value)}
+                      invalid={linkInvalid}
+                      onChange={(e) => {
+                        setLinkInvalid(false);
+                        setTrackingLink(e.target.value);
+                      }}
                     />
                     <CustomButton
                       name="Save"
@@ -269,122 +363,199 @@ const ReturnDetail = () => {
               lg={6}
               md={6}
             >
-              <div className={styles.box}>
-                {orderDataLoading ? (
-                  <Loader />
-                ) : (
-                  <>
-                    <div>
-                      <Label className="form-label ">Upload Product Images</Label>
-                      <div
-                        style={{
-                          position: "relative",
-                        }}
-                      >
-                        <Input
-                          name="projectImages"
-                          //   placeholder="Select Payment Method"
-                          type="file"
-                          multiple
-                          className={styles.select_box}
-                          onChange={(e) => setProductImages(e.target.files)}
-                          style={{
-                            // width: "100px",
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            opacity: 0,
-                          }}
-                        />
+              <div
+                style={{
+                  border: "1px solid #DDDDDD",
+                  borderRadius: "10px",
+                }}
+              >
+                <div className={styles.box}>
+                  {orderDataLoading ? (
+                    <Loader />
+                  ) : (
+                    <>
+                      <div>
+                        <Label className="form-label ">Upload Product Images</Label>
                         <div
                           style={{
-                            display: "flex",
-                            alignItems: "center",
-                            border: "1px solid #CDCDCD",
-                            borderRadius: "5px",
-                            paddingLeft: "10px",
+                            position: "relative",
                           }}
                         >
-                          {productImages && productImages.length > 0 ? (
-                            <p
-                              style={{
-                                width: "100%",
-                                color: "#000",
-                              }}
-                            >
-                              {productImages.length} Product Images Selected
-                            </p>
-                          ) : (
-                            <p
-                              style={{
-                                width: "100%",
-                                color: "#C5C5C5",
-                              }}
-                            >
-                              Upload Product Images
-                            </p>
-                          )}
-                          <CustomButton
-                            bgColor="#000"
-                            name="Upload"
-                            width="120px"
-                            onClick={handleImageUpload}
+                          <Input
+                            name="projectImages"
+                            //   placeholder="Select Payment Method"
+                            type="file"
+                            multiple
+                            className={styles.select_box}
+                            onChange={(e) => setProductImages(e.target.files)}
                             style={{
-                              zIndex: "999",
-                              background: "black",
-                              width: "120px",
+                              // width: "100px",
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                              opacity: 0,
                             }}
                           />
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              border: "1px solid #CDCDCD",
+                              borderRadius: "5px",
+                              paddingLeft: "10px",
+                            }}
+                          >
+                            {productImages && productImages.length > 0 ? (
+                              <p
+                                style={{
+                                  width: "100%",
+                                  color: "#000",
+                                }}
+                              >
+                                {productImages.length} Product Images Selected
+                              </p>
+                            ) : (
+                              <p
+                                style={{
+                                  width: "100%",
+                                  color: "#C5C5C5",
+                                }}
+                              >
+                                Upload Product Images
+                              </p>
+                            )}
+                            <CustomButton
+                              bgColor="#000"
+                              name="Upload"
+                              width="120px"
+                              onClick={handleImageUpload}
+                              style={{
+                                zIndex: "998",
+                                background: "black",
+                                width: "120px",
+                              }}
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div>
-                      <Label className="form-label ">Return Status </Label>
+                      <div>
+                        <Label className="form-label ">Return Status </Label>
 
-                      <Input
-                        name="returnStatus"
-                        placeholder="Select"
-                        type="select"
-                        className={styles.select_box}
-                        value={returnStatus}
-                        onChange={handleReturnStatus}
-                      >
-                        <option
-                          value=""
-                          disabled
+                        <Input
+                          name="returnStatus"
+                          placeholder="Select"
+                          type="select"
+                          className={styles.select_box}
+                          value={returnStatus}
+                          onChange={(e) => {
+                            setReturnStatus(e.target.value);
+                            setOpenRemarks(true)
+                          }}
                         >
-                          select
-                        </option>
-                        <option value={"Postponed to Tomorrow"}>Postponed to Tomorrow </option>
-                        <option value={"Collected"}>Collected</option>
-                        <option value={"Rejected"}>Rejected</option>
-                        <option value={"Returned to Warehouse"}>Returned to Warehouse</option>
-                      </Input>
-                    </div>
-                    <Input
-                      className={styles.input}
-                      type="text"
-                      placeholder="Note"
-                    />
-                  </>
-                )}
+                          <option
+                            value=""
+                            disabled
+                          >
+                            select
+                          </option>
+                          <option value={"POSTPONED"}>Postponed to Tomorrow </option>
+                          <option value={"COLLECTED"}>Collected</option>
+                          <option value={"REJECTED"}>Rejected</option>
+                          <option value={"RETURNED TO WAREHOUSE"}>Returned to Warehouse</option>
+                        </Input>
+                      </div>
+                      {/* <Input
+                        className={styles.input}
+                        type="text"
+                        placeholder="Note"
+                        invalid={invalid}
+                        onChange={(e) => {
+                          setInvalid(false);
+                          setRemarks(e.target.value);
+                        }}
+                      /> */}
+                    </>
+                  )}
+                </div>
+                <div
+                  className="d-none d-md-flex"
+                  style={{
+                    display: "flex",
+                    padding: "34px 20px",
+                    gap: 15,
+                  }}
+                >
+                  <a
+                    href="tel:+919744712490"
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#28A745",
+                      color: "white",
+                      width: "100%",
+                      height: "40px",
+                      borderRadius: "10px",
+                      gap: "5px",
+                      fontSize: "13px",
+                      border: "none",
+                    }}
+                  >
+                    Call Customer
+                  </a>
+
+                  <CustomButton
+                    name="Closed"
+                    width="100%"
+                    // onClick={handleReturnStatus}
+                  />
+                </div>
               </div>
             </Col>
           </Row>
         </Container>
       </div>
       <div className={`${styles.call_box} d-md-none`}>
-        <CustomButton
-          bgColor="#28A745"
-          name="Call Customer"
-          width="100%"
-        />
+        <a
+          href="tel:+919744712490"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#28A745",
+            color: "white",
+            width: "100%",
+            height: "40px",
+            borderRadius: "10px",
+            gap: "5px",
+            fontSize: "13px",
+            border: "none",
+          }}
+        >
+          Call Customer
+        </a>
         <CustomButton
           name="Closed"
           width="100%"
+          // onClick={handleReturnStatus}
         />
       </div>
-      {/* <OtpPopup isOpen={openOtp} toggle={openOtpToggle} /> */}
+      <ReturnRemarkPopup
+        remarks={remarks}
+        setRemarks={setRemarks}
+        submit={handleReturnStatus}
+        isOpen={openRemarks}
+        toggle={openRemarksToggle}
+      />
+      <OtpPopup
+        isOpen={openOtp}
+        toggle={openOtpToggle}
+        orderItemId={id}
+        returnStatus={returnStatus}
+        returnRemark={remarks}
+      />
     </React.Fragment>
   );
 };
