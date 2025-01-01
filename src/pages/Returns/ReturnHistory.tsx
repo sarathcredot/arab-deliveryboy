@@ -112,21 +112,6 @@ const Return = () => {
       }
     }, [ordersData]);
   
-    // Handle pagination
-    // const totalRecords = ordersData?.getAssignedOrderByAgentProfile?.maxRecords || 0;
-    // const totalPages = Math.ceil(totalRecords / pageSize);
-  
-    // const handlePageChange = (newPage: number) => {
-    //   setCurrentPage(newPage);
-    //   refetchOrders({
-    //     input: {
-    //       page: newPage,
-    //       size: pageSize,
-    //       shippingStatus: filter === "All" ? null : filter,
-    //     },
-    //   });
-    // };
-  
     const handleFilterChange = (newFilter: string) => {
       console.log(newFilter);
       setFilter(newFilter);
@@ -153,41 +138,46 @@ const Return = () => {
             onFilterChange={handleFilterChange}
           />
           <div className="order-outer-div">
-            {orders.map((order) => (
-              <div className="order-card" key={order._id}>
-                <div className="order-card-header">
-                {order.returnStatus === "APPROVED" ? (
-                      <span className={`order-status ${order.returnStatus.toLowerCase().replace(/\s+/g, '')}`}>
-                        Return Requested
-                      </span>
-                    ) : (
-                      <span className={`order-status ${order.returnStatus.toLowerCase().replace(/\s+/g, '')}`}>
-                        {order.returnStatus}
-                      </span>
-                    )}
-                  <h5 className="order-id">
-                      <span className="label">Order ID:</span> 
-                      <span className="value">{order.orderId}</span>
-                    </h5>
-                </div>
-                <div className="order-card-body">
-                {/* <p className="address">
-                    {`${order.returnAddress.houseNumber}, ${order.returnAddress.apartment}, ${order.returnAddress.city}, ${order.returnAddress.country}`}
-                  </p> */}
+         {ordersData?.getAssignedReturnOrderByAgent?.records?.length === 0 ? (
+          <p>No orders found</p>
+         ) :(
+          orders.map((order) => (
+            <div className="order-card" key={order._id}>
+              <div className="order-card-header">
+              {order.returnStatus === "APPROVED" ? (
+                    <span className={`order-status ${order.returnStatus.toLowerCase().replace(/\s+/g, '')}`}>
+                      Return Requested
+                    </span>
+                  ) : (
+                    <span className={`order-status ${order.returnStatus.toLowerCase().replace(/\s+/g, '')}`}>
+                      {order.returnStatus}
+                    </span>
+                  )}
+                <h5 className="order-id">
+                    <span className="label">Order ID:</span> 
+                    <span className="value">{order.orderId}</span>
+                  </h5>
+              </div>
+              <div className="order-card-body">
+              <p className="address">
+                  {`${order?.returnAddress?.houseNumber}, ${order?.returnAddress?.apartment}, ${order?.returnAddress?.city}, ${order?.returnAddress?.country}`}
+                </p>
 
-                  <div className="customer-order-date-row">
-                    <div>
-                    <p className="username">Customer</p>
-                    <p className="order-user"> {order.userId.fullName}</p>
-                    </div>
-                    <div>
-                    <p className="order-date">Date</p>
-                    <p className="date"> {order.orderDate}</p>
-                    </div>
+                <div className="customer-order-date-row">
+                  <div>
+                  <p className="username">Customer</p>
+                  <p className="order-user"> {order?.userId?.fullName}</p>
+                  </div>
+                  <div>
+                  <p className="order-date">Date</p>
+                  <p className="date"> {order.orderDate}</p>
                   </div>
                 </div>
               </div>
-            ))}
+            </div>
+          ))
+         )
+          }
           </div>
         </Container>
       </div>

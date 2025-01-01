@@ -31,6 +31,7 @@ import { gql, useMutation } from "@apollo/client";
 // import images
 import logo from "../../assets/images/arabDealLogo.svg";
 
+
 //Import config
 import config from "../../config";
 import CarouselPage from "../AuthenticationInner/CarouselPage";
@@ -99,6 +100,8 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: async (values) => {
+
+      console.log(values)
       try {
         const response = await loginAgent({
           variables: {
@@ -191,7 +194,7 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                                 : false
                             }
 
-                            style={{ borderRadius: "6px ", height: "52px", fontFamily: "Arial", border:" 1px solid #CDCDCD",backgroundColor:"white"}}
+                            style={{ borderRadius: "6px ", height: "52px", fontFamily: "Arial", border:" 1px solid #CDCDCD",backgroundColor:"white",outline: "none",boxShadow: "none"}}
                           />
                           {validation.touched.email &&
                             validation.errors.email ? (
@@ -204,7 +207,7 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                         <div className="mb-3">
                           <div className="d-flex align-items-start">
                           </div>
-                          <div className="input-group auth-pass-inputgroup" style={{position:"relative",width:"100%"}}>
+                          <div className="auth-pass-inputgroup" style={{position:"relative",width:"100%"}}>
                           <Input
                               name="password"
                               value={validation.values.password || ""}
@@ -218,9 +221,36 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                                   ? true
                                   : false
                               }
-                              style={{  borderRadius:"6px", height: "52px", fontFamily: "Arial",backgroundColor:"white" , border:" 1px solid #CDCDCD",paddingRight:"40px",boxSizing:"border-box"}}
+                              style={{ 
+                                 borderRadius:"6px",
+                                 height: "52px",
+                                  fontFamily: "Arial",
+                                  backgroundColor:"white" ,
+                                   border:" 1px solid #CDCDCD",
+                                   paddingRight:"40px",
+                                   boxSizing:"border-box",
+                                   outline: "none",
+                                   boxShadow: "none"
+                                  }}
                             />
-                            <button onClick={() => setPasswordShow(!passwordShow)} className="btn  shadow-none ms-0" type="button" id="password-addon" style={{position:"absolute",top: "50%", right: "10px", transform: "translateY(-50%)",}}><i className="mdi mdi-eye-outline"></i></button>
+                            <button onClick={() => setPasswordShow(!passwordShow)} className="btn  shadow-none ms-0" type="button" id="password-addon" 
+                                         style={{
+                                          position: "absolute",
+                                          top: "50%",
+                                          right: "10px",
+                                          transform: "translateY(-50%)",
+                                          zIndex: 2, // Ensure it's above the input
+                                          background: "transparent",
+                                          border: "none",
+                                          padding: 0,
+                                          cursor: "pointer",
+                                           }}
+                                           >
+                                             <i
+                                        className={passwordShow ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"}
+                                        style={{ fontSize: "20px", color: "#000" }}
+                                      ></i>
+                              </button>
                             {validation.touched.password &&
                               validation.errors.password ? (
                               <FormFeedback type="invalid">
@@ -228,6 +258,55 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                               </FormFeedback>
                             ) : null}
                           </div>
+
+                          {/* <div
+                            className="auth-pass-inputgroup"
+                            style={{
+                              position: "relative",
+                              width: "100%",
+                            }}
+                          >
+                            <Input
+                              name="password"
+                              type={passwordShow ? "text" : "password"}
+                              placeholder="Enter Password"
+                              onFocus={(e) => e.target.classList.add("focused")}
+                              onBlur={(e) => e.target.classList.remove("focused")}
+                              style={{
+                                borderRadius: "6px",
+                                height: "52px",
+                                fontFamily: "Arial",
+                                backgroundColor: "white",
+                                border: "1px solid #CDCDCD",
+                                paddingRight: "40px",
+                                boxSizing: "border-box",
+                                outline: "none",
+                                boxShadow: "none",
+                              }}
+                            />
+                            <button
+                              onClick={() => setPasswordShow(!passwordShow)}
+                              type="button"
+                              style={{
+                                position: "absolute",
+                                top: "50%",
+                                right: "10px",
+                                transform: "translateY(-50%)",
+                                zIndex: 2, // Ensure it's above the input
+                                background: "transparent",
+                                border: "none",
+                                padding: 0,
+                                cursor: "pointer",
+                              }}
+                            >
+                              <i
+                                className={passwordShow ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"}
+                                style={{ fontSize: "20px", color: "#000" }}
+                              ></i>
+                            </button>
+                          </div> */}
+
+
                         </div>
                         <div className="row mb-4">
                           <div className="col">
