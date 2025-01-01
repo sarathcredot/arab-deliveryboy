@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   changeLayout,
   changeSidebarTheme,
@@ -41,7 +41,7 @@ const Layout = (props: any) => {
   const {
     topbarTheme,
     layoutWidth,
-    isPreloader,
+    // isPreloader,
     leftSideBarTheme,
     layoutType,
     layoutMode,
@@ -70,23 +70,24 @@ const Layout = (props: any) => {
       dispatch(showRightSidebarAction(false));
     }
   };
+  const [isClick, setClick] = useState<boolean>(true);
 
-  useEffect(() => {
-    //init body click event fot toggle rightbar
-    document.body.addEventListener("click", hideRightbar, true);
+  // useEffect(() => {
+  //   //init body click event fot toggle rightbar
+  //   document.body.addEventListener("click", hideRightbar, true);
 
-    if (isPreloader === true) {
-      ref.current.style.display = "block";
+  //   if (isPreloader === true) {
+  //     ref.current.style.display = "block";
 
-      setTimeout(function () {
-        if (ref.current) {
-          ref.current.style.display = "none";
-        }
-      }, 1000);
-    } else {
-      ref.current.style.display = "none";
-    }
-  }, [isPreloader]);
+  //     setTimeout(function () {
+  //       if (ref.current) {
+  //         ref.current.style.display = "none";
+  //       }
+  //     }, 1000);
+  //   } else {
+  //     ref.current.style.display = "none";
+  //   }
+  // }, [isPreloader]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -143,7 +144,7 @@ const Layout = (props: any) => {
 
   return (
     <React.Fragment>
-      <div className="pace pace-active" id="preloader" ref={ref}>
+      {/* <div className="pace pace-active" id="preloader" ref={ref}>
         <div
           className="pace-progress"
           data-progress-text="100%"
@@ -153,14 +154,18 @@ const Layout = (props: any) => {
           <div className="pace-progress-inner"></div>
         </div>
         <div className="pace-activity"></div>
-      </div>
+      </div> */}
 
       <div id="layout-wrapper">
-        <Header
+        <Header 
+          isClick={isClick}
+          setClick={setClick}
           toggleMenuCallback={toggleMenuCallback}
           onChangeLayoutMode={onChangeLayoutMode}
         />
-        <Sidebar
+        <Sidebar 
+          isClick={isClick}
+          setClick={setClick}
           theme={leftSideBarTheme}
           type={leftSideBarType}
           isMobile={isMobile}

@@ -45,13 +45,12 @@ const Header = (props: any) => {
 
   const [search, setsearch] = useState<boolean>(false);
   const [socialDrp, setsocialDrp] = useState<boolean>(false);
-  const [isClick, setClick] = useState<boolean>(true);
 
   /*** Sidebar menu icon and default menu set */
   function tToggle() {
     var body = document.body;
-    setClick(!isClick);
-    if (isClick === true) {
+    props.setClick(!props.isClick);
+    if (props.isClick === true) {
       body.classList.remove("sidebar-enable");
       document.body.setAttribute("data-sidebar-size", "sm");
     } else {
@@ -61,22 +60,24 @@ const Header = (props: any) => {
   }
   useEffect(() => {
     if (window.innerWidth < 992) {
-      setClick(false);
+      props.setClick(false);
     }
   }, []);
 
   return (
     <React.Fragment>
-      <header id="page-topbar">
-        <div className="navbar-header">
+      <header  id="page-topbar">
+        <div className="navbar-header" style={{
+        paddingRight:10
+      }}>
           <div className="d-flex">
-            {isClick ? (
+            {props.isClick ? (
               <div className="navbar-brand-box ">
                 <Link
                   to="/dashboard"
                   className="logo logo-dark"
                 >
-                  {isClick && (
+                  {props.isClick && (
                     <span className="logo-sm">
                       <img
                         style={{
@@ -135,12 +136,12 @@ const Header = (props: any) => {
                 tToggle();
               }}
               type="button"
-              className="btn btn-sm px-3 font-size-16 header-item"
+              className="btn btn-sm px-4 px-md-3 font-size-16 header-item"
               id="vertical-menu-btn"
             >
               <i className="fa fa-fw fa-bars"></i>
             </button>
-            {!isClick && (
+            {!props.isClick && (
               <Link
                 to="/dashboard"
                 className="logo logo-dark"

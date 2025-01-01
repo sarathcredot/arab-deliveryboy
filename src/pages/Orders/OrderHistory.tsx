@@ -92,6 +92,7 @@ const Orders = () => {
         shippingStatus: filter === "All" ? null : filter,
       },
     },
+    fetchPolicy: "network-only"
   });
 
   useEffect(() => {

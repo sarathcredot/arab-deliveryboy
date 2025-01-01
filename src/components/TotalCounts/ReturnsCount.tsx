@@ -34,11 +34,15 @@ const ReturnsCount = ({ wallet }: Props) => {
           />
         </div>
         <div className={styles.content}>
-          <h3>{wallet?.numberOfReturnOrderAssigned}</h3>
-          <p>Assigned Returns</p>
-          <p>
+          <h3>{wallet?.numberOfReturnOrderAssigned||0}</h3>
+          <p style={{
+              fontSize: "16px",
+            }}>Assigned Returns</p>
+          <p style={{
+              fontSize: "13px",
+            }}>
             <span style={{ color: "red" }}>
-              {wallet?.numberOfPendingReturns}
+              {wallet?.numberOfPendingReturns||0}
             </span>{" "}
             Returns to Collect
           </p>

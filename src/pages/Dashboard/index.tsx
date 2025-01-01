@@ -67,6 +67,7 @@ const Dashboard = () => {
     variables: {
       input: {},
     },
+    fetchPolicy: "network-only",
   });
 
   useEffect(() => {

@@ -52,6 +52,9 @@ const ProfileMenu = (props: any) => {
         isOpen={menu}
         toggle={() => setMenu(!menu)}
         className="d-inline-block"
+        // style={{
+        //   background:"red"
+        // }}
       >
         <DropdownToggle
           className="btn header-item bg-soft-light "

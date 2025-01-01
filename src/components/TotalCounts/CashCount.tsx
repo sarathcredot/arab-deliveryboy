@@ -41,8 +41,12 @@ const CashCount = ({ wallet }: Props) => {
             </div>
             <div className={styles.content}>
               <h3>{wallet?.totalSettlement} OMR</h3>
-              <p>Cash in Hand</p>
-              <p>
+              <p style={{
+              fontSize: "16px",
+            }}>Cash in Hand</p>
+              <p style={{
+              fontSize: "13px",
+            }}>
                 <span style={{ color: "red" }}>{wallet?.cashInHand} OMR </span> to Settle
               </p>
             </div>

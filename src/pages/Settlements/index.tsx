@@ -65,7 +65,7 @@ const Settlements = () => {
     data: settlementsData,
     loading: settlementsDataLoading,
     error: settlementsDataError,
-  } = useQuery(GET_SETTLEMENTS);
+  } = useQuery(GET_SETTLEMENTS, { fetchPolicy: "network-only" });
   // wallet query
   const {
     data: walletData,
@@ -73,8 +73,9 @@ const Settlements = () => {
     error: walletDataError,
   } = useQuery(GET_WALLET, {
     variables: {
-      input: {}
+      input: {},
     },
+    fetchPolicy: "network-only",
   });
 
   if (settlementsData) {
@@ -235,7 +236,7 @@ const Settlements = () => {
                   </Col>
                 ))
               ) : (
-                <NoDataAnimation message="NO SETTLEMENTS "/>
+                <NoDataAnimation message="NO SETTLEMENTS " />
               )}
             </Row>
           )}

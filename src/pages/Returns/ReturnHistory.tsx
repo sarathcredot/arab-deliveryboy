@@ -103,6 +103,7 @@ const Return = () => {
           returnStatus: filter === "All" ? null : filter,
         },
       },
+      fetchPolicy: "network-only"
     });
   
     useEffect(() => {

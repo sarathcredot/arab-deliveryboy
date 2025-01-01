@@ -35,12 +35,18 @@ const OrdersCount = ({ wallet }: Props) => {
           />
         </div>
         <div className={styles.content}>
-          <h3>{wallet?.numberOfOrderAssigned}</h3>
-          <p>Assigned Orders</p>
-          <p>
-            <span style={{ color: "red" }}>
-              {wallet?.numberOfPendingOrdes}
-            </span>{" "}
+          <h3>{wallet?.numberOfOrderAssigned||0}</h3>
+          <p
+            style={{
+              fontSize: "16px",
+            }}
+          >
+            Assigned Orders
+          </p>
+          <p style={{
+            fontSize:"13px"
+          }}>
+            <span style={{ color: "red" }}>{wallet?.numberOfPendingOrdes||0}</span>{" "}
             Pending Orders
           </p>
         </div>
