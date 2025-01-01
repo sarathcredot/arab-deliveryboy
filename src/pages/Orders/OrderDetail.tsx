@@ -120,10 +120,15 @@ const OrderDetail = () => {
   const [openOtp, setOpenOtp] = useState(false);
   const openOtpToggle = () => {
     setOpenOtp(!openOtp);
+    refetch();
+    resetDeliveryStatus();
   };
   const [openRemarks, setOpenRemarks] = useState(false);
   const openRemarksToggle = () => {
     setOpenRemarks(!openRemarks);
+    if (!remarks) {
+      resetDeliveryStatus();
+    }
   };
   const [showMap, setShowMap] = useState(false);
   const mapToggle = () => {
@@ -192,7 +197,7 @@ const OrderDetail = () => {
       });
 
       if (response.data.orderDelivedbyAgent.status) {
-        setOpenRemarks(false)
+        setOpenRemarks(false);
         if (response.data.orderDelivedbyAgent.otp) {
           setOpenOtp(true);
         } else {
@@ -207,19 +212,22 @@ const OrderDetail = () => {
       return toast.error(error);
     }
   };
+  const resetDeliveryStatus = () => {
+    if (
+      orderDetail.shippingStatus === "POSTPONED" ||
+      orderDetail.shippingStatus === "DELIVERED" ||
+      orderDetail.shippingStatus === "CANCELED"
+    ) {
+      setDeliveryStatus(orderDetail?.shippingStatus);
+    }
+  };
   useEffect(() => {
     if (orderDetail) {
-      if (
-        orderDetail.shippingStatus === "POSTPONED" ||
-        orderDetail.shippingStatus === "DELIVERED" ||
-        orderDetail.shippingStatus === "CANCELED"
-      ) {
-        setDeliveryStatus(orderDetail?.shippingStatus);
-      }
+      resetDeliveryStatus();
       setPaymentMode(orderDetail?.paymentMode);
     }
-  }, [orderDetail]);
-
+  }, [orderDetail, orderData, refetch]);
+  console.log("STATUS = ", deliveryStatus);
   return (
     <React.Fragment>
       <div className="page-content mb-5 mb-md-0">
@@ -438,7 +446,7 @@ const OrderDetail = () => {
                   <CustomButton
                     name="Closed"
                     width="100%"
-                    // onClick={handleSubmit}
+                    onClick={() => refetch()}
                   />
                 </div>
               </div>
@@ -478,6 +486,7 @@ const OrderDetail = () => {
         submit={handleSubmit}
         isOpen={openRemarks}
         toggle={openRemarksToggle}
+        refetch={refetch}
       />
       <OtpPopup
         isOpen={openOtp}

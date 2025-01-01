@@ -64,7 +64,7 @@ const ForgetPasswordPage = ({ history }: ForgetPasswordProps) => {
     },
   });
 
-  document.title = "Forget Password | Minia - React Admin & Dashboard Template";
+  document.title = "Forget Password | Arabdeals-Agent & Dashboard ";
 
   return (
     <React.Fragment>

@@ -13,6 +13,8 @@ interface IWallet {
   numberOfOrderDelivered: number;
   numberOfReturnOrderAssigned: number;
   numberOfReturnOrderDelivered: number;
+  numberOfPendingReturns: number;
+  numberOfPendingOrdes: number;
 }
 interface Props {
   wallet?: IWallet;
@@ -37,7 +39,7 @@ const OrdersCount = ({ wallet }: Props) => {
           <p>Assigned Orders</p>
           <p>
             <span style={{ color: "red" }}>
-              {(wallet?.numberOfOrderAssigned || 0) - (wallet?.numberOfOrderDelivered || 0)}
+              {wallet?.numberOfPendingOrdes}
             </span>{" "}
             Pending Orders
           </p>

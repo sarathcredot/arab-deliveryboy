@@ -42,6 +42,7 @@
     position: fixed;
     top: $header-height;
     border-right: 1px solid var(--#{$prefix}border-color);
+    transition: 1s ease;
 }
 
 .main-content {
@@ -246,7 +247,7 @@ body[data-sidebar-size="sm"] {
             display: block;
         }
     }
-
+    
     // Side menu
     .vertical-menu {
         display: none !important;

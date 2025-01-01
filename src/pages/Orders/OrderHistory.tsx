@@ -65,7 +65,7 @@ const orderss = [
 
 const OrderHistory = () => {
 
-  document.title = "Orders | Minia - React Admin & Dashboard Template";
+  document.title = "Orders | Arabdeals-Agent & Dashboard";
 
 
   const [currentPage, setCurrentPage] = useState(null);

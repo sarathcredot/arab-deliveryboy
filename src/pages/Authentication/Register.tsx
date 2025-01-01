@@ -56,7 +56,7 @@ const Register = () => {
     dispatch(apiError(""));
   }, [dispatch]);
 
-  document.title = "Register | Minia - React Admin & Dashboard Template";
+  document.title = "Register | Arabdeals-Agent & Dashboard";
 
   return (
     <React.Fragment>

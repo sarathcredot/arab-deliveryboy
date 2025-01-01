@@ -17,6 +17,8 @@ interface IWallet {
   numberOfOrderDelivered: number;
   numberOfReturnOrderAssigned: number;
   numberOfReturnOrderDelivered: number;
+  numberOfPendingReturns: number;
+  numberOfPendingOrdes: number;
 }
 
 const GET_DATA = gql`
@@ -40,6 +42,8 @@ const GET_DATA = gql`
           numberOfOrderDelivered
           numberOfReturnOrderAssigned
           numberOfReturnOrderDelivered
+          numberOfPendingReturns
+          numberOfPendingOrdes
         }
       }
     }
@@ -50,7 +54,7 @@ const breadcrumbItems = [{ title: "Dashboard", link: "/dashboard" }];
 
 const Dashboard = () => {
   //meta title
-  document.title = "Dashboard | Minia - React Admin & Dashboard Template";
+  document.title = "Dashboard | Arabdeals-Agent & Dashboard";
 
   const [wallet, setWallet] = useState<IWallet>();
 

@@ -133,7 +133,7 @@ function* changeLeftSidebarType({ payload: { sidebarType } }: any) {
         yield call(changeBodyAttribute, "data-sidebar-size", "sm");
         break;
       default:
-        yield call(manageBodyClass, "sidebar-enable", "add");
+        yield call(manageBodyClass, "sidebar-enable", "remove"); // 
         yield call(changeBodyAttribute, "data-sidebar-size", "lg");
         break;
     }

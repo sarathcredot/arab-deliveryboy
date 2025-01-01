@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Input, Modal, ModalBody, Row } from "reactstrap";
+import { Col, Form, Input, Modal, ModalBody, Row } from "reactstrap";
 import CustomButton from "src/components/Common/CustomButton";
 import styles from "./style.module.css";
 import { gql, useMutation } from "@apollo/client";
@@ -14,7 +14,7 @@ const OrderRemarkPopup = ({ remarks, setRemarks, submit, isOpen, toggle }: any) 
       toggle={toggle}
       centered={true}
     >
-      <ModalBody className="p-4 p-md-5">
+      <ModalBody className="p-4 py-5 p-md-5">
         <h5>Please enter remarks for the delivery status change.</h5>
         <div
           className="flex-column flex-md-row"
@@ -24,30 +24,31 @@ const OrderRemarkPopup = ({ remarks, setRemarks, submit, isOpen, toggle }: any) 
             marginTop: 20,
           }}
         >
-          <Input
-            className={styles.input}
-            invalid={invaild}
-            type="text"
-            placeholder="Enter Remarks here"
-            value={remarks}
-            onChange={(e) => {
-              setInvalid(false);
-              setRemarks(e.target.value);
-            }}
-          />
-          <CustomButton
-            name="Submit"
-            padding="0 25px"
-            width="100px"
-            className="ms-auto"
-            onClick={() => {
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
               if (remarks) {
                 submit();
               } else {
                 setInvalid(true);
               }
             }}
-          />
+            style={{
+              width: "100%",
+            }}
+          >
+            <Input
+              className={styles.input}
+              invalid={invaild}
+              type="text"
+              placeholder="Enter Remarks here"
+              value={remarks}
+              onChange={(e) => {
+                setInvalid(false);
+                setRemarks(e.target.value);
+              }}
+            />
+          </Form>
         </div>
       </ModalBody>
     </Modal>

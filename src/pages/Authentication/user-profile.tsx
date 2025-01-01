@@ -87,7 +87,7 @@ const UserProfile = () => {
     }
   });
 
-  document.title = "Profile | Minia - React Admin & Dashboard Template";
+  document.title = "Profile | Arabdeals-Agent & Dashboard";
 
   return (
     <React.Fragment>

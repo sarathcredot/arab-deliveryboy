@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Input, Modal, ModalBody, Row } from "reactstrap";
+import { Col, Form, Input, Modal, ModalBody, Row } from "reactstrap";
 import CustomButton from "src/components/Common/CustomButton";
 import styles from "./style.module.css";
 import { gql, useMutation } from "@apollo/client";
@@ -70,9 +70,7 @@ const OtpPopup = ({
       toggle={toggle}
       centered={true}
     >
-      <ModalBody
-        className="p-4 p-md-5"
-      >
+      <ModalBody className="p-4 py-5 p-md-5">
         <h5>Please confirm the delivery by entering the OTP below.</h5>
         <div
           className="flex-column flex-md-row"
@@ -82,22 +80,28 @@ const OtpPopup = ({
             marginTop: 20,
           }}
         >
-          <Input
-            className={styles.input}
-            invalid={invaild}
-            type="text"
-            placeholder="Enter the OTP here"
-            value={otp}
-            onChange={(e) => {
-              setInvalid(false);
-              setOpt(e.target.value);
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitOtp()
             }}
-          />
-          <CustomButton
-            name="Submit"
-            padding="0 25px"
-            onClick={submitOtp}
-          />
+            style={{
+              width: "100%",
+            }}
+          >
+            <Input
+              className={styles.input}
+              invalid={invaild}
+              type="text"
+              placeholder="Enter the OTP here"
+              value={otp}
+              onChange={(e) => {
+                setInvalid(false);
+                setOpt(e.target.value);
+              }}
+            />
+          </Form>
+          
         </div>
       </ModalBody>
     </Modal>

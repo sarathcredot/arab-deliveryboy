@@ -13,6 +13,7 @@ interface IWallet {
   numberOfOrderDelivered: number;
   numberOfReturnOrderAssigned: number;
   numberOfReturnOrderDelivered: number;
+  numberOfPendingReturns: number;
 }
 interface Props {
   wallet?: IWallet;
@@ -37,7 +38,7 @@ const ReturnsCount = ({ wallet }: Props) => {
           <p>Assigned Returns</p>
           <p>
             <span style={{ color: "red" }}>
-              {(wallet?.numberOfReturnOrderAssigned || 0) - (wallet?.numberOfReturnOrderDelivered || 0)}
+              {wallet?.numberOfPendingReturns}
             </span>{" "}
             Returns to Collect
           </p>

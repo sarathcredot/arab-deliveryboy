@@ -14,6 +14,7 @@ interface IWallet {
   numberOfOrderDelivered: number;
   numberOfReturnOrderAssigned: number;
   numberOfReturnOrderDelivered: number;
+  numberOfPendingReturns: number;
 }
 interface Props {
   wallet?: IWallet;

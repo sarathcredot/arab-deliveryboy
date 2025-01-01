@@ -71,7 +71,7 @@ const GET_PENDING_ORDERS = gql`
 
 const Orders = () => {
 
-  document.title = "Orders | Minia - React Admin & Dashboard Template";
+  document.title = "Orders | Arabdeals-Agent & Dashboard";
 
 
   const [currentPage, setCurrentPage] = useState(null);

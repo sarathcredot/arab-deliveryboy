@@ -30,7 +30,7 @@ import { createSelector } from 'reselect';
 // import config from "./config";
 
 // Activating fake backend
-fakeBackend();
+// fakeBackend();
 
 // const firebaseConfig = {
 //   apiKey: process.env.REACT_APP_APIKEY,
