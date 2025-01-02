@@ -52,6 +52,7 @@ const Breadcrumb = ({ title, onFilterChange,isHistory}: BreadcrumbProps) => {
             <li onClick={() => applyFilter("COLLECTED")}>Collected</li>
             <li onClick={() => applyFilter("REJECTED")}>Rejected</li>
             <li onClick={() => applyFilter("RETURNED TO WAREHOUSE")}>Returned to Warehouse</li>
+            <li onClick={() => applyFilter("POSTPONED")}>Postponed</li>
           </ul>
         </div>
       )}
