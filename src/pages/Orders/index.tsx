@@ -180,7 +180,6 @@ const Orders = () => {
                   </div>
                 </div>
                 </Link>
-               
               ))
             )
           }
