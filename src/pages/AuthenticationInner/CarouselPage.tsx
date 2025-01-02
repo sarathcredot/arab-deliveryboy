@@ -97,8 +97,8 @@ const CarouselPage = () => {
             width: "516px",
             height: "114px",
             // backgroundColor:"red",
-            marginTop: "60px",
-            marginLeft: "70px",
+            // marginTop: "60px",
+            marginLeft: "10px",
           }}>
             {/* <svg xmlns="http://www.w3.org/2000/svg" width="516" height="114" viewBox="0 0 516 114" fill="none">
               <path d="M15.7271 24.6505V37.1311C15.7271 39.8758 14.5411 41.0669 12.5817 41.0669H22.9977C21.0383 41.0669 19.8523 39.8758 19.8523 37.1311V24.6505L28.412 8.18231C29.6495 5.85191 31.5058 4.81617 33.3106 4.81617H26.4525C28.3088 4.81617 28.9792 6.00727 27.6901 8.44124L19.7491 23.7184L10.0035 8.33768C8.71438 6.31799 9.07533 4.81617 10.9316 4.81617H0C1.75319 4.81617 3.55794 5.4894 5.05331 7.81981L15.7271 24.6505Z" fill="white" />
@@ -144,12 +144,12 @@ const CarouselPage = () => {
 
                <h1 style={{
                   fontFamily:"poppins",
-                  fontSize:"40px",
                   fontWeight:400,
                   lineHeight:"48px",
                   color:"#FFFFFF"
 
                 }}
+                className="login-heading"
                 >Begin your selling journey 
                on Arabdeals</h1>
            </div>

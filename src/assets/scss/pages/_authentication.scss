@@ -27,16 +27,28 @@ input.focused {
 .intro-show{
     display: block;
 }
-
-.auth-logo-section {
-    margin: 40px 0; 
+.mob-logo-auth{
+    display: block;
 }
+
+// .auth-logo-section {
+//     margin: 40px 0; 
+// }
 .auth-form-align{
     margin-top: 20px;
 }
 
 .auth-button-align{
-    margin-top: 280px;
+    margin-top: 270px;
+}
+.login-heading{
+    font-size: 33px;
+}
+
+@media (min-width:1204px) {
+    .login-heading{
+        font-size: 40px;
+    }
 }
 
 @media (min-width:768px) {
@@ -47,6 +59,9 @@ input.focused {
         display: block;
     }
     .intro-show{
+        display: none;
+    }
+    .mob-logo-auth{
         display: none;
     }
     .auth-logo-section {
@@ -60,11 +75,13 @@ input.focused {
     }
 }
 
+
+
   
 
 .auth-bg{
     background-image: url("../../images/auth2-bg.png");
-    background-position: center;
+    background-position:right center;
     background-size: cover;
     background-repeat: no-repeat;
     .bg-overlay{
@@ -74,6 +91,12 @@ input.focused {
         height: 100vh;
     }
 }
+
+// @media (max-width: 768.98px) {
+//    .auth-bg{
+//     background-image: url("../../images/greetingbg.png");
+//    }  
+// }
 .auth-full-page-content{
     min-height: 100vh;
 }
