@@ -132,7 +132,7 @@ const Return = () => {
   return (
     <React.Fragment>
       <div className="page-content">
-        <Container fluid style={{paddingRight:"0px",paddingLeft:"0px"}}>
+        <Container fluid className="px-2">
           {/* Render Breadcrumbs */}
           <Breadcrumbs
             title="Pending Returns"
