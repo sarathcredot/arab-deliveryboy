@@ -150,7 +150,7 @@ const Header = (props: any) => {
                 <img
                   style={{
                     display: "block",
-                    margin: "22px 0 ",
+                    margin: "22px 0 22px -6px ",
                   }}
                   src={logoSvg}
                   width="100%"

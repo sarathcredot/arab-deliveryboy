@@ -8,7 +8,7 @@ interface ButtonProps extends ReactstrapButtonProps {
   width?: string;
 }
 
-const CustomButton: React.FC<ButtonProps> = ({ width, bgColor, name, padding, ...rest }) => {
+const CustomButton: React.FC<ButtonProps> = ({ color, width, bgColor, name, padding, ...rest }) => {
   return (
     <Button
       style={{
@@ -17,7 +17,7 @@ const CustomButton: React.FC<ButtonProps> = ({ width, bgColor, name, padding, ..
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: bgColor ? bgColor : "black",
-        color: "white",
+        color: color ? color : "#fff",
         width: width ? width : "auto",
         height: "40px",
         borderRadius: "10px",

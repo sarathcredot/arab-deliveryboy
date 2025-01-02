@@ -48,11 +48,13 @@ const UserProfile = () => {
         <Container fluid>
           {/* Render Breadcrumb */}
           <Row>
-            <Col lg="12">
+            <Col lg="12" style={{
+              padding:0
+            }}>
               <Card>
                 <CardBody>
-                  <div className="d-flex">
-                    <div className="ms-3">
+                  <div className="d-flex align-items-center justify-content-between">
+                    <div className="">
                       <img
                         src={avatar}
                         alt=""

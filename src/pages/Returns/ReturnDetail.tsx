@@ -128,19 +128,32 @@ const ReturnDetail = () => {
   const [openOtp, setOpenOtp] = useState(false);
   const openOtpToggle = () => {
     setOpenOtp(!openOtp);
+    resetReturnStatus();
   };
   const [openRemarks, setOpenRemarks] = useState(false);
   const openRemarksToggle = () => {
-    setOpenRemarks(!openRemarks);
+    if (!remarks) {
+      setOpenRemarks(!openRemarks);
+      resetReturnStatus();
+    }
   };
   const [showMap, setShowMap] = useState(false);
   const mapToggle = () => {
     setShowMap(!showMap);
   };
+  const resetReturnStatus = () => {
+    const statuses = ["REJECTED", "COLLECTED", "RETURNED TO WAREHOUSE", "POSTPONED"];
+    if (statuses.includes(orderDetail?.returnStatus)) {
+      setReturnStatus(orderDetail?.returnStatus);
+    } else {
+      setReturnStatus("");
+    }
+  };
 
   useEffect(() => {
     if (orderData && orderData.getAssignedeOrderDeatilsByAgentProfile) {
       setOrderDetail(orderData.getAssignedeOrderDeatilsByAgentProfile);
+      resetReturnStatus();
     }
   }, [orderData]);
 
@@ -200,7 +213,7 @@ const ReturnDetail = () => {
       });
 
       if (response.data.returnStatusChangeDeliveryAgent.status) {
-        setOpenRemarks(false)
+        setOpenRemarks(false);
         if (response.data.returnStatusChangeDeliveryAgent.otp) {
           setOpenOtp(true);
         } else {
@@ -243,12 +256,6 @@ const ReturnDetail = () => {
     }
   };
 
-  useEffect(() => {
-    if (orderDetail) {
-      setReturnStatus(orderDetail?.returnStatus);
-    }
-  }, [orderDetail]);
-
   return (
     <React.Fragment>
       <div className="page-content mb-5 mb-md-0">
@@ -274,13 +281,24 @@ const ReturnDetail = () => {
                         <p>Customer :</p> <p>{orderDetail?.userName}</p>
                       </div>
                       <div>
-                        <p>Date :</p> <p>{orderDetail?.orderDate}</p>
+                        <p>Date :</p>{" "}
+                        <p>
+                          {orderDetail?.orderDate &&
+                            new Date(orderDetail.orderDate).toLocaleDateString("en-GB").replace(/\//g, "-")}
+                        </p>
                       </div>
                       <div>
                         <p>Contact :</p> <p>+956 {orderDetail?.mobileNumber}</p>
                       </div>
                       <div>
-                        <p>payment Type :</p> <p>{orderDetail?.paymentMode}</p>
+                        <p>payment Type :</p>{" "}
+                        <p>
+                          {orderDetail?.paymentMode === "COD"
+                            ? "Cash On Delivery"
+                            : orderDetail?.paymentMode === "CARD"
+                            ? "Card On Delivery"
+                            : orderDetail?.paymentMode}
+                        </p>
                       </div>
                       <div>
                         <p>payable :</p> <p>{orderDetail?.sellingPrice} OMR</p>
@@ -449,7 +467,7 @@ const ReturnDetail = () => {
                           value={returnStatus}
                           onChange={(e) => {
                             setReturnStatus(e.target.value);
-                            setOpenRemarks(true)
+                            setOpenRemarks(true);
                           }}
                         >
                           <option
@@ -536,11 +554,11 @@ const ReturnDetail = () => {
         >
           Call Customer
         </a>
-        <CustomButton
+        {/* <CustomButton
           name="Closed"
           width="100%"
           // onClick={handleReturnStatus}
-        />
+        /> */}
       </div>
       <ReturnRemarkPopup
         remarks={remarks}
@@ -551,6 +569,7 @@ const ReturnDetail = () => {
       />
       <OtpPopup
         isOpen={openOtp}
+        setOpenOtp={setOpenOtp}
         toggle={openOtpToggle}
         orderItemId={id}
         returnStatus={returnStatus}

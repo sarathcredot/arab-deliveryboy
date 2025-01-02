@@ -150,7 +150,7 @@ body[data-bs-theme ="dark"] {
 }
 
 .page-content {
-    padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} * 0.75) $footer-height calc(#{$grid-gutter-width} * 0.75);
+    padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} * 0.50) $footer-height calc(#{$grid-gutter-width} * 0.50);
 }
 
 .header-item {
