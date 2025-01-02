@@ -81,7 +81,7 @@ const Dashboard = () => {
   return (
     <React.Fragment>
       <div className="page-content ">
-        <Container fluid>
+        <Container fluid className="px-2">
           {/* Render Breadcrumbs */}
           <Breadcrumbs
             // title="Home"
