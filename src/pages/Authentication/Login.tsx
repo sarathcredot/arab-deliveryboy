@@ -30,6 +30,7 @@ import { gql, useMutation } from "@apollo/client";
 
 // import images
 import logo from "../../assets/images/arabDealLogo.svg";
+import logoSvg from "../../assets/images/brands/Logo.svg";
 
 
 //Import config
@@ -160,6 +161,9 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                 <div className="w-100">
                   <div className="d-flex flex-column h-100">
                     <div className="auth-content auth-logo-section">
+                      <div className="mob-logo-auth">
+                        <img src={logoSvg} alt="logo" height="28"  style={{marginBottom:"30px"}} />
+                      </div>
                       <div className="intro-show">
                         <h1 style={{color:"#000000",fontSize:"24px",fontWeight:700,lineHeight:"22px"}}>Login</h1>
                         <p style={{color:"#7C7C7C",fontWeight:400,fontSize:"14px",lineHeight:"22px",marginTop:"22px"}}>Enter your email and password to get started!</p>
@@ -233,24 +237,32 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                                    boxShadow: "none"
                                   }}
                             />
-                            <button onClick={() => setPasswordShow(!passwordShow)} className="btn  shadow-none ms-0" type="button" id="password-addon" 
-                                         style={{
-                                          position: "absolute",
-                                          top: "50%",
-                                          right: "10px",
-                                          transform: "translateY(-50%)",
-                                          zIndex: 2, // Ensure it's above the input
-                                          background: "transparent",
-                                          border: "none",
-                                          padding: 0,
-                                          cursor: "pointer",
-                                           }}
-                                           >
-                                             <i
-                                        className={passwordShow ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"}
-                                        style={{ fontSize: "20px", color: "#000" }}
-                                      ></i>
+                          {!validation.errors.password && ( // Only show the eye icon if there is no error
+                              <button
+                                onClick={() => setPasswordShow(!passwordShow)}
+                                className="btn shadow-none ms-0"
+                                type="button"
+                                id="password-addon"
+                                style={{
+                                  position: "absolute",
+                                  top: "50%",
+                                  right: "10px",
+                                  transform: "translateY(-50%)",
+                                  zIndex: 2, // Ensure it's above the input
+                                  background: "transparent",
+                                  border: "none",
+                                  padding: 0,
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <i
+                                  className={
+                                    passwordShow ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"
+                                  }
+                                  style={{ fontSize: "20px", color: "#000" }}
+                                ></i>
                               </button>
+                            )}
                             {validation.touched.password &&
                               validation.errors.password ? (
                               <FormFeedback type="invalid">
