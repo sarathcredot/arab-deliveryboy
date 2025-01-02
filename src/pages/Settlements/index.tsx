@@ -25,8 +25,8 @@ interface IWallet {
 }
 
 const GET_SETTLEMENTS = gql`
-  query {
-    getAgentSettlementHistoryByAgent {
+  query GetAgentSettlementHistoryByAgent($input: getAgentSettlementHistoryByAgentInput) {
+    getAgentSettlementHistoryByAgent(input: $input) {
       _id
       type
       amount
@@ -65,13 +65,14 @@ const Settlements = () => {
     data: settlementsData,
     loading: settlementsDataLoading,
     error: settlementsDataError,
-  } = useQuery(GET_SETTLEMENTS, { 
-    variables:{
-      input:{
-        type:"SETTLED"
-      }
+  } = useQuery(GET_SETTLEMENTS, {
+    variables: {
+      input: {
+        type: "SETTLED",
+      },
     },
-    fetchPolicy: "network-only" });
+    fetchPolicy: "network-only",
+  });
   // wallet query
   const {
     data: walletData,
@@ -111,11 +112,23 @@ const Settlements = () => {
   return (
     <React.Fragment>
       <div className="page-content">
-        <Container fluid className="px-2">
+        <Container
+          fluid
+          className="px-2"
+        >
           {/* Render Breadcrumbs */}
           <Breadcrumbs breadcrumbs={breadcrumbItems} />
-          <Row>
-            <Col lg={5}>
+          <Row
+            style={{
+              padding: "0 7px",
+            }}
+          >
+            <Col
+              lg={4}
+              style={{
+                padding: 0,
+              }}
+            >
               <div
                 style={{
                   border: "1px solid #DDDDDD",
@@ -146,7 +159,7 @@ const Settlements = () => {
           <h5
             style={{
               fontSize: "18px",
-              margin: "20px 0",
+              margin: "35px 0 9px",
             }}
           >
             Settlement History
@@ -156,7 +169,7 @@ const Settlements = () => {
           ) : (
             <Row
               style={{
-                padding: "0 6px",
+                padding: "0",
               }}
             >
               {settlements && settlements?.length > 0 ? (
@@ -164,7 +177,8 @@ const Settlements = () => {
                   <Col
                     lg={4}
                     style={{
-                      padding: "6px",
+                      padding: "7px",
+                      display: "grid",
                     }}
                     key={index}
                   >
@@ -198,7 +212,8 @@ const Settlements = () => {
                       <h6
                         style={{
                           fontSize: "16.5px",
-                          minHeight: "35px",
+                          // minHeight: "35px",
+                          height: "100%",
                         }}
                       >
                         {item?.remarks ? item.remarks : "No Remarks....."}
@@ -207,9 +222,11 @@ const Settlements = () => {
                       <div className="d-flex gap-4">
                         <div>
                           <p
-                            style={{
-                              marginBottom: 7,
-                            }}
+                            style={
+                              {
+                                // marginBottom: 0,
+                              }
+                            }
                           >
                             Settled
                           </p>
@@ -223,9 +240,11 @@ const Settlements = () => {
                         </div>
                         <div>
                           <p
-                            style={{
-                              marginBottom: 7,
-                            }}
+                            style={
+                              {
+                                // marginBottom: 0,
+                              }
+                            }
                           >
                             Balance
                           </p>

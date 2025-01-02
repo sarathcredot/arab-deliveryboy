@@ -236,7 +236,10 @@ const OrderDetail = () => {
   return (
     <React.Fragment>
       <div className="page-content mb-5 mb-md-0 ">
-        <Container fluid className="px-2">
+        <Container
+          fluid
+          className="px-2"
+        >
           {/* Render Breadcrumbs */}
           <Breadcrumbs breadcrumbs={breadcrumbItems} />
           <Row>
@@ -298,10 +301,19 @@ const OrderDetail = () => {
                         <p>Status :</p>
                         <p
                           style={{
-                            color: "#F97316",
+                            color:
+                              orderDetail?.shippingStatus === "SHIPPED"
+                                ? "#F97316"
+                                : orderDetail?.shippingStatus === "POSTPONED"
+                                ? "#5a6f05"
+                                : orderDetail?.shippingStatus === "DELIVERED"
+                                ? "#005E2B"
+                                : orderDetail?.shippingStatus === "CANCELED"
+                                ? "#E30613"
+                                : "#000",
                           }}
                         >
-                          {orderDetail?.shippingStatus}
+                          {orderDetail?.shippingStatus === "SHIPPED" ? "Out For Delivery" : orderDetail?.shippingStatus}
                         </p>
                       </div>
                     </>
