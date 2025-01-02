@@ -58,7 +58,7 @@ body {
         font-family: "Urbanist",sans-serif;
         text-transform: capitalize;
         color: #FFFFFF;
-        background-color: #0d3206;
+        background-color: #000;
         
   
         &.outfordelivery,
@@ -77,6 +77,9 @@ body {
         }
         &.collected{
           background-color: #4947D0;
+        }
+        &.postponed{
+          background-color: #5a6f05;
         }
         /* Add more status styles if needed */
       }
