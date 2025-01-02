@@ -39,8 +39,17 @@ input.focused {
 }
 
 .auth-button-align{
-    margin-top: 270px;
+    // margin-top: auto !important;
+    position:absolute;
+    bottom:20px;
+    left:0;
+    width:100%;
+    padding: 0 1.5rem;
 }
+
+
+
+
 .login-heading{
     font-size: 33px;
 }
@@ -72,6 +81,9 @@ input.focused {
     }
     .auth-button-align{
         margin-top: 16px;
+        position: static;
+    padding: 0px;
+
     }
 }
 

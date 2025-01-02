@@ -151,9 +151,9 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
 
 
   return (
-    <React.Fragment>
+    <React.Fragment> 
       <ToastContainer/>
-      <div className="auth-page">
+      <div className="auth-page overflow-x-hidden">
         <Container fluid className="p-0">
           <Row className="g-0">
             <Col lg={4} md={5} className="col-xxl-3">
@@ -174,6 +174,9 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                       <Form
                         
                         className="custom-form auth-form-align  pt-2"
+                        style={{
+                          // height: "100vh",
+                        }}
                         onSubmit={(e) => {
                           e.preventDefault();
                           validation.handleSubmit();
@@ -320,9 +323,9 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
 
 
                         </div>
-                        <div className="row mb-4">
+                        {/* <div className="row mb-4">
                           <div className="col">
-                            <div className="auth-button-align d-grid">
+                            <div className="auth-button-align d-grid  mt-auto" >
                               <button
                                 className="btn btn-block"
                                 type="submit"
@@ -333,7 +336,38 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                               </button>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
+
+                        <div
+                         className="auth-button-align auth-login-button"
+                        //  className=" "
+                         style={{
+                          // position:"absolute",
+                          // bottom:"0",
+                          
+                         }}
+
+                        >
+
+                            <button
+                              className=" "
+                              type="submit"
+                              style={{
+                                display: "block",
+                                margin:"auto",
+                                backgroundColor: "#131313",
+                                width:"100%",
+                                color: "#FFFFFF",
+                                borderRadius: "8px",
+                                fontWeight: 500,
+                                fontSize: "16px",
+                                lineHeight: "22px",
+                                padding: "10px",
+                              }}
+                            >
+                              Login
+                            </button>
+                          </div>
                       </Form>
                     </div>
                   </div>

@@ -137,7 +137,7 @@ const Orders = () => {
   return (
     <React.Fragment>
       <div className="page-content">
-        <Container fluid style={{paddingRight:"0px",paddingLeft:"0px"}}>
+        <Container fluid className="px-2">
           {/* Render Breadcrumbs */}
           <Breadcrumbs
             title="Pending orders"
@@ -156,7 +156,9 @@ const Orders = () => {
                     {order.shippingStatus === "SHIPPED" ? (
                        <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>Out for Delivery</span>
                     ):(
-                      <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>{order.shippingStatus}</span>
+                      <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>{order.shippingStatus
+                        .toLowerCase()
+                        .replace(/(?:^|\s)\w/g, (match:string) => match.toUpperCase())}</span>
                     )}
                     <h5 className="order-id">
                         <span className="label">Order ID:</span> 
@@ -180,7 +182,6 @@ const Orders = () => {
                   </div>
                 </div>
                 </Link>
-               
               ))
             )
           }

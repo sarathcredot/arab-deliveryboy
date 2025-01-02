@@ -21,6 +21,6 @@ const Greeting = () => {
       </button>
     </div>
   );
-};
+}; 
 
 export default Greeting;

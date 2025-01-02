@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Common/BreadcrumbReturn";
 import { Container } from "reactstrap";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import { Link } from "react-router-dom";
 
 const GET_PENDING_RETURNS = gql`
 query GetAssignedReturnOrderByAgent($input: GetAssignedReturnOrderInput!) {
@@ -132,7 +133,7 @@ const Return = () => {
   return (
     <React.Fragment>
       <div className="page-content">
-        <Container fluid style={{paddingRight:"0px",paddingLeft:"0px"}}>
+        <Container fluid className="px-2">
           {/* Render Breadcrumbs */}
           <Breadcrumbs
             title="Pending Returns"
@@ -143,7 +144,9 @@ const Return = () => {
          {ordersData?.getAssignedReturnOrderByAgent?.records?.length === 0 ? (
           <p>No orders found</p>
          ) :(
+          
           orders.map((order) => (
+            <Link to={`/returns/detail/${order._id}`} key={order._id}>
             <div className="order-card" key={order._id}>
               <div className="order-card-header">
               {order.returnStatus === "APPROVED" ? (
@@ -177,13 +180,14 @@ const Return = () => {
                   </div>
                   <div>
                   <p className="order-date">Date</p>
-                  <p className="date"> {order.orderDate}</p>
+                  <p className="date"> {new Date(order.orderDate).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
                   </div>
                 </div>
               </div>
             </div>
+            </Link>
           ))
-         )
+         ) 
           }
           </div>
         </Container>
