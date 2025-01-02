@@ -236,7 +236,7 @@ const OrderDetail = () => {
   return (
     <React.Fragment>
       <div className="page-content mb-5 mb-md-0 ">
-        <Container fluid>
+        <Container fluid className="px-2">
           {/* Render Breadcrumbs */}
           <Breadcrumbs breadcrumbs={breadcrumbItems} />
           <Row>

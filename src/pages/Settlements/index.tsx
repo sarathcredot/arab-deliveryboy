@@ -65,7 +65,13 @@ const Settlements = () => {
     data: settlementsData,
     loading: settlementsDataLoading,
     error: settlementsDataError,
-  } = useQuery(GET_SETTLEMENTS, { fetchPolicy: "network-only" });
+  } = useQuery(GET_SETTLEMENTS, { 
+    variables:{
+      input:{
+        type:"SETTLED"
+      }
+    },
+    fetchPolicy: "network-only" });
   // wallet query
   const {
     data: walletData,
@@ -105,7 +111,7 @@ const Settlements = () => {
   return (
     <React.Fragment>
       <div className="page-content">
-        <Container fluid>
+        <Container fluid className="px-2">
           {/* Render Breadcrumbs */}
           <Breadcrumbs breadcrumbs={breadcrumbItems} />
           <Row>
