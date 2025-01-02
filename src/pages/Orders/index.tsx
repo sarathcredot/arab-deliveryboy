@@ -156,7 +156,9 @@ const Orders = () => {
                     {order.shippingStatus === "SHIPPED" ? (
                        <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>Out for Delivery</span>
                     ):(
-                      <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>{order.shippingStatus}</span>
+                      <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>{order.shippingStatus
+                        .toLowerCase()
+                        .replace(/(?:^|\s)\w/g, (match:string) => match.toUpperCase())}</span>
                     )}
                     <h5 className="order-id">
                         <span className="label">Order ID:</span> 
