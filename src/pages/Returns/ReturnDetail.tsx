@@ -259,7 +259,10 @@ const ReturnDetail = () => {
   return (
     <React.Fragment>
       <div className="page-content mb-5 mb-md-0">
-        <Container fluid className="px-2">
+        <Container
+          fluid
+          className="px-2"
+        >
           {/* Render Breadcrumbs */}
           <Breadcrumbs breadcrumbs={breadcrumbItems} />
           <Row>

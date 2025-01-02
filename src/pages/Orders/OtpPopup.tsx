@@ -61,8 +61,9 @@ const OtpPopup = ({
         toast.error(response.data.deliveryStatusOtpVerify.msg);
       }
     } catch (error: any) {
-      console.log("ERROR = ", error);
-      toast.error(error);
+      console.log("ERROR = ", error.message);
+
+      toast.error(error.message);
     }
   };
   return (
