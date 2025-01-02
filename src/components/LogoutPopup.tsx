@@ -4,9 +4,9 @@ import CustomButton from "./Common/CustomButton";
 import { useNavigate } from "react-router";
 
 const LogoutPopup = ({ isOpen, toggle }: any) => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleLogout = () => {
-    navigate("/logout")
+    navigate("/logout");
     localStorage.removeItem("agent_token");
   };
 
@@ -17,24 +17,37 @@ const LogoutPopup = ({ isOpen, toggle }: any) => {
       centered={true}
       style={{
         maxWidth: "400px",
-        padding: 10,
+        padding: 20,
       }}
     >
-      <ModalBody className="p-4 py-5 p-md-5">
+      <ModalBody style={{
+        padding:"30px"
+      }}>
         <h5
           style={{
-            textAlign: "center",
+            // textAlign: "center",
           }}
         >
           Are you sure you want to log out?
         </h5>
-        <CustomButton
-          name="Logout"
-          width="70%"
-          bgColor="#E30613"
-          className="m-auto mt-3"
-          onClick={() => handleLogout()}
-        />
+        <div className=" d-flex justify-content-end gap-2">
+          <CustomButton
+            name="Cancel"
+            color="#E30613"
+            bgColor="#fff"
+            width="30%"
+            className=" mt-3"
+            padding="5px"
+            onClick={() => toggle()}
+          />
+          <CustomButton
+            name="Logout"
+            bgColor="#E30613"
+            width="30%"
+            className=" mt-3"
+            onClick={() => handleLogout()}
+          />
+        </div>
       </ModalBody>
     </Modal>
   );

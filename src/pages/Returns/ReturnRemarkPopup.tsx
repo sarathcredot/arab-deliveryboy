@@ -13,6 +13,9 @@ const ReturnRemarkPopup = ({ remarks, setRemarks, submit, isOpen, toggle }: any)
       isOpen={isOpen}
       toggle={toggle}
       centered={true}
+      style={{
+        padding:10
+      }}
     >
       <ModalBody className="p-4 py-5 p-md-5">
         <h5>Please enter remarks for the return status change.</h5>

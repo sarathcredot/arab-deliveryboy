@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Input, Label, Row } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styles from "./style.module.css";
 import CustomButton from "src/components/Common/CustomButton";
 import MapPopup from "src/components/MapPopup";
@@ -125,8 +125,8 @@ const OrderDetail = () => {
   };
   const [openRemarks, setOpenRemarks] = useState(false);
   const openRemarksToggle = () => {
-    setOpenRemarks(!openRemarks);
     if (!remarks) {
+      setOpenRemarks(!openRemarks);
       resetDeliveryStatus();
     }
   };
@@ -164,7 +164,10 @@ const OrderDetail = () => {
 
       if (response.data) {
         toast.success(response.data.updateDeliveredMapLocation.message);
-        setShowMap(true);
+        setTimeout(() => {
+          window.open(trackingLink, "_blank");
+        }, 1000);
+        // setShowMap(true);
       } else if (response.errors) {
         console.log("ERRORS = ", response.errors);
       }
@@ -219,6 +222,8 @@ const OrderDetail = () => {
       orderDetail.shippingStatus === "CANCELED"
     ) {
       setDeliveryStatus(orderDetail?.shippingStatus);
+    } else {
+      setDeliveryStatus("");
     }
   };
   useEffect(() => {
@@ -230,7 +235,7 @@ const OrderDetail = () => {
   console.log("STATUS = ", deliveryStatus);
   return (
     <React.Fragment>
-      <div className="page-content mb-5 mb-md-0">
+      <div className="page-content mb-5 mb-md-0 ">
         <Container fluid>
           {/* Render Breadcrumbs */}
           <Breadcrumbs breadcrumbs={breadcrumbItems} />
@@ -263,7 +268,14 @@ const OrderDetail = () => {
                         <p>Contact :</p> <p>{orderDetail?.mobileNumber && `+956 ${orderDetail.mobileNumber}`}</p>
                       </div>
                       <div>
-                        <p>payment Type :</p> <p>{orderDetail?.paymentMode}</p>
+                        <p>payment Type :</p>{" "}
+                        <p>
+                          {orderDetail?.paymentMode === "COD"
+                            ? "Cash On Delivery"
+                            : orderDetail?.paymentMode === "CARD"
+                            ? "Card On Delivery"
+                            : orderDetail?.paymentMode}
+                        </p>
                       </div>
                       <div>
                         <p>payable :</p> <p>{orderDetail?.sellingPrice && `${orderDetail?.sellingPrice} OMR`}</p>
@@ -402,17 +414,6 @@ const OrderDetail = () => {
                           <option value={"CANCELED"}>CANCELED</option>
                         </Input>
                       </div>
-                      {/* <Input
-                        className={styles.input}
-                        type="text"
-                        value={remarks}
-                        placeholder="Note"
-                        invalid={invalid}
-                        onChange={(e) => {
-                          setInvalid(false);
-                          setRemarks(e.target.value);
-                        }}
-                      /> */}
                     </>
                   )}
                 </div>
@@ -446,7 +447,7 @@ const OrderDetail = () => {
                   <CustomButton
                     name="Closed"
                     width="100%"
-                    onClick={() => refetch()}
+                    // onClick={() => refetch()}
                   />
                 </div>
               </div>
@@ -474,11 +475,11 @@ const OrderDetail = () => {
         >
           Call Customer
         </a>
-        <CustomButton
+        {/* <CustomButton
           name="Closed"
           width="100%"
           // onClick={handleSubmit}
-        />
+        /> */}
       </div>
       <OrderRemarkPopup
         remarks={remarks}
@@ -490,6 +491,7 @@ const OrderDetail = () => {
       />
       <OtpPopup
         isOpen={openOtp}
+        setOpenOtp={setOpenOtp}
         toggle={openOtpToggle}
         orderItemId={id}
         deliveryStatus={deliveryStatus}

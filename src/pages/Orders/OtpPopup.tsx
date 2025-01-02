@@ -22,6 +22,7 @@ const OtpPopup = ({
   returnStatus,
   returnRemark,
   isOpen,
+  setOpenOtp,
   toggle,
   refetch,
 }: any) => {
@@ -55,7 +56,7 @@ const OtpPopup = ({
       if (response.data.deliveryStatusOtpVerify.status) {
         toast.success(response.data.deliveryStatusOtpVerify.msg);
         refetch();
-        toggle();
+        setOpenOtp(false);
       } else if (response.data.deliveryStatusOtpVerify.msg) {
         toast.error(response.data.deliveryStatusOtpVerify.msg);
       }
@@ -67,8 +68,15 @@ const OtpPopup = ({
   return (
     <Modal
       isOpen={isOpen}
-      toggle={toggle}
+      toggle={() => {
+        if (!otp) {
+          toggle();
+        }
+      }}
       centered={true}
+      style={{
+        padding: 10,
+      }}
     >
       <ModalBody className="p-4 py-5 p-md-5">
         <h5>Please confirm the delivery by entering the OTP below.</h5>
@@ -83,7 +91,7 @@ const OtpPopup = ({
           <Form
             onSubmit={(e) => {
               e.preventDefault();
-              submitOtp()
+              submitOtp();
             }}
             style={{
               width: "100%",
@@ -101,7 +109,6 @@ const OtpPopup = ({
               }}
             />
           </Form>
-          
         </div>
       </ModalBody>
     </Modal>

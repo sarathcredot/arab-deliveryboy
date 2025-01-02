@@ -80,7 +80,7 @@ const Dashboard = () => {
 
   return (
     <React.Fragment>
-      <div className="page-content">
+      <div className="page-content ">
         <Container fluid>
           {/* Render Breadcrumbs */}
           <Breadcrumbs
