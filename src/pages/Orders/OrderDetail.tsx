@@ -43,30 +43,6 @@ const GET_ORDER_DETAIL = gql`
       city
       country
       postCode
-      returnStatus
-      returnUserReason
-      returnProductImage {
-        fileType
-        fileURL
-        mimeType
-        originalName
-      }
-      returnOrderAssignedOn
-      returnAddress {
-        firstname
-        email
-        mobile
-        streetName
-        city
-        houseNumber
-        country
-        postCode
-        apartment
-        suite
-        unit
-      }
-      returnAdminComment
-      returnRequestDate
     }
   }
 `;
@@ -96,7 +72,7 @@ const OrderDetail = () => {
   const [changeDeliveryStatus] = useMutation(DELIVERY_STATUS);
   const [remarks, setRemarks] = useState("");
   const [paymentMode, setPaymentMode] = useState("");
-
+  const [disable, setDisable] = useState(false);
   const [invalid, setInvalid] = useState(false);
   const [linkInvalid, setLinkInvalid] = useState(false);
 
@@ -232,7 +208,12 @@ const OrderDetail = () => {
       setPaymentMode(orderDetail?.paymentMode);
     }
   }, [orderDetail, orderData, refetch]);
-  console.log("STATUS = ", deliveryStatus);
+  useEffect(() => {
+    if (deliveryStatus && deliveryStatus === "DELIVERED") {
+      // toast.info(deliveryStatus)
+    }
+  }, [deliveryStatus]);
+
   return (
     <React.Fragment>
       <div className="page-content mb-5 mb-md-0 ">
@@ -242,7 +223,11 @@ const OrderDetail = () => {
         >
           {/* Render Breadcrumbs */}
           <Breadcrumbs breadcrumbs={breadcrumbItems} />
-          <Row>
+          <Row
+            style={{
+              padding: "0px 5px",
+            }}
+          >
             <Col
               style={{ padding: "8px" }}
               lg={6}
@@ -384,6 +369,7 @@ const OrderDetail = () => {
                       <div>
                         <Label className="form-label ">Payment Method</Label>
                         <Input
+                          // disabled={true}
                           name="paymentMode"
                           placeholder="Select Payment Method"
                           type="select"
