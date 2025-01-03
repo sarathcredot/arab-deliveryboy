@@ -151,7 +151,9 @@ const Return = () => {
                     </span>
                   ) : (
                     <span className={`order-status ${order.returnStatus.toLowerCase().replace(/\s+/g, '')}`}>
-                      {order.returnStatus}
+                      {order.returnStatus
+                          .toLowerCase()
+                          .replace(/(?:^|\s)\w/g, (match:string) => match.toUpperCase())}
                     </span>
                   )}
                 <h5 className="order-id">
@@ -171,7 +173,7 @@ const Return = () => {
                   </div>
                   <div>
                   <p className="order-date">Date</p>
-                  <p className="date"> {order.orderDate}</p>
+                  <p className="date"> {new Date(order.orderDate).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
                   </div>
                 </div>
               </div>
