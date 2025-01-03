@@ -7,9 +7,9 @@ import { Link } from "react-router-dom";
 
 
 
-const GET_PENDING_ORDERS = gql`
-    query GetAssignedOrderByAgentProfile($input: getAssignedOrderByAgentProfileInput) {
-          getAssignedOrderByAgentProfile(input: $input) {
+const GET_ORDERS = gql`
+    query GetTodayAssignedOrderByAgentProfile($input: getAssignedOrderByAgentProfileInput) {
+      getTodayAssignedOrderByAgentProfile(input: $input) {
             records {
               _id
               orderId
@@ -84,7 +84,7 @@ const Orders = () => {
     error: ordersError,
     data: ordersData,
     refetch: refetchOrders,
-  } = useQuery(GET_PENDING_ORDERS, {
+  } = useQuery(GET_ORDERS, {
     variables: {
       input: {
         page: currentPage,
@@ -96,9 +96,9 @@ const Orders = () => {
   });
 
   useEffect(() => {
-    if (ordersData && ordersData.getAssignedOrderByAgentProfile) {
+    if (ordersData && ordersData.getTodayAssignedOrderByAgentProfile) {
       console.log("response",ordersData)
-      setOrders(ordersData.getAssignedOrderByAgentProfile.records);
+      setOrders(ordersData.getTodayAssignedOrderByAgentProfile.records);
     }
   }, [ordersData]);
 
@@ -146,7 +146,7 @@ const Orders = () => {
           />
           <div className="order-outer-div">
 
-            {ordersData?.getAssignedOrderByAgentProfile?.records?.length === 0 ? (
+            {ordersData?.getTodayAssignedOrderByAgentProfile?.records?.length === 0 ? (
               <p>No Orders Found</p>
             ):(
               orders.map((order) => (

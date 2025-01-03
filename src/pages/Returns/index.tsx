@@ -4,9 +4,9 @@ import { Container } from "reactstrap";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 
-const GET_PENDING_RETURNS = gql`
-query GetAssignedReturnOrderByAgent($input: GetAssignedReturnOrderInput!) {
-  getAssignedReturnOrderByAgent(input: $input) {
+const GET__RETURNS = gql`
+query getPendingReturnsByAgent($input: GetAssignedReturnOrderInput!) {
+  getPendingReturnsByAgent(input: $input) {
     records {
       _id
       userId {
@@ -96,7 +96,7 @@ const Return = () => {
       error: ordersError,
       data: ordersData,
       refetch: refetchOrders,
-    } = useQuery(GET_PENDING_RETURNS, {
+    } = useQuery(GET__RETURNS, {
       variables: {
         input: {
           page: null,
@@ -108,9 +108,9 @@ const Return = () => {
     });
   
     useEffect(() => {
-      if (ordersData && ordersData.getAssignedReturnOrderByAgent) {
+      if (ordersData && ordersData.getPendingReturnsByAgent) {
         console.log("response",ordersData)
-        setOrders(ordersData.getAssignedReturnOrderByAgent.records);
+        setOrders(ordersData.getPendingReturnsByAgent.records);
       }
     }, [ordersData]);
   
@@ -141,7 +141,7 @@ const Return = () => {
             isHistory={true}
           />
           <div className="order-outer-div">
-         {ordersData?.getAssignedReturnOrderByAgent?.records?.length === 0 ? (
+         {ordersData?.getPendingReturnsByAgent?.records?.length === 0 ? (
           <p>No orders found</p>
          ) :(
           
