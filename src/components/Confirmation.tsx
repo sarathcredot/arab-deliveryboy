@@ -3,13 +3,7 @@ import { Modal, ModalBody } from "reactstrap";
 import CustomButton from "./Common/CustomButton";
 import { useNavigate } from "react-router";
 
-const LogoutPopup = ({ isOpen, toggle }: any) => {
-  const navigate = useNavigate();
-  const handleLogout = () => {
-    navigate("/login");
-    localStorage.removeItem("agent_token");
-  };
-
+const Confirmation = ({ isOpen, toggle, submit }: any) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -20,15 +14,19 @@ const LogoutPopup = ({ isOpen, toggle }: any) => {
         padding: 20,
       }}
     >
-      <ModalBody style={{
-        padding:"30px"
-      }}>
+      <ModalBody
+        style={{
+          padding: "30px",
+        }}
+      >
         <h5
-          style={{
-            // textAlign: "center",
-          }}
+          style={
+            {
+              // textAlign: "center",
+            }
+          }
         >
-          Are you sure you want to log out?
+          Are you sure you want to update your availability status?
         </h5>
         <div className=" d-flex justify-content-end gap-2">
           <CustomButton
@@ -41,11 +39,11 @@ const LogoutPopup = ({ isOpen, toggle }: any) => {
             onClick={() => toggle()}
           />
           <CustomButton
-            name="Logout"
+            name="Yes"
             bgColor="#E30613"
             width="30%"
             className=" mt-3"
-            onClick={() => handleLogout()}
+            onClick={() => submit()}
           />
         </div>
       </ModalBody>
@@ -53,4 +51,4 @@ const LogoutPopup = ({ isOpen, toggle }: any) => {
   );
 };
 
-export default LogoutPopup;
+export default Confirmation;

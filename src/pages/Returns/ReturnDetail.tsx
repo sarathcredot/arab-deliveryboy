@@ -120,7 +120,10 @@ const ReturnDetail = () => {
       input: {
         _id: id,
       },
+      skip: !id,
     },
+    fetchPolicy: "network-only",
+
   });
 
   const [trackingLink, setTrackingLink] = useState("");
@@ -141,21 +144,12 @@ const ReturnDetail = () => {
   const mapToggle = () => {
     setShowMap(!showMap);
   };
-  const resetReturnStatus = () => {
-    const statuses = ["REJECTED", "COLLECTED", "RETURNED TO WAREHOUSE", "POSTPONED"];
-    if (statuses.includes(orderDetail?.returnStatus)) {
-      setReturnStatus(orderDetail?.returnStatus);
-    } else {
-      setReturnStatus("");
-    }
-  };
-
+  
   useEffect(() => {
     if (orderData && orderData.getAssignedeOrderDeatilsByAgentProfile) {
       setOrderDetail(orderData.getAssignedeOrderDeatilsByAgentProfile);
-      resetReturnStatus();
     }
-  }, [orderData]);
+  }, [orderData,refetch]);
 
   if (orderDataError) {
     // console.log("ERROR =   ", orderDataError);
@@ -200,7 +194,7 @@ const ReturnDetail = () => {
     if (!remarks) {
       return setInvalid(true);
     }
-
+    
     try {
       const response = await changeReturnStatus({
         variables: {
@@ -230,6 +224,7 @@ const ReturnDetail = () => {
   };
 
   const handleImageUpload = async () => {
+    console.log("IMAGES = ", productImages);
     if (productImages && productImages.length > 0) {
       console.log("IMAGES = ", productImages);
       try {
@@ -255,17 +250,39 @@ const ReturnDetail = () => {
       toast.error("Select Product Images");
     }
   };
+  const resetReturnStatus = () => {
+    if (
+      orderDetail?.returnStatus === "POSTPONED" ||
+      orderDetail?.returnStatus === "COLLECTED" ||
+      orderDetail?.returnStatus === "REJECTED" ||
+      orderDetail?.returnStatus === "RETURNED TO WAREHOUSE"
+    ) {
+      setReturnStatus(orderDetail?.returnStatus);
+    } else {
+      setReturnStatus("");
+    }
+    
+  };
 
+  useEffect(() => {
+    if (orderDetail) {
+      resetReturnStatus();
+    }
+  }, [orderDetail, orderData, refetch]);
   return (
     <React.Fragment>
       <div className="page-content mb-5 mb-md-0">
         <Container
           fluid
           className="px-2"
-        >
+          >
           {/* Render Breadcrumbs */}
           <Breadcrumbs breadcrumbs={breadcrumbItems} />
-          <Row>
+          <Row
+            style={{
+              padding: "0 5px",
+            }}
+          >
             <Col
               style={{ padding: "8px" }}
               lg={6}
@@ -281,7 +298,7 @@ const ReturnDetail = () => {
                         <p>Order ID :</p> <p>{orderDetail?.orderId}</p>
                       </div>
                       <div>
-                        <p>Customer :</p> <p>{orderDetail?.userName}</p>
+                        <p>Customer :</p> <p className="text-capitalize">{orderDetail?.userName}</p>
                       </div>
                       <div>
                         <p>Date :</p>{" "}
@@ -308,7 +325,7 @@ const ReturnDetail = () => {
                       </div>
                       <div>
                         <p>Address :</p>{" "}
-                        <p>
+                        <p className="text-capitalize">
                           {[
                             orderDetail?.houseNumber,
                             orderDetail?.apartment,
@@ -322,12 +339,28 @@ const ReturnDetail = () => {
                       </div>
                       <div>
                         <p>Status :</p>
-                        <p
+                        <p className="text-capitalize"
                           style={{
-                            color: "#F97316",
+                            color:
+                              orderDetail?.returnStatus === "APPROVED"
+                                ? "#F97316"
+                                : orderDetail?.returnStatus === "POSTPONED"
+                                ? "#5a6f05"
+                                : orderDetail?.returnStatus === "COLLECTED"
+                                ? "#4947D0"
+                                : orderDetail?.returnStatus === "RETURNED TO WAREHOUSE"
+                                ? "#005E2B"
+                                : orderDetail?.returnStatus === "REJECTED"
+                                ? "#E30613"
+                                : "#000",
+                            textTransform: "uppercase",
                           }}
                         >
-                          {orderDetail?.returnStatus}
+                          {orderDetail?.returnStatus === "APPROVED"
+                            ? "Return Requested"
+                            : orderDetail?.returnStatus === "POSTPONED"
+                            ? "Postponed to Tomorrow"
+                            : orderDetail?.returnStatus.toLowerCase()}
                         </p>
                       </div>
                     </>
@@ -577,6 +610,7 @@ const ReturnDetail = () => {
         orderItemId={id}
         returnStatus={returnStatus}
         returnRemark={remarks}
+        refetch={refetch}
       />
     </React.Fragment>
   );

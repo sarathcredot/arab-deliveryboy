@@ -28,35 +28,35 @@ const CashCount = ({ wallet }: Props) => {
       className={styles.box}
       onClick={() => navigate("/settlements")}
     >
-      {!wallet ? (
-        <Loader />
-      ) : (
-        <>
-          <div className={styles.box_contents}>
-            <div className={styles.icon_div}>
-              <img
-                src={cashIcon}
-                alt="icon"
-              />
-            </div>
-            <div className={styles.content}>
-              <h3>{wallet?.totalSettlement} OMR</h3>
-              <p style={{
-              fontSize: "16px",
-            }}>Cash in Hand</p>
-              <p style={{
-              fontSize: "13px",
-            }}>
-                <span style={{ color: "red" }}>{wallet?.cashInHand} OMR </span> to Settle
-              </p>
-            </div>
-          </div>
+      <div className={styles.box_contents}>
+        <div className={styles.icon_div}>
           <img
-            src={arrowIcon}
+            src={cashIcon}
             alt="icon"
           />
-        </>
-      )}
+        </div>
+        <div className={styles.content}>
+          <h3>{wallet?.totalSettlement||0} OMR</h3>
+          <p
+            style={{
+              fontSize: "16px",
+            }}
+          >
+            Cash in Hand
+          </p>
+          <p
+            style={{
+              fontSize: "13px",
+            }}
+          >
+            <span style={{ color: "red" }}>{wallet?.cashInHand||0} OMR </span> to Settle
+          </p>
+        </div>
+      </div>
+      <img
+        src={arrowIcon}
+        alt="icon"
+      />
     </div>
   );
 };

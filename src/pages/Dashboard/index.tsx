@@ -81,15 +81,15 @@ const Dashboard = () => {
   return (
     <React.Fragment>
       <div className="page-content ">
-        <Container fluid className="px-2">
+        <Container
+          fluid
+          className="px-2"
+        >
           {/* Render Breadcrumbs */}
-          <Breadcrumbs
-            // title="Home"
-            breadcrumbs={breadcrumbItems}
-          />
+          <Breadcrumbs breadcrumbs={breadcrumbItems} />
           <Row
             style={{
-              gap: 0,
+              padding: 4,
             }}
           >
             <Col
@@ -97,7 +97,7 @@ const Dashboard = () => {
               md={6}
               sm={12}
               style={{
-                padding: 8,
+                padding: 7,
               }}
             >
               <OrdersCount wallet={wallet && wallet} />
@@ -107,7 +107,7 @@ const Dashboard = () => {
               md={6}
               sm={12}
               style={{
-                padding: 8,
+                padding: 7,
               }}
             >
               <ReturnsCount wallet={wallet && wallet} />
@@ -117,7 +117,7 @@ const Dashboard = () => {
               md={6}
               sm={12}
               style={{
-                padding: 8,
+                padding: 7,
               }}
             >
               <CashCount wallet={wallet && wallet} />
