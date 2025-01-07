@@ -45,7 +45,10 @@ const Breadcrumb = ({ title, onFilterChange,isHistory }: BreadcrumbProps) => {
           <ul className="filter-list">
             <li onClick={() => applyFilter("All")}>All</li>
             <li onClick={() => applyFilter("SHIPPED")}>
-              Out for Delivery
+             Shipped
+            </li>
+            <li onClick={() => applyFilter("OUT_FOR_DELIVERY")}>
+             Out for Delivery
             </li>
             <li onClick={() => applyFilter("DELIVERED")}>Delivered</li>
             <li onClick={() => applyFilter("CANCELED")}>Cancelled</li>

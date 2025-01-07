@@ -176,7 +176,7 @@ const Return = () => {
                 <div className="customer-order-date-row">
                   <div>
                   <p className="username">Customer</p>
-                  <p className="order-user"> {order?.userId?.fullName}</p>
+                  <p className="order-user"> {order?.returnAddress?.firstname}</p>
                   </div>
                   <div>
                   <p className="order-date">Date</p>
