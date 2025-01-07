@@ -126,7 +126,7 @@ const Settlements = () => {
             <Col
               lg={4}
               style={{
-                padding:"0px 5px",
+                padding: "0px 5px",
               }}
             >
               <div
@@ -261,7 +261,7 @@ const Settlements = () => {
                   </Col>
                 ))
               ) : (
-                <NoDataAnimation message="NO SETTLEMENTS " />
+                <p>No Settlements</p>
               )}
             </Row>
           )}

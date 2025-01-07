@@ -86,10 +86,7 @@ const Dashboard = () => {
           className="px-2"
         >
           {/* Render Breadcrumbs */}
-          <Breadcrumbs
-            // title="Home"
-            breadcrumbs={breadcrumbItems}
-          />
+          <Breadcrumbs breadcrumbs={breadcrumbItems} />
           <Row
             style={{
               padding: 4,

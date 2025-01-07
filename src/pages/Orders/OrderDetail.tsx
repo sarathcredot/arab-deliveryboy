@@ -11,6 +11,7 @@ import Loader from "src/components/Common/Loader";
 import OtpPopup from "./OtpPopup";
 import { skip } from "node:test";
 import OrderRemarkPopup from "./OrderRemarkPopup";
+import { capitalize, lowerCase } from "lodash";
 
 const breadcrumbItems = [
   { title: "Dashboard", link: "/dashboard" },
@@ -298,7 +299,7 @@ const OrderDetail = () => {
                                 : "#000",
                           }}
                         >
-                          {orderDetail?.shippingStatus === "SHIPPED" ? "Out For Delivery" : orderDetail?.shippingStatus}
+                          {orderDetail?.shippingStatus && capitalize(orderDetail?.shippingStatus)}
                         </p>
                       </div>
                     </>

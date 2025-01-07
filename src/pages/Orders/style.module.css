@@ -33,6 +33,7 @@
 }
 
 .detail_content div p:nth-child(2) {
+    min-width:200px;
     font-weight: bold;
 }
 
