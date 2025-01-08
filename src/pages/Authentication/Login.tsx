@@ -107,9 +107,8 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
         const response = await loginAgent({
           variables: {
             input: {
-              userID: values.email,
+              userInput: values.email,
               password: values.password,
-              contactNumber:""
             },
           },
         });
@@ -189,8 +188,8 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                           <Input
                             name="email"
                             className="form-control"
-                            placeholder="Enter Email"
-                            type="email"
+                            placeholder=" Email or contact number"
+                            type="text"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
                             value={validation.values.email || ""}
@@ -219,7 +218,7 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                               name="password"
                               value={validation.values.password || ""}
                               type={passwordShow ? "text" : "password"}
-                              placeholder="Enter Password"
+                              placeholder="Password"
                               onChange={validation.handleChange}
                               onBlur={validation.handleBlur}
                               invalid={
@@ -374,9 +373,6 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                 </div>
               </div>
             </Col>
-
-
-
             <CarouselPage/>
             
            

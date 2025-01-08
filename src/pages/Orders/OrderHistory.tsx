@@ -163,9 +163,12 @@ const Orders = () => {
                       </h5>
                   </div>
                   <div className="order-card-body">
-                   <p className="address">
-                      {`${order.houseNumber}, ${order.apartment}, ${order.city}, ${order.country}`}
+                  <p className="address">
+                      {[order.houseNumber, order.apartment, order.city, order.country]
+                        .filter(Boolean) 
+                        .join(', ')}    
                     </p>
+
                     <div className="customer-order-date-row">
                       <div>
                       <p className="username">Customer</p>

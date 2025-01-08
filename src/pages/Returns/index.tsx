@@ -169,9 +169,11 @@ const Return = () => {
                   </h5>
               </div>
               <div className="order-card-body">
-              <p className="address">
-                  {`${order?.returnAddress?.houseNumber}, ${order?.returnAddress?.apartment}, ${order?.returnAddress?.city}, ${order?.returnAddress?.country}`}
-                </p>
+                <p className="address">
+                      {[order?.returnAddress?.houseNumber, order?.returnAddress?.apartment, order?.returnAddress?.city, order?.returnAddress?.country]
+                        .filter(Boolean) 
+                        .join(', ')}    
+                    </p>
 
                 <div className="customer-order-date-row">
                   <div>

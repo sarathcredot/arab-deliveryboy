@@ -31,7 +31,7 @@ const RedirectToHome = () => {
   const width = useWindowWidth();
   console.log(width);
 
-  if (width <= 480) {
+  if (width <= 680) {
     // On mobile, show the Greeting page
     return token ? <Navigate to="/dashboard" /> : <Greeting />;
   } else {

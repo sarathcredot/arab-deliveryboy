@@ -15,7 +15,7 @@ const Authmiddleware = (props: any) => {
       setIsAuthenticated(true);
     } else {
       console.log("Redirecting to /login");
-      if(width <= 480){
+      if(width <= 680){
         navigate("/greeting")
       }else{
         navigate("/login");
