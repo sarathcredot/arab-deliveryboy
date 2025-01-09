@@ -55,10 +55,23 @@ const UPDATE_AVAILABILITY = gql`
   }
 `;
 
+const CHANGE_PASSWORD = gql`
+  mutation ResetPassword($input: ResetPasswordInput!) {
+    resetPassword(input: $input) {
+      success
+      message
+    }
+  }
+`;
+
 const UserProfile = () => {
   document.title = "Profile | Arabdeals-Agent & Dashboard";
   const [agent, setAgent] = useState<any>({});
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [invalid1, setInvalid1] = useState(false);
+  const [invalid2, setInvalid2] = useState(false);
   const [isToggled, setToggle] = useState(false);
   const handleToggle = () => {
     setToggle(!isToggled);
@@ -102,6 +115,35 @@ const UserProfile = () => {
       toast.error(error);
     }
     refetch();
+  };
+  const [changePassword] = useMutation(CHANGE_PASSWORD);
+
+  const handleSubmit = async () => {
+    try {
+      if (!password) return setInvalid1(true);
+      if (!confirmPassword) return setInvalid2(true);
+      if (password !== confirmPassword) {
+        toast.error("Password and confirm password do not match");
+        return setInvalid2(true);
+      }
+
+      const response = await changePassword({
+        variables: {
+          input: {
+            newPassword: confirmPassword,
+          },
+        },
+      });
+
+      console.log("RESPONSE = ", response);
+      if (response?.data?.resetPassword?.success) {
+        console.log(response?.data?.resetPassword?.message)
+        toast.success(response?.data?.resetPassword?.message);
+      }
+    } catch (error: any) {
+      console.log("ERROR = ", error);
+      toast.error(error);
+    }
   };
 
   return (
@@ -189,11 +231,31 @@ const UserProfile = () => {
                 }}
               >
                 <h5>Change Password</h5>
-                <Form className="w-100">
+                <Form
+                  className="w-100"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmit();
+                  }}
+                >
                   <Label className="p-0 my-1 fw-normal">password:</Label>
-                  <Input className="mb-2" />
+                  <Input
+                    invalid={invalid1}
+                    className="mb-2"
+                    onChange={(e) => {
+                      setInvalid1(false);
+                      setPassword(e.target.value);
+                    }}
+                  />
                   <Label className="p-0 my-1 fw-normal">confirm password:</Label>
-                  <Input className="mb-2" />
+                  <Input
+                    invalid={invalid2}
+                    className="mb-2"
+                    onChange={(e) => {
+                      setInvalid2(false);
+                      setConfirmPassword(e.target.value);
+                    }}
+                  />
                   <CustomButton
                     className={"mx-auto mt-4 "}
                     name="Change"

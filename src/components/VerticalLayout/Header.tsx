@@ -82,7 +82,7 @@ const Header = (props: any) => {
                       <img
                         style={{
                           display: "block",
-                          margin: "22px auto ",
+                          margin: "24px auto 20px ",
                         }}
                         src={logoSvg}
                         width="80%"
@@ -92,11 +92,12 @@ const Header = (props: any) => {
                   <span className="logo-lg">
                     <img
                       style={{
-                        paddingLeft: 15,
+                        paddingLeft: 25,
+                        marginTop:"13px"
                       }}
                       src={logoSvg}
                       alt=""
-                      width="63%"
+                      width="62%"
                     />{" "}
                   </span>
                 </Link>
