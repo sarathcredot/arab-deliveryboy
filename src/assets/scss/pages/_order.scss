@@ -10,7 +10,23 @@ body {
     gap: 1rem;
     max-width: 100%;
     // padding: 1rem;
+
+    // &:has(.order-card:only-child) {
+    //   grid-template-columns: repeat(2, 1fr); // Ensure single card takes half width
+    // }
   }
+
+  // @media (min-width:1280px) {
+  //   .order-outer-div{
+  //         &:has(.order-card:only-child) {
+  //         grid-template-columns: repeat(2, 1fr); // Ensure single card takes half width
+  //       }
+
+  //         &:not(:has(.order-card:only-child)) {
+  //           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  //         }
+  //   }
+  // }
   
   .order-card {
     background: #fff;
@@ -21,6 +37,7 @@ body {
     transition: transform 0.2s;
     flex: 1 1 auto; 
     max-width: 100%;
+    min-height: 100%;
   
     // &:hover {
     //   transform: translateY(-5px);
@@ -98,7 +115,7 @@ body {
     
         .customer-order-date-row {
           display: flex;
-          gap: 20px;
+          gap: 40px;
           align-items: flex-start;
     
           .username,

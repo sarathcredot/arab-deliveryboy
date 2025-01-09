@@ -153,21 +153,21 @@ const Orders = () => {
                 <Link to={`/orders/detail/${order._id}`} key={order._id}>
                  <div className="order-card" >
                   <div className="order-card-header">
-                    {order.shippingStatus === "SHIPPED" ? (
-                       <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>Out for Delivery</span>
-                    ):(
+                  
                       <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>{order.shippingStatus
                         .toLowerCase()
                         .replace(/(?:^|\s)\w/g, (match:string) => match.toUpperCase())}</span>
-                    )}
+                  
                     <h5 className="order-id">
                         <span className="label">Order ID:</span> 
                         <span className="value">{order.orderId}</span>
                       </h5>
                   </div>
                   <div className="order-card-body">
-                   <p className="address">
-                      {`${order.houseNumber}, ${order.apartment}, ${order.city}, ${order.country}`}
+                  <p className="address">
+                      {[order.houseNumber, order.apartment, order.city, order.country]
+                        .filter(Boolean) 
+                        .join(', ')}    
                     </p>
                     <div className="customer-order-date-row">
                       <div>

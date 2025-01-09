@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Common/BreadcrumbReturn";
 import { Container } from "reactstrap";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import { Link } from "react-router-dom";
 
 const GET_PENDING_RETURNS = gql`
 query GetAssignedReturnOrderByAgent($input: GetAssignedReturnOrderInput!) {
@@ -143,6 +144,7 @@ const Return = () => {
           <p>No orders found</p>
          ) :(
           orders.map((order) => (
+             <Link to={`/returns/detail/${order._id}`} key={order._id}>
             <div className="order-card" key={order._id}>
               <div className="order-card-header">
               {order.returnStatus === "APPROVED" ? (
@@ -163,8 +165,10 @@ const Return = () => {
               </div>
               <div className="order-card-body">
               <p className="address">
-                  {`${order?.returnAddress?.houseNumber}, ${order?.returnAddress?.apartment}, ${order?.returnAddress?.city}, ${order?.returnAddress?.country}`}
-                </p>
+                      {[order?.returnAddress?.houseNumber, order?.returnAddress?.apartment, order?.returnAddress?.city, order?.returnAddress?.country]
+                        .filter(Boolean) 
+                        .join(', ')}    
+                    </p>
 
                 <div className="customer-order-date-row">
                   <div>
@@ -178,6 +182,7 @@ const Return = () => {
                 </div>
               </div>
             </div>
+            </Link>
           ))
          )
           }
