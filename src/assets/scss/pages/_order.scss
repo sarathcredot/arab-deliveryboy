@@ -9,6 +9,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1rem;
     max-width: 100%;
+    font-family: "Urbanist", serif;
     // padding: 1rem;
 
     // &:has(.order-card:only-child) {
@@ -52,7 +53,7 @@ body {
 
         .label {
             font-size: 14px;
-            font-weight: 400;
+            font-weight: 500;
             line-height: 24px;
             color: #1C1C1C;
             // font-family: "Urbanist",sans-serif;
@@ -60,7 +61,7 @@ body {
         
           .value {
             font-size: 15px;
-            font-weight: 500;
+            font-weight: 600;
             line-height: 24px;
             color: #1C1C1C;
             // font-family: "open-sans",sans-serif;
@@ -71,8 +72,7 @@ body {
         padding: 0.3rem 0.6rem;
         font-size: 14px;
         line-height: 24px;
-        font-weight: 400;
-        font-family: "Urbanist",sans-serif;
+        font-weight: 500;
         text-transform: capitalize;
         color: #FFFFFF;
         background-color: #000;
@@ -107,7 +107,7 @@ body {
         .address {
           margin-bottom: 1rem;
           font-size: 16px;
-          font-weight: 500;
+          font-weight: 600;
           line-height: 26px;
           color: #1C1C1C;
           // font-family: "Urbanist",sans-serif;
@@ -121,7 +121,7 @@ body {
           .username,
           .order-date {
             font-size: 14px;
-            font-weight: 400;
+            font-weight: 500;
             line-height: 24px;
             color: #1C1C1C;
             // font-family: "Urbanist",sans-serif;
@@ -131,10 +131,10 @@ body {
           .order-user,
           .date {
             font-size: 15px;
-            font-weight: 500;
+            font-weight: 600;
             line-height: 24px;
             color: #1C1C1C;
-            // font-family: "open-sans",sans-serif;
+            font-family: "Open Sans", serif;
             }
         }
       }
@@ -160,9 +160,10 @@ body {
     
         li {
           padding: 10px 0px;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
           font-size: 14px;
+          font-family: "Open Sans", serif;
           color: #1C1C1C;
           border-bottom: 1px solid #002A3A;
           
@@ -175,3 +176,13 @@ body {
       }
     }
     
+
+    @media (min-width: 600px) {
+      .order-card {
+        &-body {
+          .address {
+            min-height: 50px;
+          }
+      }
+    }
+    }

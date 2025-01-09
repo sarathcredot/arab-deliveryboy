@@ -51,13 +51,14 @@ $font-family: Arial, sans-serif;
 }
 
   .get-started-btn {
-    width: 100%;
+    width: 90%;
     max-width: 300px;
     padding: 8px 20px;
     margin-bottom: 20px;
     background-color: #E30613;
     color: $text-color;
     font-size: 16px;
+    font-family: "Plus Jakarta Sans", serif;
     font-weight: 500;
     border: none;
     border-radius: 8px;

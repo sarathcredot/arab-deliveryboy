@@ -27,7 +27,9 @@ const Breadcrumb = ({ title, onFilterChange,isHistory }: BreadcrumbProps) => {
     <Row>
       <Col xs={12}>
         <div className="page-title-box  align-items-center justify-content-between" style={{display:"flex"}}>
-          <h4 className="mb-0 font-size-18">{title}</h4>
+          <h4 className="mb-0 font-size-18" 
+          style={{fontFamily:'"Urbanist", serif',fontWeight:"600"}}
+          >{title}</h4>
           <div className="page-title-right" style={{display:"flex",gap:"10px"}}>
             
             {isHistory && (
@@ -45,7 +47,7 @@ const Breadcrumb = ({ title, onFilterChange,isHistory }: BreadcrumbProps) => {
           <ul className="filter-list">
             <li onClick={() => applyFilter("All")}>All</li>
             <li onClick={() => applyFilter("SHIPPED")}>
-             Shipped
+             Assigned
             </li>
             <li onClick={() => applyFilter("OUT_FOR_DELIVERY")}>
              Out for Delivery
