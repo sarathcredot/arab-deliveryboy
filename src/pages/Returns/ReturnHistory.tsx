@@ -173,11 +173,11 @@ const Return = () => {
                 <div className="customer-order-date-row">
                   <div>
                   <p className="username">Customer</p>
-                  <p className="order-user"> {order?.userId?.fullName}</p>
+                  <p className="order-user"> {order?.returnAddress?.firstName}</p>
                   </div>
                   <div>
                   <p className="order-date">Date</p>
-                  <p className="date"> {new Date(order.orderDate).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
+                  <p className="date"> {new Date(order?.returnOrderAssignedOn).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
                   </div>
                 </div>
               </div>

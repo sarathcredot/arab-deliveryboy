@@ -6,7 +6,7 @@ import styles from "./style.module.css";
 import CustomButton from "src/components/Common/CustomButton";
 import MapPopup from "src/components/MapPopup";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { toast } from "react-toastify";
+import { Slide, toast, ToastContainer } from "react-toastify";
 import Loader from "src/components/Common/Loader";
 import OtpPopup from "../Orders/OtpPopup";
 import ReturnRemarkPopup from "./ReturnRemarkPopup";
@@ -123,7 +123,6 @@ const ReturnDetail = () => {
       skip: !id,
     },
     fetchPolicy: "network-only",
-
   });
 
   const [trackingLink, setTrackingLink] = useState("");
@@ -144,12 +143,12 @@ const ReturnDetail = () => {
   const mapToggle = () => {
     setShowMap(!showMap);
   };
-  
+
   useEffect(() => {
     if (orderData && orderData.getAssignedeOrderDeatilsByAgentProfile) {
       setOrderDetail(orderData.getAssignedeOrderDeatilsByAgentProfile);
     }
-  }, [orderData,refetch]);
+  }, [orderData, refetch]);
 
   if (orderDataError) {
     // console.log("ERROR =   ", orderDataError);
@@ -174,7 +173,14 @@ const ReturnDetail = () => {
       });
 
       if (response.data) {
-        toast.success(response.data.updateDeliveredMapLocation.message);
+        toast(response.data.updateDeliveredMapLocation.message, {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-success text-white",
+          transition: Slide,
+          autoClose: 2000,
+          closeOnClick: true,
+        });
         refetch();
         setShowMap(true);
       } else if (response.errors) {
@@ -182,19 +188,33 @@ const ReturnDetail = () => {
       }
     } catch (error: any) {
       console.log("ERROR = ", error);
-      toast.error(error);
+      toast(error, {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-danger text-white",
+        transition: Slide,
+        autoClose: 2000,
+        closeOnClick: true,
+      });
     }
   };
 
   // submit return status
   const handleReturnStatus = async () => {
     if (!returnStatus) {
-      return toast.error("Select Status");
+      return toast("select return status", {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-danger text-white",
+        transition: Slide,
+        autoClose: 2000,
+        closeOnClick: true,
+      });
     }
     if (!remarks) {
       return setInvalid(true);
     }
-    
+
     try {
       const response = await changeReturnStatus({
         variables: {
@@ -211,15 +231,36 @@ const ReturnDetail = () => {
         if (response.data.returnStatusChangeDeliveryAgent.otp) {
           setOpenOtp(true);
         } else {
-          toast.success(response.data.returnStatusChangeDeliveryAgent.msg);
+          toast(response.data.returnStatusChangeDeliveryAgent.msg, {
+            position: "top-right",
+            hideProgressBar: true,
+            className: "bg-success text-white",
+            transition: Slide,
+            autoClose: 2000,
+            closeOnClick: true,
+          });
           refetch();
         }
       } else {
-        return toast.error(response.data.returnStatusChangeDeliveryAgent.msg);
+        return toast(response.data.returnStatusChangeDeliveryAgent.msg, {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-danger text-white",
+          transition: Slide,
+          autoClose: 2000,
+          closeOnClick: true,
+        });
       }
     } catch (error: any) {
       console.log("ERROR = ", error);
-      return toast.error(error);
+      toast(error.message, {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-danger text-white",
+        transition: Slide,
+        autoClose: 2000,
+        closeOnClick: true,
+      });
     }
   };
 
@@ -237,17 +278,38 @@ const ReturnDetail = () => {
           },
         });
         console.log("RESPONSE = ", response);
-        if (response.data) {
-          toast.success(response.data.uploadReturnProductImageByAgent.message);
-        } else if (response.errors) {
+        if (response?.data) {
+          toast(response?.data?.uploadReturnProductImageByAgent?.message, {
+            position: "top-right",
+            hideProgressBar: true,
+            className: "bg-success text-white",
+            transition: Slide,
+            autoClose: 2000,
+            closeOnClick: true,
+          });
+        } else if (response?.errors) {
           console.log("ERRORS = ", response.errors);
         }
       } catch (error: any) {
         console.log("error = ", error);
-        toast.error(error);
+        toast(error, {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-danger text-white",
+          transition: Slide,
+          autoClose: 2000,
+          closeOnClick: true,
+        });
       }
     } else {
-      toast.error("Select Product Images");
+      toast("Select Product Images", {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-success text-white",
+        transition: Slide,
+        autoClose: 2000,
+        closeOnClick: true,
+      });
     }
   };
   const resetReturnStatus = () => {
@@ -261,7 +323,6 @@ const ReturnDetail = () => {
     } else {
       setReturnStatus("");
     }
-    
   };
 
   useEffect(() => {
@@ -275,7 +336,7 @@ const ReturnDetail = () => {
         <Container
           fluid
           className="px-2"
-          >
+        >
           {/* Render Breadcrumbs */}
           <Breadcrumbs breadcrumbs={breadcrumbItems} />
           <Row
@@ -303,8 +364,10 @@ const ReturnDetail = () => {
                       <div>
                         <p>Date :</p>{" "}
                         <p>
-                          {orderDetail?.orderDate &&
-                            new Date(orderDetail.orderDate).toLocaleDateString("en-GB").replace(/\//g, "-")}
+                          {orderDetail?.returnOrderAssignedOn &&
+                            new Date(orderDetail?.returnOrderAssignedOn)
+                              .toLocaleDateString("en-GB")
+                              .replace(/\//g, "-")}
                         </p>
                       </div>
                       <div>
@@ -339,7 +402,8 @@ const ReturnDetail = () => {
                       </div>
                       <div>
                         <p>Status :</p>
-                        <p className="text-capitalize"
+                        <p
+                          className="text-capitalize"
                           style={{
                             color:
                               orderDetail?.returnStatus === "APPROVED"
@@ -559,11 +623,11 @@ const ReturnDetail = () => {
                     Call Customer
                   </a>
 
-                  <CustomButton
+                  {/* <CustomButton
                     name="Closed"
                     width="100%"
                     // onClick={handleReturnStatus}
-                  />
+                  /> */}
                 </div>
               </div>
             </Col>
@@ -612,6 +676,7 @@ const ReturnDetail = () => {
         returnRemark={remarks}
         refetch={refetch}
       />
+      <ToastContainer/>
     </React.Fragment>
   );
 };

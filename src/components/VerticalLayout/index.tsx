@@ -19,6 +19,7 @@ import RightSidebar from "../CommonForBoth/RightSidebar";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
+import { ToastContainer } from "react-toastify";
 const Layout = (props: any) => {
   const ref = useRef<any>(null);
 
@@ -144,6 +145,7 @@ const Layout = (props: any) => {
 
   return (
     <React.Fragment>
+      <ToastContainer/>
       {/* <div className="pace pace-active" id="preloader" ref={ref}>
         <div
           className="pace-progress"

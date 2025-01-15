@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, ModalBody } from "reactstrap";
 import CustomButton from "./Common/CustomButton";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const LogoutPopup = ({ isOpen, toggle }: any) => {
   const navigate = useNavigate();
@@ -20,13 +21,17 @@ const LogoutPopup = ({ isOpen, toggle }: any) => {
         padding: 20,
       }}
     >
-      <ModalBody style={{
-        padding:"30px"
-      }}>
+      <ModalBody
+        style={{
+          padding: "30px",
+        }}
+      >
         <h5
-          style={{
-            // textAlign: "center",
-          }}
+          style={
+            {
+              // textAlign: "center",
+            }
+          }
         >
           Are you sure you want to log out?
         </h5>

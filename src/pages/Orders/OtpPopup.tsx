@@ -3,7 +3,7 @@ import { Col, Form, Input, Modal, ModalBody, Row } from "reactstrap";
 import CustomButton from "src/components/Common/CustomButton";
 import styles from "./style.module.css";
 import { gql, useMutation } from "@apollo/client";
-import { toast } from "react-toastify";
+import { Slide, toast } from "react-toastify";
 
 const VERIFY_OTP = gql`
   mutation DeliveryStatusOtpVerify($input: DeliveryStatusOtpVerifyInput!) {
@@ -32,7 +32,14 @@ const OtpPopup = ({
   const submitOtp = async () => {
     console.log({ otp });
     if (!orderItemId) {
-      return toast.error("Order ID is Required");
+      return toast("Order ID is Required", {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-danger text-white",
+        transition: Slide,
+        autoClose: 2000,
+        closeOnClick: true,
+      });
     }
     if (!otp) {
       return setInvalid(true);
@@ -54,16 +61,37 @@ const OtpPopup = ({
       });
       console.log("RESPONSE = ", response);
       if (response.data.deliveryStatusOtpVerify.status) {
-        toast.success(response.data.deliveryStatusOtpVerify.msg);
+        toast(response.data.deliveryStatusOtpVerify.msg, {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-success text-white",
+          transition: Slide,
+          autoClose: 2000,
+          closeOnClick: true,
+        });
         refetch();
         setOpenOtp(false);
       } else if (response.data.deliveryStatusOtpVerify.msg) {
-        toast.error(response.data.deliveryStatusOtpVerify.msg);
+        toast(response.data.deliveryStatusOtpVerify.msg, {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-danger text-white",
+          transition: Slide,
+          autoClose: 2000,
+          closeOnClick: true,
+        });
       }
     } catch (error: any) {
-      console.log("ERROR = ", error.message);
+      console.log("ERROR = ", error);
 
-      toast.error(error.message);
+      toast(error?.message, {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-danger text-white",
+        transition: Slide,
+        autoClose: 2000,
+        closeOnClick: true,
+      });
     }
   };
   return (
