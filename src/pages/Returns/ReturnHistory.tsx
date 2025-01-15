@@ -45,44 +45,6 @@ query GetAssignedReturnOrderByAgent($input: GetAssignedReturnOrderInput!) {
 }
 `;
 const Return = () => {
-  // const orderss = [
-  //   {
-  //     id: "ORD12345",
-  //     status: "Return Requested",
-  //     username: "John Doe",
-  //     address: "123 Main Street, New York, NY",
-  //     orderDate: "2024-12-22",
-  //   },
-  //   {
-  //     id: "ORD12346",
-  //     status: "Collected",
-  //     username: "Jane Smith",
-  //     address: "456 Elm Street, Los Angeles, CA",
-  //     orderDate: "2024-12-21",
-  //   },
-  //   {
-  //     id: "ORD12347",
-  //     status: "Rejected",
-  //     username: "Alice Johnson",
-  //     address: "789 Pine Avenue, Chicago, IL",
-  //     orderDate: "2024-12-20",
-  //   },
-  //   {
-  //     id: "ORD12348",
-  //     status: "Returned to Warehouse",
-  //     username: "Bob Brown",
-  //     address: "321 Oak Lane, Houston, TX",
-  //     orderDate: "2024-12-19",
-  //   },
-  // ];
-
-  // const breadcrumbItems = [
-  //   {title:"Dashboard" ,link:"/dashboard"},
-  //   {title:"Pendind Orders",link:"" },
-  
-  // ]
-
- 
 
   document.title = "Orders | Arabdeals-Agent & Dashboard";
 
@@ -173,7 +135,7 @@ const Return = () => {
                 <div className="customer-order-date-row">
                   <div>
                   <p className="username">Customer</p>
-                  <p className="order-user"> {order?.returnAddress?.firstName}</p>
+                  <p className="order-user"> {order?.returnAddress?.firstname}</p>
                   </div>
                   <div>
                   <p className="order-date">Date</p>

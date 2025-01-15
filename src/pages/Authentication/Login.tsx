@@ -182,11 +182,11 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                   <div className="d-flex flex-column h-100">
                     <div className="auth-content auth-logo-section">
                       <div className="mob-logo-auth">
-                        <img src={logoSvg} alt="logo" height="28"  style={{marginBottom:"30px"}} />
+                        <img src={logoSvg} alt="logo" height="28"  style={{marginBottom:"60px"}} />
                       </div>
                       <div className="intro-show">
-                        <h1 style={{color:"#000000",fontSize:"24px",fontWeight:700,lineHeight:"22px"}}>Login</h1>
-                        <p style={{color:"#7C7C7C",fontWeight:400,fontSize:"14px",lineHeight:"22px",marginTop:"22px"}}>Enter your email and password to get started!</p>
+                        <h1 style={{color:"#000000",fontSize:"24px",fontWeight:700,lineHeight:"22px",fontFamily:"Plus Jakarta Sans"}}>Login</h1>
+                        <p style={{color:"#7C7C7C",fontWeight:400,fontSize:"14px",lineHeight:"22px",marginTop:"22px",fontFamily:"Plus Jakarta Sans"}}>Enter your email and password to get started!</p>
                       </div>
                       <div className="text-center  logo-show">
                         <img src={logo} alt="" width={"60%"} />
@@ -383,6 +383,7 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
                                 fontSize: "16px",
                                 lineHeight: "22px",
                                 padding: "10px",
+                                fontFamily: '"Plus Jakarta Sans", serif',
                               }}
                             >
                               Login
