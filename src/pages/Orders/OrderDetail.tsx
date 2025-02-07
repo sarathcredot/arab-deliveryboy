@@ -22,30 +22,71 @@ const breadcrumbItems = [
 const GET_ORDER_DETAIL = gql`
   query GetAssignedeOrderDeatilsByAgentProfile($input: getAssignedeOrderDeatilsByAgentProfileInput!) {
     getAssignedeOrderDeatilsByAgentProfile(input: $input) {
-      _id
-      orderId
-      userId
-      productName
-      itemId
-      sellingPrice
-      paymentStatus
-      paymentMode
-      orderDate
-      shippingStatus
-      deliveryAgentId
-      userName
+    _id
+    orderId
+    userId
+    productName
+    itemId
+    sellingPrice
+    paymentStatus
+    paymentMode
+    orderDate
+    shippingStatus
+    deliveryAgentId
+    userName
+    email
+    mobileNumber
+    houseNumber
+    streetName
+    apartment
+    suite
+    unit
+    city
+    label
+    deliveryAddress
+    country
+    postCode
+    returnStatus
+    returnUserReason
+    returnProductImage {
+      fileType
+      fileURL
+      mimeType
+      originalName
+    }
+    returnOrderAssignedOn
+    returnAddress {
+      firstname
       email
-      mobileNumber
-      houseNumber
+      mobile
       streetName
+      city
+      houseNumber
+      country
+      postCode
       apartment
       suite
       unit
-      city
-      country
-      postCode
+      governorate
+      village
+      governorateID
+      villageID
+      address
     }
+    returnAdminComment
+    returnRequestDate
+    deliveyremark
+    cancelremark
+    postponedremark
+    deliveredMapLocation
+    deliveryAssignedOn
+    returnRejectedDate
+    returnRejectedRemarks
+    returnPostponedDate
+    returnPostponedRemarks
+    returnCollectedDate
   }
+}
 `;
 const UPLOAD_LOCATION = gql`
   mutation UpdateDeliveredMapLocation($input: UpdateMapLocation!) {
@@ -303,7 +344,7 @@ const OrderDetail = () => {
                         </p>
                       </div>
                       <div>
-                        <p>Contact :</p> <p>{orderDetail?.mobileNumber && `+956 ${orderDetail.mobileNumber}`}</p>
+                        <p>Contact :</p> <p>{orderDetail?.mobileNumber && `+968 ${orderDetail.mobileNumber}`}</p>
                       </div>
                       <div>
                         <p>payment Type :</p>{" "}
@@ -322,10 +363,7 @@ const OrderDetail = () => {
                         <p>Address :</p>{" "}
                         <p>
                           {[
-                            orderDetail?.houseNumber,
-                            orderDetail?.apartment,
-                            orderDetail?.streetName,
-                            orderDetail?.city,
+                            orderDetail?.deliveryAddress,
                             orderDetail?.postCode,
                           ]
                             .filter(Boolean)
@@ -481,7 +519,7 @@ const OrderDetail = () => {
                   }}
                 >
                   <a
-                    href={`tel:+956${orderDetail?.mobileNumber}`}
+                    href={`tel:+968${orderDetail?.mobileNumber}`}
                     style={{
                       display: "flex",
                       flexDirection: "row",
@@ -512,7 +550,7 @@ const OrderDetail = () => {
       </div>
       <div className={`${styles.call_box} d-md-none`}>
         <a
-          href={`tel:+956${orderDetail?.mobileNumber}`}
+          href={`tel:+968${orderDetail?.mobileNumber}`}
           style={{
             display: "flex",
             flexDirection: "row",

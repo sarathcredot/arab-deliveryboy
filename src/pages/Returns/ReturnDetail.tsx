@@ -21,54 +21,71 @@ const breadcrumbItems = [
 const GET_ORDER_DETAIL = gql`
   query GetAssignedeOrderDeatilsByAgentProfile($input: getAssignedeOrderDeatilsByAgentProfileInput!) {
     getAssignedeOrderDeatilsByAgentProfile(input: $input) {
-      _id
-      orderId
-      userId
-      productName
-      itemId
-      sellingPrice
-      paymentStatus
-      paymentMode
-      orderDate
-      shippingStatus
-      deliveryAgentId
-      userName
+    _id
+    orderId
+    userId
+    productName
+    itemId
+    sellingPrice
+    paymentStatus
+    paymentMode
+    orderDate
+    shippingStatus
+    deliveryAgentId
+    userName
+    email
+    mobileNumber
+    houseNumber
+    streetName
+    apartment
+    suite
+    unit
+    city
+    label
+    deliveryAddress
+    country
+    postCode
+    returnStatus
+    returnUserReason
+    returnProductImage {
+      fileType
+      fileURL
+      mimeType
+      originalName
+    }
+    returnOrderAssignedOn
+    returnAddress {
+      firstname
       email
-      mobileNumber
-      houseNumber
+      mobile
       streetName
+      city
+      houseNumber
+      country
+      postCode
       apartment
       suite
       unit
-      city
-      country
-      postCode
-      returnStatus
-      returnUserReason
-      returnProductImage {
-        fileType
-        fileURL
-        mimeType
-        originalName
-      }
-      returnOrderAssignedOn
-      returnAddress {
-        firstname
-        email
-        mobile
-        streetName
-        city
-        houseNumber
-        country
-        postCode
-        apartment
-        suite
-        unit
-      }
-      returnAdminComment
-      returnRequestDate
+      governorate
+      village
+      governorateID
+      villageID
+      address
     }
+    returnAdminComment
+    returnRequestDate
+    deliveyremark
+    cancelremark
+    postponedremark
+    deliveredMapLocation
+    deliveryAssignedOn
+    returnRejectedDate
+    returnRejectedRemarks
+    returnPostponedDate
+    returnPostponedRemarks
+    returnCollectedDate
   }
+}
 `;
 
 const RETURN_STATUS = gql`
@@ -359,7 +376,7 @@ const ReturnDetail = () => {
                         <p>Order ID :</p> <p>{orderDetail?.orderId}</p>
                       </div>
                       <div>
-                        <p>Customer :</p> <p className="text-capitalize">{orderDetail?.userName}</p>
+                        <p>Customer :</p> <p className="text-capitalize">{orderDetail?.returnAddress?.firstname}</p>
                       </div>
                       <div>
                         <p>Date :</p>{" "}
@@ -371,7 +388,7 @@ const ReturnDetail = () => {
                         </p>
                       </div>
                       <div>
-                        <p>Contact :</p> <p>+956 {orderDetail?.mobileNumber}</p>
+                        <p>Contact :</p> <p>+968 {orderDetail?.returnAddress?.mobile}</p>
                       </div>
                       <div>
                         <p>payment Type :</p>{" "}
@@ -390,11 +407,8 @@ const ReturnDetail = () => {
                         <p>Address :</p>{" "}
                         <p className="text-capitalize">
                           {[
-                            orderDetail?.houseNumber,
-                            orderDetail?.apartment,
-                            orderDetail?.streetName,
-                            orderDetail?.city,
-                            orderDetail?.postCode,
+                            orderDetail?.returnAddress?.address,
+                            orderDetail?.returnAddress?.postCode,
                           ]
                             .filter(Boolean)
                             .join(", ")}
@@ -604,7 +618,7 @@ const ReturnDetail = () => {
                   }}
                 >
                   <a
-                    href="tel:+919744712490"
+                    href={`tel:+968${orderDetail?.returnAddress?.mobile}`}
                     style={{
                       display: "flex",
                       flexDirection: "row",
@@ -636,7 +650,7 @@ const ReturnDetail = () => {
       </div>
       <div className={`${styles.call_box} d-md-none`}>
         <a
-          href="tel:+919744712490"
+          href={`tel:+968${orderDetail?.returnAddress?.mobile}`}
           style={{
             display: "flex",
             flexDirection: "row",
