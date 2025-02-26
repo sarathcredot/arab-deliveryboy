@@ -39,6 +39,14 @@
     transition: .2s ease;
 
 }
+.icon_div img.third {
+    scale: 1.1;
+    /* width: 35px;
+    height: 35px; */
+    transition: .2s ease;
+
+}
+
 
 .content {
     display: flex;

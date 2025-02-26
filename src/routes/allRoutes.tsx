@@ -59,6 +59,9 @@ const userRoutes: Array<RouteProps> = [
   { path: "/returns", component: <Returns /> },
   { path: "/returns/detail/:id", component: <ReturnDetail /> },
   { path: "/return-history", component: <ReturnHistory /> },
+  
+  //warranty-pickups
+  { path: "/warranty-pickups", component: <Returns /> },
 
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: <RedirectToHome /> },
