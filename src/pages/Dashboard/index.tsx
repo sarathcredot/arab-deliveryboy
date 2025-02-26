@@ -8,6 +8,7 @@ import ReturnsCount from "src/components/TotalCounts/ReturnsCount";
 import CashCount from "src/components/TotalCounts/CashCount";
 import { gql, useQuery } from "@apollo/client";
 import { ToastContainer } from "react-toastify";
+import WarrantyCount from "src/components/TotalCounts/WarrantyCount";
 
 interface IWallet {
   cashInHand: number;
@@ -112,6 +113,16 @@ const Dashboard = () => {
               }}
             >
               <ReturnsCount wallet={wallet && wallet} />
+            </Col>
+            <Col
+              lg={4}
+              md={6}
+              sm={12}
+              style={{
+                padding: 7,
+              }}
+            >
+              <WarrantyCount wallet={wallet && wallet} />
             </Col>
             <Col
               lg={4}
