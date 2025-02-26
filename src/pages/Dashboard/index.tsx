@@ -7,6 +7,7 @@ import OrdersCount from "src/components/TotalCounts/OrdersCount";
 import ReturnsCount from "src/components/TotalCounts/ReturnsCount";
 import CashCount from "src/components/TotalCounts/CashCount";
 import { gql, useQuery } from "@apollo/client";
+import { ToastContainer } from "react-toastify";
 
 interface IWallet {
   cashInHand: number;
@@ -125,6 +126,7 @@ const Dashboard = () => {
           </Row>
         </Container>
       </div>
+      <ToastContainer/>
     </React.Fragment>
   );
 };

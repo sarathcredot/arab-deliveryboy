@@ -8,35 +8,38 @@ import { Link } from "react-router-dom";
 
 
 const GET_PENDING_ORDERS = gql`
-    query GetAssignedOrderByAgentProfile($input: getAssignedOrderByAgentProfileInput) {
-          getAssignedOrderByAgentProfile(input: $input) {
-            records {
-              _id
-              orderId
-              userId
-              productName
-              itemId
-              sellingPrice
-              paymentStatus
-              paymentMode
-              orderDate
-              shippingStatus
-              deliveryAgentId
-              userName
-              email
-              mobileNumber
-              houseNumber
-              streetName
-              apartment
-              suite
-              unit
-              city
-              country
-              postCode
-            }
-            maxRecords
-          }
-        }
+query GetAssignedOrderByAgentProfile($input: getAssignedOrderByAgentProfileInput) {
+  getAssignedOrderByAgentProfile(input: $input) {
+    records {
+      _id
+      orderId
+      userId
+      productName
+      itemId
+      sellingPrice
+      paymentStatus
+      paymentMode
+      orderDate
+      shippingStatus
+      deliveryAgentId
+      deliveryAssignedOn
+      userName
+      email
+      mobileNumber
+      houseNumber
+      streetName
+      apartment
+      suite
+      unit
+      city
+      country
+      postCode
+      label
+      address
+    }
+    maxRecords
+  }
+}
 `;
 
 // const orderss = [
@@ -156,9 +159,17 @@ const Orders = () => {
                        <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>Assigned</span>
                   
                     ):(
-                      <span className={`order-status ${order.shippingStatus.toLowerCase().replace(/\s+/g, '')}`}>{order.shippingStatus
+                      <span
+                      className={`order-status ${order.shippingStatus
                         .toLowerCase()
-                        .replace(/(?:^|\s)\w/g, (match:string) => match.toUpperCase())}</span>
+                        .replace(/_/g, '')
+                        .replace(/\s+/g, '')}`}
+                    >
+                      {order.shippingStatus
+                        .replace(/_/g, ' ')
+                        .toLowerCase()
+                        .replace(/(?:^|\s)\w/g, (match: string) => match.toUpperCase())}
+                    </span>
                     )}
                  
                     <h5 className="order-id">
@@ -168,7 +179,7 @@ const Orders = () => {
                   </div>
                   <div className="order-card-body">
                   <p className="address">
-                      {[order.houseNumber, order.apartment, order.city, order.country]
+                      {[order?.address, order?.country]
                         .filter(Boolean) 
                         .join(', ')}    
                     </p>

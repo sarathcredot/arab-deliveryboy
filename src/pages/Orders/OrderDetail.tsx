@@ -6,7 +6,7 @@ import styles from "./style.module.css";
 import CustomButton from "src/components/Common/CustomButton";
 import MapPopup from "src/components/MapPopup";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { toast } from "react-toastify";
+import { Slide, toast, ToastContainer } from "react-toastify";
 import Loader from "src/components/Common/Loader";
 import OtpPopup from "./OtpPopup";
 import { skip } from "node:test";
@@ -22,30 +22,71 @@ const breadcrumbItems = [
 const GET_ORDER_DETAIL = gql`
   query GetAssignedeOrderDeatilsByAgentProfile($input: getAssignedeOrderDeatilsByAgentProfileInput!) {
     getAssignedeOrderDeatilsByAgentProfile(input: $input) {
-      _id
-      orderId
-      userId
-      productName
-      itemId
-      sellingPrice
-      paymentStatus
-      paymentMode
-      orderDate
-      shippingStatus
-      deliveryAgentId
-      userName
+    _id
+    orderId
+    userId
+    productName
+    itemId
+    sellingPrice
+    paymentStatus
+    paymentMode
+    orderDate
+    shippingStatus
+    deliveryAgentId
+    userName
+    email
+    mobileNumber
+    houseNumber
+    streetName
+    apartment
+    suite
+    unit
+    city
+    label
+    deliveryAddress
+    country
+    postCode
+    returnStatus
+    returnUserReason
+    returnProductImage {
+      fileType
+      fileURL
+      mimeType
+      originalName
+    }
+    returnOrderAssignedOn
+    returnAddress {
+      firstname
       email
-      mobileNumber
-      houseNumber
+      mobile
       streetName
+      city
+      houseNumber
+      country
+      postCode
       apartment
       suite
       unit
-      city
-      country
-      postCode
+      governorate
+      village
+      governorateID
+      villageID
+      address
     }
+    returnAdminComment
+    returnRequestDate
+    deliveyremark
+    cancelremark
+    postponedremark
+    deliveredMapLocation
+    deliveryAssignedOn
+    returnRejectedDate
+    returnRejectedRemarks
+    returnPostponedDate
+    returnPostponedRemarks
+    returnCollectedDate
   }
+}
 `;
 const UPLOAD_LOCATION = gql`
   mutation UpdateDeliveredMapLocation($input: UpdateMapLocation!) {
@@ -140,7 +181,14 @@ const OrderDetail = () => {
       });
 
       if (response.data) {
-        toast.success(response.data.updateDeliveredMapLocation.message);
+        toast(response.data.updateDeliveredMapLocation.message, {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-success text-white",
+          transition: Slide,
+          autoClose:2000,
+          closeOnClick:true
+        });
         setTimeout(() => {
           window.open(trackingLink, "_blank");
         }, 1000);
@@ -150,19 +198,44 @@ const OrderDetail = () => {
       }
     } catch (error: any) {
       console.log("ERROR = ", error);
-      toast.error(error);
+      toast(error, {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-success text-white",
+        transition: Slide,
+        autoClose:2000,
+        closeOnClick:true
+      });
     }
   };
 
-  const handleSubmit = async () => {
-    if (!paymentMode) {
-      return toast.error("Select a Payment Method");
+  const handleSubmit = async (tempStatus: any) => {
+    let status = tempStatus == "OUT_FOR_DELIVERY" ? tempStatus : deliveryStatus;
+
+    if (!status) {
+      return toast("select a delivery status", {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-danger text-white",
+        transition: Slide,
+        autoClose:2000,
+        closeOnClick:true
+      });
     }
-    if (!deliveryStatus) {
-      return toast.error("Select a Status");
-    }
-    if (!remarks) {
-      return setInvalid(true);
+    if (status !== "OUT_FOR_DELIVERY") {
+      if (!paymentMode) {
+        return toast("select a payment method", {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-danger text-white",
+          transition: Slide,
+          autoClose:2000,
+          closeOnClick:true
+        });;
+      }
+      if (!remarks) {
+        return setInvalid(true);
+      }
     }
 
     try {
@@ -170,33 +243,55 @@ const OrderDetail = () => {
         variables: {
           input: {
             orderItemId: id,
-            deliveryStatus,
+            deliveryStatus: status,
             remarks,
           },
         },
       });
-
       if (response.data.orderDelivedbyAgent.status) {
         setOpenRemarks(false);
         if (response.data.orderDelivedbyAgent.otp) {
           setOpenOtp(true);
         } else {
           refetch();
-          toast.success(response.data.orderDelivedbyAgent.msg);
+          setRemarks("")
+          toast(response.data.orderDelivedbyAgent.msg, {
+            position: "top-right",
+            hideProgressBar: true,
+            className: "bg-success text-white",
+            transition: Slide,
+            autoClose:2000,
+            closeOnClick:true
+          });
         }
       } else {
-        return toast.error(response.data.orderDelivedbyAgent.msg);
+        return toast(response.data.orderDelivedbyAgent.msg, {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-danger text-white",
+          transition: Slide,
+          autoClose:2000,
+          closeOnClick:true
+        });
       }
     } catch (error: any) {
       console.log("ERROR = ", error);
-      return toast.error(error);
+       toast(error, {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-danger text-white",
+        transition: Slide,
+        autoClose:2000,
+        closeOnClick:true
+      });
     }
   };
   const resetDeliveryStatus = () => {
     if (
       orderDetail.shippingStatus === "POSTPONED" ||
       orderDetail.shippingStatus === "DELIVERED" ||
-      orderDetail.shippingStatus === "CANCELED"
+      orderDetail.shippingStatus === "CANCELED" ||
+      orderDetail.shippingStatus === "OUT_FOR_DELIVERY"
     ) {
       setDeliveryStatus(orderDetail?.shippingStatus);
     } else {
@@ -209,11 +304,6 @@ const OrderDetail = () => {
       setPaymentMode(orderDetail?.paymentMode);
     }
   }, [orderDetail, orderData, refetch]);
-  useEffect(() => {
-    if (deliveryStatus && deliveryStatus === "DELIVERED") {
-      // toast.info(deliveryStatus)
-    }
-  }, [deliveryStatus]);
 
   return (
     <React.Fragment>
@@ -254,7 +344,7 @@ const OrderDetail = () => {
                         </p>
                       </div>
                       <div>
-                        <p>Contact :</p> <p>{orderDetail?.mobileNumber && `+956 ${orderDetail.mobileNumber}`}</p>
+                        <p>Contact :</p> <p>{orderDetail?.mobileNumber && `+968 ${orderDetail.mobileNumber}`}</p>
                       </div>
                       <div>
                         <p>payment Type :</p>{" "}
@@ -273,10 +363,7 @@ const OrderDetail = () => {
                         <p>Address :</p>{" "}
                         <p>
                           {[
-                            orderDetail?.houseNumber,
-                            orderDetail?.apartment,
-                            orderDetail?.streetName,
-                            orderDetail?.city,
+                            orderDetail?.deliveryAddress,
                             orderDetail?.postCode,
                           ]
                             .filter(Boolean)
@@ -287,6 +374,7 @@ const OrderDetail = () => {
                         <p>Status :</p>
                         <p
                           style={{
+                            textTransform:"capitalize",
                             color:
                               orderDetail?.shippingStatus === "SHIPPED"
                                 ? "#F97316"
@@ -299,7 +387,7 @@ const OrderDetail = () => {
                                 : "#000",
                           }}
                         >
-                          {orderDetail?.shippingStatus && capitalize(orderDetail?.shippingStatus)}
+                          {orderDetail?.shippingStatus && capitalize(orderDetail.shippingStatus.replace(/_/g, ' '))}
                         </p>
                       </div>
                     </>
@@ -399,7 +487,12 @@ const OrderDetail = () => {
                           value={deliveryStatus}
                           onChange={(e) => {
                             setDeliveryStatus(e.target.value);
-                            setOpenRemarks(true);
+                            console.log(e.target.value)
+                            if (e.target.value === "OUT_FOR_DELIVERY") {
+                              handleSubmit(e.target.value);
+                            } else {
+                              setOpenRemarks(true);
+                            }
                           }}
                         >
                           <option
@@ -408,9 +501,10 @@ const OrderDetail = () => {
                           >
                             Select Delivery Status
                           </option>
-                          <option value={"POSTPONED"}>POSTPONED</option>
-                          <option value={"DELIVERED"}>DELIVERED</option>
-                          <option value={"CANCELED"}>CANCELED</option>
+                          <option value={"POSTPONED"}>Postponed</option>
+                          <option value={"OUT_FOR_DELIVERY"}>Out For Delivery</option>
+                          <option value={"DELIVERED"}>Delivered</option>
+                          <option value={"CANCELED"}>Canceled</option>
                         </Input>
                       </div>
                     </>
@@ -425,7 +519,7 @@ const OrderDetail = () => {
                   }}
                 >
                   <a
-                    href={`tel:+956${orderDetail?.mobileNumber}`}
+                    href={`tel:+968${orderDetail?.mobileNumber}`}
                     style={{
                       display: "flex",
                       flexDirection: "row",
@@ -443,11 +537,11 @@ const OrderDetail = () => {
                   >
                     Call Customer
                   </a>
-                  <CustomButton
+                  {/* <CustomButton
                     name="Closed"
                     width="100%"
                     // onClick={() => refetch()}
-                  />
+                  /> */}
                 </div>
               </div>
             </Col>
@@ -456,7 +550,7 @@ const OrderDetail = () => {
       </div>
       <div className={`${styles.call_box} d-md-none`}>
         <a
-          href={`tel:+956${orderDetail?.mobileNumber}`}
+          href={`tel:+968${orderDetail?.mobileNumber}`}
           style={{
             display: "flex",
             flexDirection: "row",
@@ -498,6 +592,7 @@ const OrderDetail = () => {
         remarks={remarks}
         refetch={refetch}
       />
+      <ToastContainer/>
     </React.Fragment>
   );
 };

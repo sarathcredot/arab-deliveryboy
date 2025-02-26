@@ -37,7 +37,7 @@ import logoSvg from "../../assets/images/brands/Logo.svg";
 import config from "../../config";
 import CarouselPage from "../AuthenticationInner/CarouselPage";
 import { createSelector } from "reselect";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 
 
 interface LoginProps {
@@ -120,15 +120,36 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
           console.log("Token received:", newToken); // Log the token
           localStorage.setItem("agent_token", newToken);
           setToken(newToken); // Update token state
-          toast.success("Successfully logged in");
+          toast("Successfully logged in", {
+            position: "top-right",
+            hideProgressBar: true,
+            className: "bg-success text-white",
+            transition: Slide,
+            autoClose:2000,
+            closeOnClick:true
+          });
           navigate("/dashboard")
           
         } else {
-          return toast.error(response.data.loginDeliveryAgent.msg);
+          return toast(response.data.loginDeliveryAgent.msg, {
+            position: "top-right",
+            hideProgressBar: true,
+            className: "bg-danger text-white",
+            transition: Slide,
+            autoClose:2000,
+            closeOnClick:true
+          });
         }
       } catch (error:any) {
         console.log(error);
-        return toast.error(error.message);
+        return toast(error.message, {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-danger text-white",
+          transition: Slide,
+          autoClose:2000,
+          closeOnClick:true
+        });
       }
     },
   });
@@ -151,7 +172,7 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
 
   return (
     <React.Fragment> 
-      <ToastContainer/>
+      
       <div className="auth-page overflow-x-hidden">
         <Container fluid className="p-0">
           <Row className="g-0">
@@ -380,6 +401,7 @@ const [loginAgent] = useMutation(LOGIN_MUTATION);
           </Row>
         </Container>
       </div>
+      <ToastContainer/>
     </React.Fragment>
   );
 };

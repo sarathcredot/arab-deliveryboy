@@ -49,7 +49,7 @@ root.render(
       <ApolloProvider client={client}>
         <ToastContainer
           position="top-right"
-          autoClose={5000}
+          autoClose={2000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
@@ -57,7 +57,7 @@ root.render(
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="dark"
+          // theme="dark"
         />
         <App />
       </ApolloProvider>

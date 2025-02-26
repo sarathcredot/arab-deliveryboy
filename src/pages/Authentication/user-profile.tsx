@@ -20,7 +20,7 @@ import avatar from "../../assets/images/icons/user.png";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import CustomButton from "src/components/Common/CustomButton";
 import Confirmation from "src/components/Confirmation";
-import { toast } from "react-toastify";
+import { Slide, toast, ToastContainer } from "react-toastify";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const breadcrumbItems = [
@@ -107,12 +107,26 @@ const UserProfile = () => {
         },
       });
       if (response?.data?.updateAvailableStatus) {
-        toast.success("Availabilty updated");
+        toast(response?.data?.updateAvailableStatus?.message || "Availability Updated", {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-success text-white",
+          transition: Slide,
+          autoClose: 2000,
+          closeOnClick: true,
+        });
         handleToggle();
       }
     } catch (error: any) {
       console.log("ERROR = ", error);
-      toast.error(error);
+      toast(error, {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-danger text-white",
+        transition: Slide,
+        autoClose: 2000,
+        closeOnClick: true,
+      });
     }
     refetch();
   };
@@ -123,7 +137,15 @@ const UserProfile = () => {
       if (!password) return setInvalid1(true);
       if (!confirmPassword) return setInvalid2(true);
       if (password !== confirmPassword) {
-        toast.error("Password and confirm password do not match");
+        toast("Password and confirm password do not match", {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-danger text-white",
+          transition: Slide,
+          autoClose: 2000,
+          closeOnClick: true,
+        });
+
         return setInvalid2(true);
       }
 
@@ -137,12 +159,27 @@ const UserProfile = () => {
 
       console.log("RESPONSE = ", response);
       if (response?.data?.resetPassword?.success) {
-        console.log(response?.data?.resetPassword?.message)
-        toast.success(response?.data?.resetPassword?.message);
+        console.log(response?.data?.resetPassword?.message);
+        toast(response?.data?.resetPassword?.message, {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-success text-white",
+          transition: Slide,
+          autoClose: 2000,
+          closeOnClick: true,
+        });
+        refetch();
       }
     } catch (error: any) {
       console.log("ERROR = ", error);
-      toast.error(error);
+      toast(error, {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-danger text-white",
+        transition: Slide,
+        autoClose: 2000,
+        closeOnClick: true,
+      });
     }
   };
 
@@ -196,6 +233,7 @@ const UserProfile = () => {
                               className="mt-2"
                             >
                               <Input
+                                className={agent?.isAvailable === true ? "bg-success border-success" : ""}
                                 type="switch"
                                 style={{ width: "40px", height: "20px" }}
                                 checked={agent?.isAvailable}
@@ -275,6 +313,7 @@ const UserProfile = () => {
         toggle={handleToggle}
         submit={handleAvailability}
       />
+      <ToastContainer />
     </React.Fragment>
   );
 };
