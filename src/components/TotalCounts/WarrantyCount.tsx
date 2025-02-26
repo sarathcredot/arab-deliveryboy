@@ -24,7 +24,7 @@ const WarrantyCount = ({ wallet }: Props) => {
   return (
     <div
       className={styles.box}
-      onClick={() => navigate("/returns")}
+      onClick={() => navigate("/warranty-pickups")}
     >
       <div className={styles.box_contents}>
         <div className={styles.icon_div}>
