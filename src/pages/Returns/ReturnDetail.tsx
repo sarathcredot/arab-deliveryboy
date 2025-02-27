@@ -199,7 +199,10 @@ const ReturnDetail = () => {
           closeOnClick: true,
         });
         refetch();
-        setShowMap(true);
+        setTimeout(() => {
+          window.open(trackingLink, "_blank");
+        }, 1000);
+        // setShowMap(true);
       } else if (response.errors) {
         console.log("ERRORS = ", response.errors);
       }
@@ -322,7 +325,7 @@ const ReturnDetail = () => {
       toast("Select Product Images", {
         position: "top-right",
         hideProgressBar: true,
-        className: "bg-success text-white",
+        className: "bg-danger text-white",
         transition: Slide,
         autoClose: 2000,
         closeOnClick: true,

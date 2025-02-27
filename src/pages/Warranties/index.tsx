@@ -110,7 +110,7 @@ const Warranties = () => {
          ) :(
           
           orders.map((order) => (
-            <Link to={`/returns/detail/${order._id}`} key={order._id}>
+            <Link to={`/warranty-pickups/detail/${order._id}`} key={order._id}>
             <div className="order-card" key={order._id}>
               <div className="order-card-header">
               {order.claimStatus === "APPROVED" ? (

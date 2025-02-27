@@ -48,7 +48,7 @@ const GET__WARRANTY_HISTORY = gql`
 
 const WarrantyHistory = () => {
 
-  document.title = "Orders | Arabdeals-Agent & Dashboard";
+  document.title = "Warranty Pickups | Arabdeals-Agent & Dashboard";
 
    const [currentPage, setCurrentPage] = useState(null);
     const [pageSize] = useState(null);
@@ -109,7 +109,7 @@ const WarrantyHistory = () => {
          ) :(
           
           orders.map((order) => (
-            <Link to={`/returns/detail/${order._id}`} key={order._id}>
+            <Link to={`/warranty-pickups/detail/${order._id}`} key={order._id}>
             <div className="order-card" key={order._id}>
               <div className="order-card-header">
               {order.claimStatus === "APPROVED" ? (

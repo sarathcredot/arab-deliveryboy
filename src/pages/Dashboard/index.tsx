@@ -21,6 +21,9 @@ interface IWallet {
   numberOfReturnOrderDelivered: number;
   numberOfPendingReturns: number;
   numberOfPendingOrdes: number;
+  numberOfWarrantyCallAssigned: number;
+  numberOfWarrantyCallDelivered: number;
+  numberOfPendingWarrantyCall: number;
 }
 
 const GET_DATA = gql`
@@ -46,6 +49,9 @@ const GET_DATA = gql`
           numberOfReturnOrderDelivered
           numberOfPendingReturns
           numberOfPendingOrdes
+          numberOfWarrantyCallAssigned
+          numberOfWarrantyCallDelivered
+          numberOfPendingWarrantyCall
         }
       }
     }
@@ -137,7 +143,7 @@ const Dashboard = () => {
           </Row>
         </Container>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </React.Fragment>
   );
 };
