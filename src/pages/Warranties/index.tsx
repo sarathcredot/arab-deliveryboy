@@ -39,6 +39,7 @@ const GET__WARRANTY = gql`
         villageID
         address
       }
+      deliveryAgentAssignedOn
     }
     maxRecords
   }
@@ -146,7 +147,7 @@ const Warranties = () => {
                   </div>
                   <div>
                   <p className="order-date">Date</p>
-                  <p className="date"> {new Date(order.claimDate).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
+                  <p className="date"> {new Date(order.deliveryAgentAssignedOn).toLocaleDateString("en-GB").replace(/\//g, "-")}</p>
                   </div>
                 </div>
               </div>
