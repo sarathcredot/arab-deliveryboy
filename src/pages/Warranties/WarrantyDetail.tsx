@@ -2,121 +2,106 @@ import React, { useEffect, useState } from "react";
 import { Col, Container, FormFeedback, Input, Label, Row } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { useParams, useSearchParams } from "react-router-dom";
-import styles from "./style.module.css";
+import styles from "src/pages/Returns/style.module.css";
 import CustomButton from "src/components/Common/CustomButton";
 import MapPopup from "src/components/MapPopup";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import Loader from "src/components/Common/Loader";
 import OtpPopup from "../Orders/OtpPopup";
-import ReturnRemarkPopup from "./ReturnRemarkPopup";
+import ReturnRemarkPopup from "../Returns/ReturnRemarkPopup";
+import WarrantyOtpPopup from "./WarrantyOtpPopup";
+import WarrantyRemarkPopup from "./WarrantyRemarkPopup";
+// import ReturnRemarkPopup from "./ReturnRemarkPopup";
 // import OtpPopup from "./OtpPopup";
 
 const breadcrumbItems = [
   { title: "Dashboard", link: "/dashboard" },
-  { title: "Returns", link: "/returns" },
-  { title: "Return detail", link: "" },
+  { title: "Warranty Pickups", link: "/warranty-pickups" },
+  { title: "Pickup detail", link: "" },
 ];
 
 const GET_ORDER_DETAIL = gql`
-  query GetAssignedeOrderDeatilsByAgentProfile($input: getAssignedeOrderDeatilsByAgentProfileInput!) {
-    getAssignedeOrderDeatilsByAgentProfile(input: $input) {
-    _id
-    orderId
-    userId
-    productName
-    itemId
-    sellingPrice
-    paymentStatus
-    paymentMode
-    orderDate
-    shippingStatus
-    deliveryAgentId
-    userName
-    email
-    mobileNumber
-    houseNumber
-    streetName
-    apartment
-    suite
-    unit
-    city
-    label
-    deliveryAddress
-    country
-    postCode
-    returnStatus
-    returnUserReason
-    returnProductImage {
-      fileType
-      fileURL
-      mimeType
-      originalName
+  query GetDetailsOfWarrantyPickupsByAgent($input: getDetailsOfWarrantyPickupsByAgentInput!) {
+    getDetailsOfWarrantyPickupsByAgent(input: $input) {
+      product {
+        productId
+        warranty {
+          name
+          description
+          duration
+          warrantyType
+        }
+        productName
+        deliveryDate
+        shippingStatus
+        orderDate
+        paymentStatus
+        shippingCharge
+        sellingPrice
+        paymentMode
+        itemId
+      }
+      _id
+      productImage {
+        fileType
+        fileURL
+        mimeType
+        originalName
+      }
+      createdAt
+      issueDescription
+      warrantyId
+      claimStatus
+      claimType
+      claimDate
+      warrantyAddress {
+        firstname
+        email
+        mobile
+        country
+        postCode
+        governorate
+        village
+        governorateID
+        villageID
+        address
+      }
+      replacementDeliveredLocation
+      deliveryAgentAssignedOn
     }
-    returnOrderAssignedOn
-    returnAddress {
-      firstname
-      email
-      mobile
-      streetName
-      city
-      houseNumber
-      country
-      postCode
-      apartment
-      suite
-      unit
-      governorate
-      village
-      governorateID
-      villageID
-      address
-    }
-    returnAdminComment
-    returnRequestDate
-    deliveyremark
-    cancelremark
-    postponedremark
-    deliveredMapLocation
-    deliveryAssignedOn
-    returnRejectedDate
-    returnRejectedRemarks
-    returnPostponedDate
-    returnPostponedRemarks
-    returnCollectedDate
   }
-}
 `;
 
-const RETURN_STATUS = gql`
-  mutation ReturnStatusChangeDeliveryAgent($input: ReturnstatusUpdateInput!) {
-    returnStatusChangeDeliveryAgent(input: $input) {
-      otp
+const WARRANTY_STATUS = gql`
+  mutation UpdateClaimStatusByAgent($input: updateClaimStatusByAgentInput!) {
+    updateClaimStatusByAgent(input: $input) {
       status
+      otp
       msg
     }
   }
 `;
 
 const UPLOAD_IMAGES = gql`
-  mutation UploadReturnProductImageByAgent($input: UploadReturnInput!, $image: [Upload]) {
-    uploadReturnProductImageByAgent(input: $input, image: $image) {
+  mutation UploadWarrantyProductImageByAgent($input: uploadWarrantyProductImageByAgentInput!, $image: [Upload]) {
+    uploadWarrantyProductImageByAgent(input: $input, image: $image) {
       message
     }
   }
 `;
 const UPLOAD_LOCATION = gql`
-  mutation UpdateDeliveredMapLocation($input: UpdateMapLocation!) {
-    updateDeliveredMapLocation(input: $input) {
+  mutation UpdateReplacementDeliveredLocation($input: updateReplacementDeliveredLocationInput!) {
+    updateReplacementDeliveredLocation(input: $input) {
       message
     }
   }
 `;
 
-const ReturnDetail = () => {
+const WarrantyDetail = () => {
   const { id } = useParams();
-  const [orderDetail, setOrderDetail] = useState<any>();
-  const [returnStatus, setReturnStatus] = useState("");
+  const [warrantyDetail, setWarrantyDetail] = useState<any>();
+  const [claimStatus, setClaimStatus] = useState("");
   const [remarks, setRemarks] = useState("");
 
   const [invalid, setInvalid] = useState(false);
@@ -125,7 +110,7 @@ const ReturnDetail = () => {
   const [productImages, setProductImages] = useState<FileList | null>(null);
   const [uploadProductImages] = useMutation(UPLOAD_IMAGES);
   const [uploadLocation] = useMutation(UPLOAD_LOCATION);
-  const [changeReturnStatus] = useMutation(RETURN_STATUS);
+  const [changeWarrantyStatus] = useMutation(WARRANTY_STATUS);
 
   const {
     data: orderData,
@@ -135,7 +120,7 @@ const ReturnDetail = () => {
   } = useQuery(GET_ORDER_DETAIL, {
     variables: {
       input: {
-        _id: id,
+        claimRequestId: id,
       },
       skip: !id,
     },
@@ -162,8 +147,8 @@ const ReturnDetail = () => {
   };
 
   useEffect(() => {
-    if (orderData && orderData.getAssignedeOrderDeatilsByAgentProfile) {
-      setOrderDetail(orderData.getAssignedeOrderDeatilsByAgentProfile);
+    if (orderData && orderData.getDetailsOfWarrantyPickupsByAgent) {
+      setWarrantyDetail(orderData.getDetailsOfWarrantyPickupsByAgent);
     }
   }, [orderData, refetch]);
 
@@ -183,14 +168,14 @@ const ReturnDetail = () => {
       const response = await uploadLocation({
         variables: {
           input: {
-            orderProductId: id,
+            claimRequestId: id,
             mapLocation: trackingLink,
           },
         },
       });
 
       if (response.data) {
-        toast(response.data.updateDeliveredMapLocation.message, {
+        toast(response.data.updateReplacementDeliveredLocation.message, {
           position: "top-right",
           hideProgressBar: true,
           className: "bg-success text-white",
@@ -219,10 +204,10 @@ const ReturnDetail = () => {
     }
   };
 
-  // submit return status
-  const handleReturnStatus = async () => {
-    if (!returnStatus) {
-      return toast("select return status", {
+  // submit warranty status
+  const handleWarrantyStatus = async (status: any) => {
+    if (!status && !claimStatus) {
+      return toast("select warranty status", {
         position: "top-right",
         hideProgressBar: true,
         className: "bg-danger text-white",
@@ -231,27 +216,27 @@ const ReturnDetail = () => {
         closeOnClick: true,
       });
     }
-    if (!remarks) {
+    if (!status && !remarks) {
       return setInvalid(true);
     }
 
     try {
-      const response = await changeReturnStatus({
+      const response = await changeWarrantyStatus({
         variables: {
           input: {
-            orderProductId: id,
-            returnStatus,
+            claimRequestId: id,
+            claimStatus: status ?? claimStatus,
             remarks,
           },
         },
       });
 
-      if (response.data.returnStatusChangeDeliveryAgent.status) {
+      if (response.data.updateClaimStatusByAgent.status) {
         setOpenRemarks(false);
-        if (response.data.returnStatusChangeDeliveryAgent.otp) {
+        if (response.data.updateClaimStatusByAgent.otp) {
           setOpenOtp(true);
         } else {
-          toast(response.data.returnStatusChangeDeliveryAgent.msg, {
+          toast(response.data.updateClaimStatusByAgent.msg, {
             position: "top-right",
             hideProgressBar: true,
             className: "bg-success text-white",
@@ -260,9 +245,10 @@ const ReturnDetail = () => {
             closeOnClick: true,
           });
           refetch();
+          setRemarks("")
         }
       } else {
-        return toast(response.data.returnStatusChangeDeliveryAgent.msg, {
+        return toast(response.data.updateClaimStatusByAgent.msg, {
           position: "top-right",
           hideProgressBar: true,
           className: "bg-danger text-white",
@@ -292,14 +278,14 @@ const ReturnDetail = () => {
         const response = await uploadProductImages({
           variables: {
             input: {
-              orderProductId: id,
+              claimRequestId: id,
             },
             image: productImages, // need to change this
           },
         });
         console.log("RESPONSE = ", response);
         if (response?.data) {
-          toast(response?.data?.uploadReturnProductImageByAgent?.message, {
+          toast(response?.data?.uploadWarrantyProductImageByAgent?.message, {
             position: "top-right",
             hideProgressBar: true,
             className: "bg-success text-white",
@@ -334,22 +320,23 @@ const ReturnDetail = () => {
   };
   const resetReturnStatus = () => {
     if (
-      orderDetail?.returnStatus === "POSTPONED" ||
-      orderDetail?.returnStatus === "COLLECTED" ||
-      orderDetail?.returnStatus === "REJECTED" ||
-      orderDetail?.returnStatus === "RETURNED TO WAREHOUSE"
+      warrantyDetail?.claimStatus === "POSTPONED" ||
+      warrantyDetail?.claimStatus === "OUT_FOR_DELIVERY" ||
+      warrantyDetail?.claimStatus === "REJECTED" ||
+      warrantyDetail?.claimStatus === "REPLACEMENT_COMPLETED" ||
+      warrantyDetail?.claimStatus === "RETURNED_TO_WAREHOUSE"
     ) {
-      setReturnStatus(orderDetail?.returnStatus);
+      setClaimStatus(warrantyDetail?.claimStatus);
     } else {
-      setReturnStatus("");
+      setClaimStatus("");
     }
   };
 
   useEffect(() => {
-    if (orderDetail) {
+    if (warrantyDetail) {
       resetReturnStatus();
     }
-  }, [orderDetail, orderData, refetch]);
+  }, [warrantyDetail, orderData, refetch]);
   return (
     <React.Fragment>
       <div className="page-content mb-5 mb-md-0">
@@ -376,43 +363,41 @@ const ReturnDetail = () => {
                   ) : (
                     <>
                       <div>
-                        <p>Order ID :</p> <p>{orderDetail?.orderId}</p>
+                        <p>Warranty ID :</p> <p>{warrantyDetail?.warrantyId}</p>
                       </div>
                       <div>
-                        <p>Customer :</p> <p className="text-capitalize">{orderDetail?.returnAddress?.firstname}</p>
+                        <p>Customer :</p>{" "}
+                        <p className="text-capitalize">{warrantyDetail?.warrantyAddress?.firstname}</p>
                       </div>
                       <div>
                         <p>Date :</p>{" "}
                         <p>
-                          {orderDetail?.returnOrderAssignedOn &&
-                            new Date(orderDetail?.returnOrderAssignedOn)
+                          {warrantyDetail?.deliveryAgentAssignedOn &&
+                            new Date(warrantyDetail?.deliveryAgentAssignedOn)
                               .toLocaleDateString("en-GB")
                               .replace(/\//g, "-")}
                         </p>
                       </div>
                       <div>
-                        <p>Contact :</p> <p>+968 {orderDetail?.returnAddress?.mobile}</p>
+                        <p>Contact :</p> <p>+968 {warrantyDetail?.warrantyAddress?.mobile}</p>
                       </div>
                       <div>
                         <p>payment Type :</p>{" "}
                         <p>
-                          {orderDetail?.paymentMode === "COD"
+                          {warrantyDetail?.product?.paymentMode === "COD"
                             ? "Cash On Delivery"
-                            : orderDetail?.paymentMode === "CARD"
+                            : warrantyDetail?.product?.paymentMode === "CARD"
                             ? "Card On Delivery"
-                            : orderDetail?.paymentMode}
+                            : warrantyDetail?.product?.paymentMode}
                         </p>
                       </div>
                       <div>
-                        <p>payable :</p> <p>{orderDetail?.sellingPrice} OMR</p>
+                        <p>payable :</p> <p>{warrantyDetail?.product?.sellingPrice} OMR</p>
                       </div>
                       <div>
                         <p>Address :</p>{" "}
                         <p className="text-capitalize">
-                          {[
-                            orderDetail?.returnAddress?.address,
-                            orderDetail?.returnAddress?.postCode,
-                          ]
+                          {[warrantyDetail?.warrantyAddress?.address, warrantyDetail?.warrantyAddress?.postCode]
                             .filter(Boolean)
                             .join(", ")}
                         </p>
@@ -423,25 +408,25 @@ const ReturnDetail = () => {
                           className="text-capitalize"
                           style={{
                             color:
-                              orderDetail?.returnStatus === "APPROVED"
+                              warrantyDetail?.claimStatus === "APPROVED"
                                 ? "#F97316"
-                                : orderDetail?.returnStatus === "POSTPONED"
+                                : warrantyDetail?.claimStatus === "POSTPONED"
                                 ? "#5a6f05"
-                                : orderDetail?.returnStatus === "COLLECTED"
+                                : warrantyDetail?.claimStatus === "COLLECTED"
                                 ? "#4947D0"
-                                : orderDetail?.returnStatus === "RETURNED TO WAREHOUSE"
+                                : warrantyDetail?.claimStatus === "RETURNED TO WAREHOUSE"
                                 ? "#005E2B"
-                                : orderDetail?.returnStatus === "REJECTED"
+                                : warrantyDetail?.claimStatus === "REJECTED"
                                 ? "#E30613"
                                 : "#000",
                             textTransform: "uppercase",
                           }}
                         >
-                          {orderDetail?.returnStatus === "APPROVED"
+                          {warrantyDetail?.claimStatus === "APPROVED"
                             ? "Return Requested"
-                            : orderDetail?.returnStatus === "POSTPONED"
+                            : warrantyDetail?.claimStatus === "POSTPONED"
                             ? "Postponed to Tomorrow"
-                            : orderDetail?.returnStatus.toLowerCase()}
+                            : warrantyDetail?.claimStatus.toLowerCase()}
                         </p>
                       </div>
                     </>
@@ -472,18 +457,27 @@ const ReturnDetail = () => {
                       className={styles.input}
                       type="text"
                       placeholder="Past the tracking link here"
-                      value={trackingLink}
+                      value={warrantyDetail?.replacementDeliveredLocation ?? trackingLink}
                       invalid={linkInvalid}
+                      disabled={warrantyDetail?.replacementDeliveredLocation}
                       onChange={(e) => {
                         setLinkInvalid(false);
                         setTrackingLink(e.target.value);
                       }}
                     />
-                    <CustomButton
-                      name="Save"
-                      padding="0 25px"
-                      onClick={submitTrackingLink}
-                    />
+                    {warrantyDetail?.replacementDeliveredLocation ? (
+                      <CustomButton
+                        name="Open"
+                        padding="0 25px"
+                        onClick={() => window.open(warrantyDetail?.replacementDeliveredLocation, "_blank")}
+                      />
+                    ) : (
+                      <CustomButton
+                        name="Save"
+                        padding="0 25px"
+                        onClick={submitTrackingLink}
+                      />
+                    )}
 
                     <MapPopup
                       show={showMap}
@@ -574,17 +568,21 @@ const ReturnDetail = () => {
                         </div>
                       </div>
                       <div>
-                        <Label className="form-label ">Return Status </Label>
+                        <Label className="form-label ">Warranty Status </Label>
 
                         <Input
-                          name="returnStatus"
+                          name="claimStatus"
                           placeholder="Select"
                           type="select"
                           className={styles.select_box}
-                          value={returnStatus}
+                          value={claimStatus}
                           onChange={(e) => {
-                            setReturnStatus(e.target.value);
-                            setOpenRemarks(true);
+                            setClaimStatus(e.target.value);
+                            if (e.target.value === "OUT_FOR_DELIVERY") {
+                              handleWarrantyStatus(e.target.value);
+                            } else {
+                              setOpenRemarks(true);
+                            }
                           }}
                         >
                           <option
@@ -593,10 +591,11 @@ const ReturnDetail = () => {
                           >
                             select
                           </option>
-                          <option value={"POSTPONED"}>Postponed to Tomorrow </option>
-                          <option value={"COLLECTED"}>Collected</option>
-                          <option value={"REJECTED"}>Rejected</option>
-                          <option value={"RETURNED TO WAREHOUSE"}>Returned to Warehouse</option>
+                          <option value={"REJECTED"}>Reject</option>
+                          <option value={"POSTPONED"}>Postponed</option>
+                          <option value={"OUT_FOR_DELIVERY"}>Out for delivery</option>
+                          <option value={"REPLACEMENT_COMPLETED"}>Completed</option>
+                          <option value={"RETURNED_TO_WAREHOUSE"}>Returned to Warehouse</option>
                         </Input>
                       </div>
                       {/* <Input
@@ -621,7 +620,7 @@ const ReturnDetail = () => {
                   }}
                 >
                   <a
-                    href={`tel:+968${orderDetail?.returnAddress?.mobile}`}
+                    href={`tel:+968${warrantyDetail?.warrantyAddress?.mobile}`}
                     style={{
                       display: "flex",
                       flexDirection: "row",
@@ -643,7 +642,7 @@ const ReturnDetail = () => {
                   {/* <CustomButton
                     name="Closed"
                     width="100%"
-                    // onClick={handleReturnStatus}
+                    // onClick={handleWarrantyStatus}
                   /> */}
                 </div>
               </div>
@@ -653,7 +652,7 @@ const ReturnDetail = () => {
       </div>
       <div className={`${styles.call_box} d-md-none`}>
         <a
-          href={`tel:+968${orderDetail?.returnAddress?.mobile}`}
+          href={`tel:+968${warrantyDetail?.warrantyAddress?.mobile}`}
           style={{
             display: "flex",
             flexDirection: "row",
@@ -674,28 +673,28 @@ const ReturnDetail = () => {
         {/* <CustomButton
           name="Closed"
           width="100%"
-          // onClick={handleReturnStatus}
+          // onClick={handleWarrantyStatus}
         /> */}
       </div>
-      <ReturnRemarkPopup
+      <WarrantyRemarkPopup
         remarks={remarks}
         setRemarks={setRemarks}
-        submit={handleReturnStatus}
+        submit={handleWarrantyStatus}
         isOpen={openRemarks}
         toggle={openRemarksToggle}
       />
-      <OtpPopup
+      <WarrantyOtpPopup
         isOpen={openOtp}
         setOpenOtp={setOpenOtp}
         toggle={openOtpToggle}
-        orderItemId={id}
-        returnStatus={returnStatus}
-        returnRemark={remarks}
+        claimRequestId={id}
+        claimStatus={claimStatus}
+        remarks={remarks}
         refetch={refetch}
       />
-      <ToastContainer/>
+      <ToastContainer />
     </React.Fragment>
   );
 };
 
-export default ReturnDetail;
+export default WarrantyDetail;

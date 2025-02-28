@@ -8,6 +8,7 @@ import ReturnsCount from "src/components/TotalCounts/ReturnsCount";
 import CashCount from "src/components/TotalCounts/CashCount";
 import { gql, useQuery } from "@apollo/client";
 import { ToastContainer } from "react-toastify";
+import WarrantyCount from "src/components/TotalCounts/WarrantyCount";
 
 interface IWallet {
   cashInHand: number;
@@ -20,6 +21,9 @@ interface IWallet {
   numberOfReturnOrderDelivered: number;
   numberOfPendingReturns: number;
   numberOfPendingOrdes: number;
+  numberOfWarrantyCallAssigned: number;
+  numberOfWarrantyCallDelivered: number;
+  numberOfPendingWarrantyCall: number;
 }
 
 const GET_DATA = gql`
@@ -45,6 +49,9 @@ const GET_DATA = gql`
           numberOfReturnOrderDelivered
           numberOfPendingReturns
           numberOfPendingOrdes
+          numberOfWarrantyCallAssigned
+          numberOfWarrantyCallDelivered
+          numberOfPendingWarrantyCall
         }
       }
     }
@@ -121,12 +128,22 @@ const Dashboard = () => {
                 padding: 7,
               }}
             >
+              <WarrantyCount wallet={wallet && wallet} />
+            </Col>
+            <Col
+              lg={4}
+              md={6}
+              sm={12}
+              style={{
+                padding: 7,
+              }}
+            >
               <CashCount wallet={wallet && wallet} />
             </Col>
           </Row>
         </Container>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </React.Fragment>
   );
 };

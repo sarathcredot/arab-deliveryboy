@@ -20,6 +20,10 @@ import Greeting from "src/pages/Authentication/Greeting";
 import useWindowWidth from "src/hooks/useWindowWidth";
 import ReturnDetail from "src/pages/Returns/ReturnDetail";
 
+import Warranties from "src/pages/Warranties";
+import WarrantyHistory from "src/pages/Warranties/warrantyHistory";
+import WarrantyDetail from "src/pages/Warranties/WarrantyDetail";
+
 interface RouteProps {
   path: string;
   component: any;
@@ -59,6 +63,11 @@ const userRoutes: Array<RouteProps> = [
   { path: "/returns", component: <Returns /> },
   { path: "/returns/detail/:id", component: <ReturnDetail /> },
   { path: "/return-history", component: <ReturnHistory /> },
+
+  //warranty-pickups
+  { path: "/warranty-pickups", component: <Warranties /> },
+  { path: "/warranty-history", component: <WarrantyHistory /> },
+  { path: "/warranty-pickups/detail/:id", component: <WarrantyDetail /> },
 
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: <RedirectToHome /> },
